@@ -4,7 +4,7 @@
       <v-toolbar-title>RoutineQuest</v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <NuxtLink to="/other" class="mr-4">サインアップ</NuxtLink>
+      <NuxtLink to="/signup" class="mr-4">サインアップ</NuxtLink>
 
       <NuxtLink to="/other">ログイン</NuxtLink>
     </v-app-bar>

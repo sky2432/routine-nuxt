@@ -6,13 +6,15 @@
 
       <NuxtLink to="/signup" class="mr-4">サインアップ</NuxtLink>
 
-      <NuxtLink to="/other">ログイン</NuxtLink>
+      <NuxtLink to="/login">ログイン</NuxtLink>
     </v-app-bar>
     <v-main class="main">
       <div class="top-message">
         <h1>ゲームのように習慣を身につけよう</h1>
         <h1>習慣が人生を作る</h1>
-        <v-btn class="mt-4 top-btn" large>はじめる</v-btn>
+        <v-btn class="mt-4 top-btn" large @click="$router.push('/signup')"
+          >はじめる</v-btn
+        >
       </div>
     </v-main>
     <v-footer>

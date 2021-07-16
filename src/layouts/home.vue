@@ -1,10 +1,22 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      app
-    >
+    <v-app-bar fixed app>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title v-text="title" />
+    </v-app-bar>
+
+    <v-navigation-drawer v-model="drawer"  mobile-breakpoint="960" fixed app>
+      <v-sheet color="grey">
+        <v-row class="align-center ma-0 pt-4 pl-4">
+          <v-avatar color="white" size="64"> </v-avatar>
+          <div class="pl-4">sky</div>
+        </v-row>
+        <div class="d-flex pt-4 pl-4">
+          <p class="mr-4">フォロー<a href="#">8</a></p>
+          <p>フォロワー<a href="#">10</a></p>
+        </div>
+      </v-sheet>
+
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -22,46 +34,46 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar
-      fixed
-      app
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
-    </v-app-bar>
     <v-main>
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 
-<script>
-export default {
-  data () {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  data() {
     return {
-      drawer: false,
+      drawer: null as boolean | null,
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          title: 'ホーム',
+          to: '/home',
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
+          title: '投稿',
+          to: '/',
+        },
+        {
+          icon: 'mdi-apps',
+          title: 'レポート',
+          to: '/',
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'お知らせ',
+          to: '/',
+        },
       ],
-      title: 'RoutineQuest'
+      title: 'RoutineQuest',
     }
-  }
-}
+  },
+})
 </script>
+

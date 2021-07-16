@@ -58,7 +58,7 @@ export default Vue.extend({
         {
           icon: 'mdi-chart-bubble',
           title: '投稿',
-          to: '/',
+          to: '/post',
         },
         {
           icon: 'mdi-apps',

@@ -2,12 +2,7 @@
   <div>
     <v-row class="ma-0">
       <v-col cols="12" sm="6" v-for="routine in routines" :key="routine.name">
-        <v-card
-          class="routine"
-          height="150"
-          @click="showRoutineDetail(routine)"
-          hover
-        >
+        <v-card height="150" @click="showRoutineDetail(routine)" hover>
           <div class="text-left">
             <v-checkbox
               hide-details
@@ -63,7 +58,7 @@
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-menu offset-y v-if="target.name">
+        <v-menu offset-y v-if="target.id">
           <template v-slot:activator="{ on, attrs }">
             <v-btn v-bind="attrs" v-on="on" icon>
               <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
@@ -80,11 +75,11 @@
         </v-menu>
       </div>
 
-      <div class="wrapper" v-if="!detail">
+      <div class="wrapper" v-if="!target.id">
         <div>習慣を選択してください</div>
       </div>
 
-      <div v-if="detail">
+      <div v-if="target.id">
         <h2 class="ml-2 mt-4">{{ target.name }}</h2>
         <div class="px-2">
           <v-card class="mt-4">
@@ -186,6 +181,7 @@ import windowWidthMixin from '../mixins/windowWidthMixin'
 import BaseDialog from '../components/BaseDialog.vue'
 
 export interface routineType {
+  id: number
   name: string
   total_days: number
   continuous_days: number
@@ -207,6 +203,7 @@ export default windowWidthMixin.extend({
       detail: false,
       routines: [
         {
+          id: 1,
           name: 'プログラミング',
           total_days: 4,
           continuous_days: 2,
@@ -217,6 +214,7 @@ export default windowWidthMixin.extend({
           check_status: true,
         },
         {
+          id: 2,
           name: '読書',
           total_days: 10,
           continuous_days: 4,
@@ -227,6 +225,7 @@ export default windowWidthMixin.extend({
           check_status: false,
         },
         {
+          id: 3,
           name: '瞑想',
           total_days: 4,
           continuous_days: 2,
@@ -255,19 +254,14 @@ export default windowWidthMixin.extend({
     },
 
     drawerWidth(): string {
-      if (this.width >= 960) {
-        return '30%'
-      }
-      if (this.width >= 600) {
-        return '40%'
-      }
+      if (this.width >= 960) return '30%'
+      if (this.width >= 600) return '40%'
       return '100%'
     },
   },
 
   methods: {
     showRoutineDetail(routine: routineType): void {
-      this.detail = true
       this.target = routine
       this.drawer = true
     },
@@ -289,10 +283,6 @@ export default windowWidthMixin.extend({
 </script>
 
 <style scoped>
-.right-drawer {
-  width: 100%;
-}
-
 .wrapper {
   height: calc(100vh - 64px);
 }

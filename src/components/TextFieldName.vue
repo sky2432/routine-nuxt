@@ -1,9 +1,9 @@
 <template>
   <BaseTextField
     :name="name"
-    rules="required|min:2|max:10"
+    :rules="rules"
     vid="name"
-    :counter="10"
+    :counter="counter"
     :icon="icon"
     :label="label"
     :value="value"
@@ -31,6 +31,13 @@ export default Vue.extend({
       type: String,
       default: 'mdi-account',
     },
+    rules: {
+      type: String,
+      default: 'required|min:2|max:10'
+    },
+    counter: {
+      default: 10,
+    }
   },
 })
 </script>

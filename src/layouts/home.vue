@@ -63,7 +63,7 @@ export default Vue.extend({
         {
           icon: 'mdi-apps',
           title: 'レポート',
-          to: '/',
+          to: '/report',
         },
         {
           icon: 'mdi-chart-bubble',

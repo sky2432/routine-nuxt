@@ -61,14 +61,14 @@ export default Vue.extend({
           to: '/post',
         },
         {
-          icon: 'mdi-apps',
+          icon: 'mdi-chart-bar',
           title: 'レポート',
           to: '/report',
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-bell-outline',
           title: 'お知らせ',
-          to: '/',
+          to: '/notification',
         },
       ],
       title: 'RoutineQuest',

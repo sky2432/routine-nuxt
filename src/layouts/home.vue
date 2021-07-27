@@ -9,7 +9,9 @@
       <v-sheet color="grey">
         <v-row class="align-center ma-0 pt-4 pl-4">
           <v-avatar color="white" size="64"> </v-avatar>
-          <div class="pl-4">sky</div>
+          <div class="pl-4">
+            <span v-if="$auth.loggedIn">{{ $auth.user.name }}</span>
+          </div>
         </v-row>
         <div class="d-flex pt-4 pl-4">
           <p class="mr-4">フォロー<a href="#">8</a></p>
@@ -37,18 +39,20 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items2"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
+        <v-list-item to="/setting" exact>
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title>設定</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item exact @click="logout">
+          <v-list-item-action>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>ログアウト</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -104,6 +108,17 @@ export default Vue.extend({
       ],
       title: 'RoutineQuest',
     }
+  },
+
+  methods: {
+    async logout() {
+      try {
+        await this.$auth.logout()
+        this.$router.push('/')
+      } catch (error) {
+        console.log(error)
+      }
+    },
   },
 })
 </script>

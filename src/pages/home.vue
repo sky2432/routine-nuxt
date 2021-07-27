@@ -179,6 +179,7 @@
 <script lang="ts">
 import windowWidthMixin from '../mixins/windowWidthMixin'
 import BaseDialog from '../components/BaseDialog.vue'
+import { $axios } from '@/util/axios'
 
 export interface routineType {
   id: number
@@ -260,7 +261,16 @@ export default windowWidthMixin.extend({
     },
   },
 
+  created() {
+    this.getUserRoutines()
+  },
+
   methods: {
+    getUserRoutines() {
+      const response = this.$axios.$get('routines/' + this.$auth.user.id)
+      console.log(response)
+    },
+
     showRoutineDetail(routine: routineType): void {
       this.target = routine
       this.drawer = true

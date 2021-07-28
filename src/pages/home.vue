@@ -1,34 +1,30 @@
 <template>
   <div>
     <v-row class="ma-0">
-      <v-col cols="12" sm="6" v-for="routine in routines" :key="routine.name">
+      <v-col cols="12" sm="6" v-for="routine in routines" :key="routine.id">
         <v-card height="150" @click="showRoutineDetail(routine)" hover>
           <div class="text-left">
             <v-checkbox
               hide-details
               class="ml-2"
-              :input-value="routine.check_status"
+              :input-value="false"
             ></v-checkbox>
           </div>
-          <v-overlay
-            absolute
-            opacity="0.2"
-            :value="routine.check_status"
-          ></v-overlay>
+          <v-overlay absolute opacity="0.2" :value="false"></v-overlay>
           <div class="mt-4 d-flex justify-center align-center">
             <div>
               <div class="text-center">
                 <p>{{ routine.name }}</p>
               </div>
               <div>
-                <v-chip :color="chipColor(routine.total_rank)">{{
-                  routine.total_rank
+                <v-chip :color="chipColor(routine.total_rank.name)">{{
+                  routine.total_rank.name
                 }}</v-chip>
-                <v-chip :color="chipColor(routine.continuous_rank)">{{
-                  routine.continuous_rank
+                <v-chip :color="chipColor(routine.continuous_rank.name)">{{
+                  routine.continuous_rank.name
                 }}</v-chip>
-                <v-chip :color="chipColor(routine.recovery_rank)">{{
-                  routine.recovery_rank
+                <v-chip :color="chipColor(routine.recovery_rank.name)">{{
+                  routine.recovery_rank.name
                 }}</v-chip>
               </div>
             </div>
@@ -89,8 +85,8 @@
                 >{{ target.total_days }}<span class="attach">日</span></v-col
               >
               <v-col
-                ><v-chip :color="chipColor(target.total_rank)">{{
-                  target.total_rank
+                ><v-chip :color="chipColor(target.total_rank.name)">{{
+                  target.total_rank.name
                 }}</v-chip></v-col
               >
             </v-row>
@@ -103,8 +99,8 @@
                 }}<span class="attach">日</span></v-col
               >
               <v-col
-                ><v-chip :color="chipColor(target.continuous_rank)">{{
-                  target.continuous_rank
+                ><v-chip :color="chipColor(target.continuous_rank.name)">{{
+                  target.continuous_rank.name
                 }}</v-chip></v-col
               >
             </v-row>
@@ -117,8 +113,8 @@
                 }}<span class="attach">回</span></v-col
               >
               <v-col
-                ><v-chip :color="chipColor(target.recovery_rank)">{{
-                  target.recovery_rank
+                ><v-chip :color="chipColor(target.recovery_rank.name)">{{
+                  target.recovery_rank.name
                 }}</v-chip></v-col
               >
             </v-row>
@@ -184,13 +180,22 @@ import { $axios } from '@/util/axios'
 export interface routineType {
   id: number
   name: string
+  user_id: number
   total_days: number
   continuous_days: number
   recovery_count: number
-  total_rank: string
-  continuous_rank: string
-  recovery_rank: string
-  check_status: boolean
+  total_rank: rank
+  continuous_rank: rank
+  recovery_rank: rank
+  created_at: string
+  updated_at: string
+}
+
+interface rank {
+  id: number
+  name: string
+  created_at: string
+  updated_at: string
 }
 
 export default windowWidthMixin.extend({
@@ -202,41 +207,7 @@ export default windowWidthMixin.extend({
     return {
       drawer: null as boolean | null,
       detail: false,
-      routines: [
-        {
-          id: 1,
-          name: 'プログラミング',
-          total_days: 4,
-          continuous_days: 2,
-          recovery_count: 1,
-          total_rank: '初級',
-          continuous_rank: '中級',
-          recovery_rank: '復活',
-          check_status: true,
-        },
-        {
-          id: 2,
-          name: '読書',
-          total_days: 10,
-          continuous_days: 4,
-          recovery_count: 2,
-          total_rank: '初級',
-          continuous_rank: '中級',
-          recovery_rank: '復活',
-          check_status: false,
-        },
-        {
-          id: 3,
-          name: '瞑想',
-          total_days: 4,
-          continuous_days: 2,
-          recovery_count: 1,
-          total_rank: '見習い',
-          continuous_rank: '中級',
-          recovery_rank: '復活',
-          check_status: false,
-        },
-      ],
+      routines: [] as routineType[],
       target: {} as routineType,
       name: '' as string,
       updatedName: '' as string,
@@ -249,7 +220,15 @@ export default windowWidthMixin.extend({
         if (rank === '初級') return 'blue-grey lighten-3'
         if (rank === '中級') return 'brown lighten-3'
         if (rank === '上級') return 'deep-orange lighten-3'
+        if (rank === '聖級') return 'yellow lighten-3'
+        if (rank === '王級') return 'indigo lighten-3'
+        if (rank === '帝級') return 'deep-purple lighten-3'
+        if (rank === '神級') return 'pink lighten-3'
         if (rank === '復活') return 'green lighten-3'
+        if (rank === '不屈') return 'purple lighten-3'
+        if (rank === '蘇生') return 'lime lighten-3'
+        if (rank === '転生') return 'light-blue lighten-3'
+        if (rank === '不死') return 'red lighten-3'
         return 'grey lighten-2'
       }
     },
@@ -266,9 +245,10 @@ export default windowWidthMixin.extend({
   },
 
   methods: {
-    getUserRoutines() {
-      const response = this.$axios.$get('routines/' + this.$auth.user.id)
-      console.log(response)
+    async getUserRoutines() {
+      const response = await this.$axios.$get('routines/' + this.$auth.user.id)
+      this.routines = response.data
+      console.log(response.data)
     },
 
     showRoutineDetail(routine: routineType): void {

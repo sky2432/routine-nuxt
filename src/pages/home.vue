@@ -2,15 +2,20 @@
   <div>
     <v-row class="ma-0">
       <v-col cols="12" sm="6" v-for="routine in routines" :key="routine.id">
-        <v-card height="150" @click="showRoutineDetail(routine)" hover>
+        <v-card
+          :color="doneRoutine(routine)"
+          height="150"
+          @click="showRoutineDetail(routine)"
+          hover
+        >
           <div class="text-left">
             <v-checkbox
               hide-details
               class="ml-2"
-              :input-value="false"
+              :input-value="routine.today_record !== null"
+              @click="changeRecord(routine)"
             ></v-checkbox>
           </div>
-          <v-overlay absolute opacity="0.2" :value="false"></v-overlay>
           <div class="mt-4 d-flex justify-center align-center">
             <div>
               <div class="text-center">
@@ -149,7 +154,9 @@
         <validation-observer ref="observer" v-slot="{ invalid }">
           <TextFieldName v-model="updatedName" rules="required"></TextFieldName>
           <v-card-actions class="justify-center"
-            ><v-btn :disabled="invalid" @click="editRoutine">変更</v-btn></v-card-actions
+            ><v-btn :disabled="invalid" @click="editRoutine"
+              >変更</v-btn
+            ></v-card-actions
           >
         </validation-observer>
       </template>
@@ -179,6 +186,7 @@ export interface routineType {
   total_rank: rank
   continuous_rank: rank
   recovery_rank: rank
+  today_record: record | null
   created_at: string
   updated_at: string
 }
@@ -186,6 +194,13 @@ export interface routineType {
 interface rank {
   id: number
   name: string
+  created_at: string
+  updated_at: string
+}
+
+interface record {
+  id: number
+  routine_id: number
   created_at: string
   updated_at: string
 }
@@ -201,8 +216,8 @@ export default windowWidthMixin.extend({
       detail: false,
       routines: [] as routineType[],
       target: {} as routineType,
-      name: '' as string,
-      updatedName: '' as string,
+      name: '',
+      updatedName: '',
     }
   },
 
@@ -222,6 +237,14 @@ export default windowWidthMixin.extend({
         if (rank === '転生') return 'light-blue lighten-3'
         if (rank === '不死') return 'red lighten-3'
         return 'grey lighten-2'
+      }
+    },
+
+    doneRoutine() {
+      return function (routine: routineType) {
+        if (routine.today_record !== null) {
+          return 'grey lighten-3'
+        }
       }
     },
 
@@ -246,6 +269,29 @@ export default windowWidthMixin.extend({
     showRoutineDetail(routine: routineType): void {
       this.target = routine
       this.drawer = true
+    },
+
+    // 記録
+    changeRecord(routine: routineType) {
+      console.log(routine)
+      if (routine.today_record === null) {
+        this.createRecord(routine.id)
+      } else {
+        this.deleteRecord(routine.today_record.id)
+      }
+    },
+
+    async createRecord(routine_id: number) {
+      const sendData = {
+        routine_id: routine_id,
+      }
+      await this.$axios.$post('records', sendData)
+      this.getUserRoutines()
+    },
+
+    async deleteRecord(record_id: number) {
+      await this.$axios.$delete('records/' + record_id)
+      this.getUserRoutines()
     },
 
     // 習慣の追加
@@ -274,8 +320,8 @@ export default windowWidthMixin.extend({
       const sendData = {
         name: this.updatedName,
       }
-      await this.$axios.$put('routines/' + this.target.id , sendData)
-      this.getUserRoutines();
+      await this.$axios.$put('routines/' + this.target.id, sendData)
+      this.getUserRoutines()
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
 
@@ -286,8 +332,10 @@ export default windowWidthMixin.extend({
 
     async deleteRoutine() {
       await this.$axios.$delete('routines/' + this.target.id)
-      this.getUserRoutines();
-      ;(this.$refs.deleteDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      this.getUserRoutines()
+      ;(
+        this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
+      ).closeDialog()
     },
   },
 })

@@ -158,7 +158,7 @@
     <BaseDialog ref="deleteDialog" defaultButtonText="キャンセル">
       <template #title> 本当に削除しますか？ </template>
       <template #rightButton>
-        <v-btn>削除</v-btn>
+        <v-btn @click="deleteRoutine">削除</v-btn>
       </template>
     </BaseDialog>
   </div>
@@ -248,6 +248,7 @@ export default windowWidthMixin.extend({
       this.drawer = true
     },
 
+    // 習慣の追加
     openAddDialog() {
       ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).openDialog()
     },
@@ -268,6 +269,7 @@ export default windowWidthMixin.extend({
       this.updatedName = this.target.name
     },
 
+    // 習慣の編集
     async editRoutine() {
       const sendData = {
         name: this.updatedName,
@@ -277,8 +279,15 @@ export default windowWidthMixin.extend({
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
 
+    // 習慣の削除
     openDeleteDialog() {
       ;(this.$refs.deleteDialog as InstanceType<typeof BaseDialog>).openDialog()
+    },
+
+    async deleteRoutine() {
+      await this.$axios.$delete('routines/' + this.target.id)
+      this.getUserRoutines();
+      ;(this.$refs.deleteDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
   },
 })

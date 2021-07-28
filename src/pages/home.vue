@@ -147,14 +147,9 @@
       <template #title>習慣を編集</template>
       <template #body>
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <TextFieldName
-            v-model="updatedName"
-            rules="required"
-            :counter="false"
-            :icon="false"
-          ></TextFieldName>
+          <TextFieldName v-model="updatedName" rules="required"></TextFieldName>
           <v-card-actions class="justify-center"
-            ><v-btn :disabled="invalid">変更</v-btn></v-card-actions
+            ><v-btn :disabled="invalid" @click="editRoutine">変更</v-btn></v-card-actions
           >
         </validation-observer>
       </template>
@@ -264,12 +259,22 @@ export default windowWidthMixin.extend({
       }
       await this.$axios.$post('routines', sendData)
       this.getUserRoutines()
+      this.name = ''
       ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
 
     openEditDialog() {
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).openDialog()
       this.updatedName = this.target.name
+    },
+
+    async editRoutine() {
+      const sendData = {
+        name: this.updatedName,
+      }
+      await this.$axios.$put('routines/' + this.target.id , sendData)
+      this.getUserRoutines();
+      ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
 
     openDeleteDialog() {

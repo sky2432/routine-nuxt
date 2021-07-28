@@ -241,10 +241,11 @@ export default windowWidthMixin.extend({
     },
 
     doneRoutine() {
-      return function (routine: routineType) {
+      return function (routine: routineType): string {
         if (routine.today_record !== null) {
           return 'grey lighten-3'
         }
+        return ''
       }
     },
 
@@ -277,7 +278,7 @@ export default windowWidthMixin.extend({
       if (routine.today_record === null) {
         this.createRecord(routine.id)
       } else {
-        this.deleteRecord(routine.today_record.id)
+        this.deleteRecord(routine)
       }
     },
 
@@ -286,12 +287,23 @@ export default windowWidthMixin.extend({
         routine_id: routine_id,
       }
       await this.$axios.$post('records', sendData)
-      this.getUserRoutines()
+      await this.getUserRoutines()
+      this.reloadRoutineDetail(routine_id)
     },
 
-    async deleteRecord(record_id: number) {
-      await this.$axios.$delete('records/' + record_id)
-      this.getUserRoutines()
+    async deleteRecord(routine: routineType) {
+      await this.$axios.$delete('records/' + routine.today_record?.id)
+      await this.getUserRoutines()
+      this.reloadRoutineDetail(routine.id)
+    },
+
+    reloadRoutineDetail(routine_id: number) {
+      for (let i in this.routines) {
+        const routine = this.routines[i]
+        if (routine.id === routine_id) {
+          this.showRoutineDetail(routine)
+        }
+      }
     },
 
     // 習慣の追加
@@ -321,7 +333,8 @@ export default windowWidthMixin.extend({
         name: this.updatedName,
       }
       await this.$axios.$put('routines/' + this.target.id, sendData)
-      this.getUserRoutines()
+      await this.getUserRoutines()
+      this.reloadRoutineDetail(this.target.id)
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
 
@@ -333,6 +346,7 @@ export default windowWidthMixin.extend({
     async deleteRoutine() {
       await this.$axios.$delete('routines/' + this.target.id)
       this.getUserRoutines()
+      this.target = {} as routineType
       ;(
         this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
       ).closeDialog()

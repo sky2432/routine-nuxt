@@ -130,14 +130,11 @@
       <template #title>習慣を登録</template>
       <template #body>
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <TextFieldName
-            v-model="name"
-            rules="required"
-            :counter="false"
-            :icon="false"
-          ></TextFieldName>
+          <TextFieldName v-model="name" rules="required"></TextFieldName>
           <v-card-actions class="justify-center"
-            ><v-btn :disabled="invalid">登録</v-btn></v-card-actions
+            ><v-btn :disabled="invalid" @click="addRoutine"
+              >登録</v-btn
+            ></v-card-actions
           >
         </validation-observer>
       </template>
@@ -258,6 +255,16 @@ export default windowWidthMixin.extend({
 
     openAddDialog() {
       ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).openDialog()
+    },
+
+    async addRoutine() {
+      const sendData = {
+        name: this.name,
+        user_id: this.$auth.user.id,
+      }
+      await this.$axios.$post('routines', sendData)
+      this.getUserRoutines()
+      ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
 
     openEditDialog() {

@@ -8,13 +8,13 @@
           @click="showRoutineDetail(routine)"
           hover
         >
-          <div class="text-left">
-            <v-checkbox
-              hide-details
-              class="ml-2"
-              :input-value="routine.today_record !== null"
+          <div>
+            <input
+              type="checkbox"
+              class="ml-2 mt-2"
+              :checked="routine.today_record !== null"
               @click="changeRecord(routine)"
-            ></v-checkbox>
+            />
           </div>
           <div class="mt-4 d-flex justify-center align-center">
             <div>
@@ -25,8 +25,8 @@
                 <v-chip :color="chipColor(routine.total_rank.name)">{{
                   routine.total_rank.name
                 }}</v-chip>
-                <v-chip :color="chipColor(routine.continuous_rank.name)">{{
-                  routine.continuous_rank.name
+                <v-chip :color="chipColor(routine.highest_continuous_rank.name)">{{
+                  routine.highest_continuous_rank.name
                 }}</v-chip>
                 <v-chip :color="chipColor(routine.recovery_rank.name)">{{
                   routine.recovery_rank.name
@@ -85,6 +85,16 @@
         <div class="px-2">
           <v-card class="mt-4">
             <v-row class="ma-0 align-center">
+              <v-col>連続日数</v-col>
+              <v-col
+                >{{ target.continuous_days
+                }}<span class="attach">日</span></v-col
+              >
+              <v-col></v-col>
+            </v-row>
+          </v-card>
+          <v-card class="mt-4">
+            <v-row class="ma-0 align-center">
               <v-col>累計日数</v-col>
               <v-col
                 >{{ target.total_days }}<span class="attach">日</span></v-col
@@ -98,14 +108,14 @@
           </v-card>
           <v-card class="mt-4">
             <v-row class="ma-0 align-center">
-              <v-col>連続日数</v-col>
+              <v-col>最高連続日数</v-col>
               <v-col
-                >{{ target.continuous_days
+                >{{ target.highest_continuous_days
                 }}<span class="attach">日</span></v-col
               >
               <v-col
-                ><v-chip :color="chipColor(target.continuous_rank.name)">{{
-                  target.continuous_rank.name
+                ><v-chip :color="chipColor(target.highest_continuous_rank.name)">{{
+                  target.highest_continuous_rank.name
                 }}</v-chip></v-col
               >
             </v-row>
@@ -182,9 +192,10 @@ export interface routineType {
   user_id: number
   total_days: number
   continuous_days: number
+  highest_continuous_days: number
   recovery_count: number
   total_rank: rank
-  continuous_rank: rank
+  highest_continuous_rank: rank
   recovery_rank: rank
   today_record: record | null
   created_at: string

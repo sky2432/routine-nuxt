@@ -25,9 +25,10 @@
                 <v-chip :color="chipColor(routine.total_rank.name)">{{
                   routine.total_rank.name
                 }}</v-chip>
-                <v-chip :color="chipColor(routine.highest_continuous_rank.name)">{{
-                  routine.highest_continuous_rank.name
-                }}</v-chip>
+                <v-chip
+                  :color="chipColor(routine.highest_continuous_rank.name)"
+                  >{{ routine.highest_continuous_rank.name }}</v-chip
+                >
                 <v-chip :color="chipColor(routine.recovery_rank.name)">{{
                   routine.recovery_rank.name
                 }}</v-chip>
@@ -114,15 +115,16 @@
                 }}<span class="attach">日</span></v-col
               >
               <v-col
-                ><v-chip :color="chipColor(target.highest_continuous_rank.name)">{{
-                  target.highest_continuous_rank.name
-                }}</v-chip></v-col
+                ><v-chip
+                  :color="chipColor(target.highest_continuous_rank.name)"
+                  >{{ target.highest_continuous_rank.name }}</v-chip
+                ></v-col
               >
             </v-row>
           </v-card>
           <v-card class="mt-4">
             <v-row class="ma-0 align-center">
-              <v-col>リカバリー回数</v-col>
+              <v-col>リカバリー</v-col>
               <v-col
                 >{{ target.recovery_count
                 }}<span class="attach">回</span></v-col
@@ -178,6 +180,10 @@
         <v-btn @click="deleteRoutine">削除</v-btn>
       </template>
     </BaseDialog>
+
+    <BaseDialog ref="rankUpDialog">
+      <template #title>ランクアップ</template>
+    </BaseDialog>
   </div>
 </template>
 
@@ -214,6 +220,12 @@ interface record {
   routine_id: number
   created_at: string
   updated_at: string
+}
+
+export interface rankUp {
+  total_rank: boolean
+  highest_continuous_rank: boolean
+  recovery_rank: boolean
 }
 
 export default windowWidthMixin.extend({
@@ -285,7 +297,6 @@ export default windowWidthMixin.extend({
 
     // 記録
     changeRecord(routine: routineType) {
-      console.log(routine)
       if (routine.today_record === null) {
         this.createRecord(routine.id)
       } else {
@@ -297,9 +308,19 @@ export default windowWidthMixin.extend({
       const sendData = {
         routine_id: routine_id,
       }
-      await this.$axios.$post('records', sendData)
+      const response = await this.$axios.$post('records', sendData)
+      console.log(response)
       await this.getUserRoutines()
       this.reloadRoutineDetail(routine_id)
+      this.notifyRankUp(response.rank_up)
+    },
+
+    notifyRankUp(rank_up: rankUp) {
+      if (rank_up.total_rank || rank_up.highest_continuous_rank || rank_up.recovery_rank) {
+        ;(
+          this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
+        ).openDialog()
+      }
     },
 
     async deleteRecord(routine: routineType) {

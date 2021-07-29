@@ -23,7 +23,7 @@
             ></TextFieldPassword>
 
             <v-card-actions class="justify-center">
-              <v-btn :disabled="invalid"> 更新 </v-btn>
+              <v-btn :disabled="invalid" @click="updatePassword"> 更新 </v-btn>
             </v-card-actions>
           </v-form>
         </validation-observer>
@@ -44,9 +44,24 @@ export default Vue.extend({
       password: '',
       newPassword: '',
       formValid: false,
-      showPassword: false,
-      showNewPassword: false,
     }
+  },
+
+  methods: {
+    async updatePassword() {
+      const sendData = {
+        password: this.password,
+        new_password: this.newPassword,
+      }
+      try {
+        await this.$axios.$put(
+          'users/' + this.$auth.user.id + '/password',
+          sendData
+        )
+      } catch (error) {
+        alert(error)
+      }
+    },
   },
 })
 </script>

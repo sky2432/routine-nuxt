@@ -13,7 +13,7 @@
             <TextFieldEmail v-model="email"></TextFieldEmail>
 
             <v-card-actions class="justify-center">
-              <v-btn :disabled="invalid"> 更新 </v-btn>
+              <v-btn :disabled="invalid" @click="updateNameEmail"> 更新 </v-btn>
             </v-card-actions>
           </v-form>
         </validation-observer>
@@ -35,6 +35,33 @@ export default Vue.extend({
       email: '',
       formValid: false,
     }
+  },
+
+  created() {
+    this.setUserNameEmail()
+  },
+
+  methods: {
+    setUserNameEmail() {
+      this.name = this.$auth.user.name
+      this.email = this.$auth.user.email
+    },
+
+    async updateNameEmail() {
+      const sendData = {
+        name: this.name,
+        email: this.email,
+      }
+      try {
+        const response = await this.$axios.$put(
+          'users/' + this.$auth.user.id,
+          sendData
+        )
+        this.$store.commit('updateUser', response.data)
+      } catch (error) {
+        alert(error)
+      }
+    },
   },
 })
 </script>

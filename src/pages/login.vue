@@ -58,7 +58,6 @@ export default Vue.extend({
             password: this.password,
           },
         })
-        this.$router.push('/home')
       } catch {
         alert('メールアドレスまたはパスワードが間違っております')
       }

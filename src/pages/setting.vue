@@ -33,6 +33,9 @@
 import Vue from 'vue'
 export default Vue.extend({
   layout: 'home',
+  
+  middleware: 'auth',
+
   data() {
     return {
       currentComponent: 'FormUpdateImage',

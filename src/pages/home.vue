@@ -231,6 +231,8 @@ export interface rankUp {
 export default windowWidthMixin.extend({
   layout: 'home',
 
+  middleware: 'auth',
+
   mixins: [windowWidthMixin],
 
   data() {

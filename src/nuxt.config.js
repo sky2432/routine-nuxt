@@ -66,6 +66,12 @@ export default {
   build: {},
 
   auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: false,
+      home: '/home',
+    },
     strategies: {
       laravelJWT: {
         provider: 'laravel/jwt',

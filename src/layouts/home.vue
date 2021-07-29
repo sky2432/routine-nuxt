@@ -10,7 +10,7 @@
         <v-row class="align-center ma-0 pt-4 pl-4">
           <v-avatar color="white" size="64"> </v-avatar>
           <div class="pl-4">
-            <span v-if="$auth.loggedIn">{{ $auth.user.name }}</span>
+            <span v-if="$auth.loggedIn">{{ userName }}</span>
           </div>
         </v-row>
         <div class="d-flex pt-4 pl-4">
@@ -110,11 +110,16 @@ export default Vue.extend({
     }
   },
 
+  computed: {
+    userName() {
+      return this.$auth.user.name
+    },
+  },
+
   methods: {
     async logout() {
       try {
         await this.$auth.logout()
-        this.$router.push('/')
       } catch (error) {
         console.log(error)
       }

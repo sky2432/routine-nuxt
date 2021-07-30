@@ -66,6 +66,7 @@ export default {
   build: {},
 
   auth: {
+    plugins: ['./plugins/axios.js'],
     redirect: {
       login: '/login',
       logout: '/',
@@ -81,6 +82,15 @@ export default {
         },
         refreshToken: {
           maxAge: 20160 * 60,
+        },
+      },
+      local: {
+        endpoints: {
+          user: {
+            url: '/api/auth/me',
+            method: 'get',
+            propertyName: 'user',
+          },
         },
       },
     },

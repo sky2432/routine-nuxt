@@ -12,7 +12,7 @@
                 v-slot="{ errors }"
                 ref="fileProvider"
                 rules="required|image"
-                name="店舗画像"
+                name="画像"
               >
                 <v-file-input
                   accept="image/*"
@@ -24,7 +24,7 @@
                 ></v-file-input>
               </validation-provider>
               <v-card-actions class="justify-center">
-                <v-btn :disabled="invalid"> 更新 </v-btn>
+                <v-btn :disabled="invalid" @click="updateImage"> 更新 </v-btn>
               </v-card-actions>
             </v-form>
           </validation-observer>
@@ -43,13 +43,21 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      image: null,
+      image: null as null | any,
       imageUrl: '',
       formValid: false,
     }
   },
 
+  created() {
+    this.setCurrentImage()
+  },
+
   methods: {
+    setCurrentImage() {
+      this.imageUrl = this.$auth.user.image_url
+    },
+
     setImage(event: any) {
       this.image = event
       this.showImagePreview()
@@ -60,8 +68,27 @@ export default Vue.extend({
         this.imageUrl = URL.createObjectURL(this.image)
       }
       if (!this.image) {
-        this.imageUrl = ''
+        this.imageUrl = this.$auth.user.image_url
       }
+    },
+
+    async updateImage() {
+      const formData = new FormData()
+      formData.append('image', this.image)
+      const headers: object = {
+        headers: {
+          'content-type': 'multipart/form-data',
+          'X-HTTP-Method-Override': 'PUT',
+        },
+      }
+      const response = await this.$axios.$post(
+        'users/' + this.$auth.user.id + '/image',
+        formData,
+        headers
+      )
+      console.log(response)
+
+      this.$store.commit('updateUser', response.data)
     },
   },
 })

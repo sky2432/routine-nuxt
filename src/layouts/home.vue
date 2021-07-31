@@ -8,7 +8,9 @@
     <v-navigation-drawer v-model="drawer" mobile-breakpoint="960" fixed app>
       <v-sheet color="grey">
         <v-row class="align-center ma-0 pt-4 pl-4">
-          <v-avatar color="white" size="64"> </v-avatar>
+          <v-avatar color="white" size="64">
+            <v-img :src="userImage"></v-img>
+          </v-avatar>
           <div class="pl-4">
             <span v-if="$auth.loggedIn">{{ userName }}</span>
           </div>
@@ -113,6 +115,10 @@ export default Vue.extend({
   computed: {
     userName() {
       return this.$auth.user.name
+    },
+
+    userImage() {
+      return this.$auth.user.image_url
     },
   },
 

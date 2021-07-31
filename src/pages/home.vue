@@ -289,7 +289,7 @@ export default windowWidthMixin.extend({
     async getUserRoutines() {
       const response = await this.$axios.$get('routines/' + this.$auth.user.id)
       this.routines = response.data
-      console.log(response.data)
+      // console.log(response.data)
     },
 
     showRoutineDetail(routine: routineType): void {

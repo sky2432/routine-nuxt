@@ -17,12 +17,12 @@
             </v-card-actions>
           </v-form>
         </validation-observer>
-
-        <BaseDialog ref="baseDialog">
-          <template #title>名前・メールアドレスを更新しました</template>
-        </BaseDialog>
       </div>
     </v-card>
+
+    <BaseDialog ref="baseDialog">
+      <template #title>名前・メールアドレスを更新しました</template>
+    </BaseDialog>
   </div>
 </template>
 
@@ -57,7 +57,7 @@ export default Vue.extend({
           'users/' + this.$auth.user.id,
           sendData
         )
-        this.$store.commit('updateUser', response.data)
+        this.$auth.setUser(response.data)
       } catch (error) {
         alert(error)
       }

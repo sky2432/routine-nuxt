@@ -86,9 +86,7 @@ export default Vue.extend({
         formData,
         headers
       )
-      console.log(response)
-
-      this.$store.commit('updateUser', response.data)
+      this.$auth.setUser(response.data)
     },
   },
 })

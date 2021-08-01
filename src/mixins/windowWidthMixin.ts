@@ -1,9 +1,10 @@
 import Vue from 'vue'
+import { $axios } from '@/util/axios'
 
 export default Vue.extend({
   data() {
     return {
-      width: window.innerWidth,
+      width: window.innerWidth as number,
     }
   },
 

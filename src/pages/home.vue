@@ -136,6 +136,46 @@
               >
             </v-row>
           </v-card>
+          <v-sheet class="mt-4 mb-2" tile>
+            <div class="d-flex align-center">
+              <div>
+                <v-btn outlined small @click="setToday"
+                  >今日</v-btn
+                >
+              </div>
+              <div>
+                <v-btn icon @click="prev">
+                  <v-icon>mdi-chevron-left</v-icon>
+                </v-btn>
+                <span>{{ calendarTitle }}</span>
+                <v-btn icon @click="next">
+                  <v-icon>mdi-chevron-right</v-icon>
+                </v-btn>
+              </div>
+            </div>
+          </v-sheet>
+          <v-sheet>
+            <v-calendar
+              ref="calendar"
+              locale="ja-jp"
+              color="primary"
+              :day-format="(timestamp) => new Date(timestamp.date).getDate()"
+              :month-format="
+                (timestamp) => new Date(timestamp.date).getMonth() + 1 + ' /'
+              "
+              v-model="value"
+            >
+              <template v-slot:day="{ date }">
+                <p
+                  v-if="doneDate(date)"
+                  class="mb-0 text-center"
+                  style="color: blue"
+                >
+                  ✔︎
+                </p>
+              </template>
+            </v-calendar>
+          </v-sheet>
         </div>
       </div>
     </v-navigation-drawer>
@@ -188,9 +228,9 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 import windowWidthMixin from '../mixins/windowWidthMixin'
 import BaseDialog from '../components/BaseDialog.vue'
-import { $axios } from '@/util/axios'
 
 export interface routineType {
   id: number
@@ -228,12 +268,22 @@ export interface rankUp {
   recovery_rank: boolean
 }
 
+export interface VCalendar extends Vue {
+  prev(): void
+  next(): void
+}
+
+export interface records {
+  id: number
+  routine_id: number
+  created_at: string
+  updated_at: string
+}
+
 export default windowWidthMixin.extend({
   layout: 'home',
 
   middleware: 'auth',
-
-  mixins: [windowWidthMixin],
 
   data() {
     return {
@@ -243,6 +293,8 @@ export default windowWidthMixin.extend({
       target: {} as routineType,
       name: '',
       updatedName: '',
+      value: this.$dayjs().format('YYYY-MM-DD') as string,
+      records: {} as records[],
     }
   },
 
@@ -274,6 +326,24 @@ export default windowWidthMixin.extend({
       }
     },
 
+    calendarTitle() {
+      return this.$dayjs(this.value).format('YYYY-MM')
+    },
+
+    doneDate() {
+      return (date: number) => {
+        const calendar = this.$dayjs(date)
+        for (let i in this.records) {
+          const record = this.records[i]
+          const day = this.$dayjs(record.created_at.substr(0, 10))
+          if (calendar.isSame(day)) {
+            return true
+          }
+        }
+        return false
+      }
+    },
+
     drawerWidth(): string {
       if (this.width >= 960) return '30%'
       if (this.width >= 600) return '40%'
@@ -286,6 +356,20 @@ export default windowWidthMixin.extend({
   },
 
   methods: {
+    setToday() {
+      this.value = this.$dayjs().format('YYYY-MM-DD')
+    },
+
+    prev() {
+      const calendar = this.$refs.calendar as VCalendar
+      calendar.prev()
+    },
+
+    next() {
+      const calendar = this.$refs.calendar as VCalendar
+      calendar.next()
+    },
+
     async getUserRoutines() {
       const response = await this.$axios.$get('routines/' + this.$auth.user.id)
       this.routines = response.data
@@ -295,9 +379,16 @@ export default windowWidthMixin.extend({
     showRoutineDetail(routine: routineType): void {
       this.target = routine
       this.drawer = true
+      this.setToday()
+      this.getRecords(routine.id)
     },
 
     // 記録
+    async getRecords(routineId: number) {
+      const response = await this.$axios.$get('records/' + routineId)
+      this.records = response.data
+    },
+
     changeRecord(routine: routineType) {
       if (routine.today_record === null) {
         this.createRecord(routine.id)
@@ -318,7 +409,11 @@ export default windowWidthMixin.extend({
     },
 
     notifyRankUp(rank_up: rankUp) {
-      if (rank_up.total_rank || rank_up.highest_continuous_rank || rank_up.recovery_rank) {
+      if (
+        rank_up.total_rank ||
+        rank_up.highest_continuous_rank ||
+        rank_up.recovery_rank
+      ) {
         ;(
           this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
         ).openDialog()

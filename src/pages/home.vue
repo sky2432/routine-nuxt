@@ -188,7 +188,7 @@
       <template #title>習慣を登録</template>
       <template #body>
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <TextFieldName v-model="name" rules="required"></TextFieldName>
+          <TextFieldRoutine v-model="name"></TextFieldRoutine>
           <v-card-actions class="justify-center"
             ><v-btn :disabled="invalid" @click="addRoutine"
               >登録</v-btn
@@ -205,7 +205,7 @@
       <template #title>習慣を編集</template>
       <template #body>
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <TextFieldName v-model="updatedName" rules="required"></TextFieldName>
+          <TextFieldRoutine v-model="updatedName"></TextFieldRoutine>
           <v-card-actions class="justify-center"
             ><v-btn :disabled="invalid" @click="editRoutine"
               >変更</v-btn
@@ -217,8 +217,10 @@
 
     <BaseDialog ref="deleteDialog" defaultButtonText="キャンセル">
       <template #title> 本当に削除しますか？ </template>
-      <template #rightButton>
-        <v-btn @click="deleteRoutine">削除</v-btn>
+      <template #leftButton>
+        <v-btn class="mr-2" color="red white--text" @click="deleteRoutine"
+          >削除</v-btn
+        >
       </template>
     </BaseDialog>
 
@@ -362,7 +364,7 @@ export default windowWidthMixin.extend({
         routine_id: this.target.id,
       }
       await this.$axios.$post('users/routines/archive', sendData)
-      this.target = {}
+      this.target = {} as routineType
       this.getUserRoutines()
     },
 

@@ -67,6 +67,9 @@
             </v-btn>
           </template>
           <v-list>
+            <v-list-item @click="archiveRoutine">
+              <v-list-item-title>アーカイブ</v-list-item-title>
+            </v-list-item>
             <v-list-item @click="openEditDialog">
               <v-list-item-title>編集</v-list-item-title>
             </v-list-item>
@@ -139,9 +142,7 @@
           <v-sheet class="mt-4 mb-2" tile>
             <div class="d-flex align-center">
               <div>
-                <v-btn outlined small @click="setToday"
-                  >今日</v-btn
-                >
+                <v-btn outlined small @click="setToday">今日</v-btn>
               </div>
               <div>
                 <v-btn icon @click="prev">
@@ -327,7 +328,7 @@ export default windowWidthMixin.extend({
     },
 
     calendarTitle() {
-      return this.$dayjs(this.value).format('YYYY-MM')
+      return this.$dayjs((this as any).value).format('YYYY-MM')
     },
 
     doneDate() {
@@ -356,18 +357,12 @@ export default windowWidthMixin.extend({
   },
 
   methods: {
-    setToday() {
-      this.value = this.$dayjs().format('YYYY-MM-DD')
-    },
-
-    prev() {
-      const calendar = this.$refs.calendar as VCalendar
-      calendar.prev()
-    },
-
-    next() {
-      const calendar = this.$refs.calendar as VCalendar
-      calendar.next()
+    async archiveRoutine() {
+      const sendData = {
+        routine_id: this.target.id,
+      }
+      await this.$axios.$post('routines/archive', sendData)
+      this.getUserRoutines()
     },
 
     async getUserRoutines() {
@@ -381,6 +376,21 @@ export default windowWidthMixin.extend({
       this.drawer = true
       this.setToday()
       this.getRecords(routine.id)
+    },
+
+    // カレンダー
+    setToday() {
+      this.value = this.$dayjs().format('YYYY-MM-DD')
+    },
+
+    prev() {
+      const calendar = this.$refs.calendar as VCalendar
+      calendar.prev()
+    },
+
+    next() {
+      const calendar = this.$refs.calendar as VCalendar
+      calendar.next()
     },
 
     // 記録
@@ -397,14 +407,14 @@ export default windowWidthMixin.extend({
       }
     },
 
-    async createRecord(routine_id: number) {
+    async createRecord(routineId: number) {
       const sendData = {
-        routine_id: routine_id,
+        routine_id: routineId,
       }
       const response = await this.$axios.$post('records', sendData)
       console.log(response)
       await this.getUserRoutines()
-      this.reloadRoutineDetail(routine_id)
+      this.reloadRoutineDetail(routineId)
       this.notifyRankUp(response.rank_up)
     },
 

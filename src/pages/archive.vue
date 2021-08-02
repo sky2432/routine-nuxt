@@ -2,21 +2,8 @@
   <div>
     <v-row class="ma-0">
       <v-col cols="12" sm="6" v-for="routine in routines" :key="routine.id">
-        <v-card
-          :color="doneRoutine(routine)"
-          height="150"
-          @click="showRoutineDetail(routine)"
-          hover
-        >
-          <div>
-            <input
-              type="checkbox"
-              class="ml-2 mt-2"
-              :checked="routine.today_record !== null"
-              @click="changeRecord(routine)"
-            />
-          </div>
-          <div class="mt-4 d-flex justify-center align-center">
+        <v-card height="150" @click="showRoutineDetail(routine)" hover>
+          <div class="d-flex justify-center align-center" style="height: 100%">
             <div>
               <div class="text-center">
                 <p>{{ routine.name }}</p>
@@ -38,10 +25,6 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <v-btn class="add-btn" color="indigo" fab dark large @click="openAddDialog">
-      <v-icon dark> mdi-plus </v-icon>
-    </v-btn>
 
     <v-navigation-drawer
       v-model="drawer"
@@ -68,7 +51,7 @@
           </template>
           <v-list>
             <v-list-item @click="archiveRoutine">
-              <v-list-item-title>アーカイブ</v-list-item-title>
+              <v-list-item-title>戻す</v-list-item-title>
             </v-list-item>
             <v-list-item @click="openEditDialog">
               <v-list-item-title>編集</v-list-item-title>
@@ -182,23 +165,6 @@
     </v-navigation-drawer>
 
     <BaseDialog
-      ref="addDialog"
-      v-bind="{ body: true, closeIcon: true, button: false }"
-    >
-      <template #title>習慣を登録</template>
-      <template #body>
-        <validation-observer ref="observer" v-slot="{ invalid }">
-          <TextFieldName v-model="name" rules="required"></TextFieldName>
-          <v-card-actions class="justify-center"
-            ><v-btn :disabled="invalid" @click="addRoutine"
-              >登録</v-btn
-            ></v-card-actions
-          >
-        </validation-observer>
-      </template>
-    </BaseDialog>
-
-    <BaseDialog
       ref="editDialog"
       v-bind="{ body: true, closeIcon: true, button: false }"
     >
@@ -222,9 +188,6 @@
       </template>
     </BaseDialog>
 
-    <BaseDialog ref="rankUpDialog">
-      <template #title>ランクアップ</template>
-    </BaseDialog>
   </div>
 </template>
 
@@ -318,15 +281,6 @@ export default windowWidthMixin.extend({
       }
     },
 
-    doneRoutine() {
-      return function (routine: routineType): string {
-        if (routine.today_record !== null) {
-          return 'grey lighten-3'
-        }
-        return ''
-      }
-    },
-
     calendarTitle() {
       return this.$dayjs((this as any).value).format('YYYY-MM')
     },
@@ -367,7 +321,7 @@ export default windowWidthMixin.extend({
     },
 
     async getUserRoutines() {
-      const response = await this.$axios.$get('routines/' + this.$auth.user.id)
+      const response = await this.$axios.$get(`users/${this.$auth.user.id}/routines/archive`)
       this.routines = response.data
     },
 
@@ -399,43 +353,6 @@ export default windowWidthMixin.extend({
       this.records = response.data
     },
 
-    changeRecord(routine: routineType) {
-      if (routine.today_record === null) {
-        this.createRecord(routine.id)
-      } else {
-        this.deleteRecord(routine)
-      }
-    },
-
-    async createRecord(routineId: number) {
-      const sendData = {
-        routine_id: routineId,
-      }
-      const response = await this.$axios.$post('records', sendData)
-      console.log(response)
-      await this.getUserRoutines()
-      this.reloadRoutineDetail(routineId)
-      this.notifyRankUp(response.rank_up)
-    },
-
-    notifyRankUp(rank_up: rankUp) {
-      if (
-        rank_up.total_rank ||
-        rank_up.highest_continuous_rank ||
-        rank_up.recovery_rank
-      ) {
-        ;(
-          this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
-        ).openDialog()
-      }
-    },
-
-    async deleteRecord(routine: routineType) {
-      await this.$axios.$delete('records/' + routine.today_record?.id)
-      await this.getUserRoutines()
-      this.reloadRoutineDetail(routine.id)
-    },
-
     reloadRoutineDetail(routine_id: number) {
       for (let i in this.routines) {
         const routine = this.routines[i]
@@ -445,28 +362,12 @@ export default windowWidthMixin.extend({
       }
     },
 
-    // 習慣の追加
-    openAddDialog() {
-      ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).openDialog()
-    },
-
-    async addRoutine() {
-      const sendData = {
-        name: this.name,
-        user_id: this.$auth.user.id,
-      }
-      await this.$axios.$post('routines', sendData)
-      this.getUserRoutines()
-      this.name = ''
-      ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).closeDialog()
-    },
-
+      // 習慣の編集
     openEditDialog() {
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).openDialog()
       this.updatedName = this.target.name
     },
 
-    // 習慣の編集
     async editRoutine() {
       const sendData = {
         name: this.updatedName,

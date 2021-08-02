@@ -81,6 +81,11 @@ export default Vue.extend({
           to: '/home',
         },
         {
+          icon: 'mdi-archive',
+          title: 'アーカイブ',
+          to: '/archive',
+        },
+        {
           icon: 'mdi-chart-bubble',
           title: '投稿',
           to: '/post',
@@ -94,18 +99,6 @@ export default Vue.extend({
           icon: 'mdi-bell-outline',
           title: 'お知らせ',
           to: '/notification',
-        },
-      ],
-      items2: [
-        {
-          icon: 'mdi-cog',
-          title: '設定',
-          to: '/setting',
-        },
-        {
-          icon: 'mdi-logout',
-          title: 'ログアウト',
-          to: '/',
         },
       ],
       title: 'RoutineQuest',

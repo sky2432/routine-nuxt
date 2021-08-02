@@ -187,7 +187,7 @@
     >
       <template #title>習慣を登録</template>
       <template #body>
-        <validation-observer ref="observer" v-slot="{ invalid }">
+        <validation-observer ref="addobserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="name"></TextFieldRoutine>
           <v-card-actions class="justify-center"
             ><v-btn :disabled="invalid" @click="addRoutine"
@@ -204,7 +204,7 @@
     >
       <template #title>習慣を編集</template>
       <template #body>
-        <validation-observer ref="observer" v-slot="{ invalid }">
+        <validation-observer ref="editObserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="updatedName"></TextFieldRoutine>
           <v-card-actions class="justify-center"
             ><v-btn :disabled="invalid" @click="editRoutine"
@@ -451,6 +451,10 @@ export default windowWidthMixin.extend({
     // 習慣の追加
     openAddDialog() {
       ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).openDialog()
+      this.name = ''
+      this.$nextTick(() => {
+        this.$refs.addobserver.reset()
+      })
     },
 
     async addRoutine() {

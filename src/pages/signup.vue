@@ -14,7 +14,7 @@
 
               <TextFieldPassword v-model="password"></TextFieldPassword>
               <v-card-actions class="justify-center">
-                <v-btn :disabled="invalid"> サインアップ </v-btn>
+                <v-btn :disabled="invalid" @click="signup"> サインアップ </v-btn>
               </v-card-actions>
             </v-form>
           </validation-observer>
@@ -36,5 +36,26 @@ export default Vue.extend({
       password: '',
     }
   },
+
+  methods: {
+    async signup() {
+      const sendData = {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+      }
+      try {
+        const response = await this.$axios.$post(
+          'users',
+          sendData
+        )
+        this.$router.push('/login')
+      } catch (error) {
+        this.$nextTick(() => {
+          this.$refs.observer.setErrors(error.response.data.errors)
+        })
+      }
+    }
+  }
 })
 </script>

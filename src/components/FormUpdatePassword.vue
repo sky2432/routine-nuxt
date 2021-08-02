@@ -58,8 +58,14 @@ export default Vue.extend({
           'users/' + this.$auth.user.id + '/password',
           sendData
         )
+        this.password = this.newPassword = ''
+        this.$nextTick(() => {
+          this.$refs.observer.reset()
+        })
       } catch (error) {
-        alert(error)
+        this.$nextTick(() => {
+          this.$refs.observer.setErrors(error.response.data.errors)
+        })
       }
     },
   },

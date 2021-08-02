@@ -59,7 +59,9 @@ export default Vue.extend({
         )
         this.$auth.setUser(response.data)
       } catch (error) {
-        alert(error)
+        this.$nextTick(() => {
+          this.$refs.observer.setErrors(error.response.data.errors)
+        })
       }
     },
   },

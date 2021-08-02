@@ -58,8 +58,10 @@ export default Vue.extend({
             password: this.password,
           },
         })
-      } catch {
-        alert('メールアドレスまたはパスワードが間違っております')
+      } catch (error) {
+        this.$nextTick(() => {
+          this.$refs.observer.setErrors(error.response.data.errors)
+        })
       }
     },
   },

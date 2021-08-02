@@ -14,7 +14,9 @@
 
               <TextFieldPassword v-model="password"></TextFieldPassword>
               <v-card-actions class="justify-center">
-                <v-btn :disabled="invalid" @click="signup"> サインアップ </v-btn>
+                <v-btn :disabled="invalid" @click="signup">
+                  サインアップ
+                </v-btn>
               </v-card-actions>
             </v-form>
           </validation-observer>
@@ -26,6 +28,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ValidationObserver } from 'vee-validate'
 
 export default Vue.extend({
   data() {
@@ -45,17 +48,16 @@ export default Vue.extend({
         password: this.password,
       }
       try {
-        const response = await this.$axios.$post(
-          'users',
-          sendData
-        )
+        const response = await this.$axios.$post('users', sendData)
         this.$router.push('/login')
       } catch (error) {
         this.$nextTick(() => {
-          this.$refs.observer.setErrors(error.response.data.errors)
+          ;(
+            this.$refs.observer as InstanceType<typeof ValidationObserver>
+          ).setErrors(error.response.data.errors)
         })
       }
-    }
-  }
+    },
+  },
 })
 </script>

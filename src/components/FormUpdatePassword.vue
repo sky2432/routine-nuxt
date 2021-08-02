@@ -38,6 +38,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ValidationObserver } from 'vee-validate'
+
 export default Vue.extend({
   data() {
     return {
@@ -60,11 +62,11 @@ export default Vue.extend({
         )
         this.password = this.newPassword = ''
         this.$nextTick(() => {
-          this.$refs.observer.reset()
+          (this.$refs.observer as InstanceType<typeof ValidationObserver>).reset()
         })
       } catch (error) {
         this.$nextTick(() => {
-          this.$refs.observer.setErrors(error.response.data.errors)
+          (this.$refs.observer as InstanceType<typeof ValidationObserver>).setErrors(error.response.data.errors)
         })
       }
     },

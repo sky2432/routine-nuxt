@@ -234,6 +234,7 @@
 import Vue from 'vue'
 import windowWidthMixin from '../mixins/windowWidthMixin'
 import BaseDialog from '../components/BaseDialog.vue'
+import { ValidationObserver } from 'vee-validate'
 
 export interface routineType {
   id: number
@@ -453,7 +454,9 @@ export default windowWidthMixin.extend({
       ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).openDialog()
       this.name = ''
       this.$nextTick(() => {
-        this.$refs.addobserver.reset()
+        ;(
+          this.$refs.addobserver as InstanceType<typeof ValidationObserver>
+        ).reset()
       })
     },
 

@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ValidationObserver } from 'vee-validate'
 
 export default Vue.extend({
   data() {
@@ -60,7 +61,9 @@ export default Vue.extend({
         })
       } catch (error) {
         this.$nextTick(() => {
-          this.$refs.observer.setErrors(error.response.data.errors)
+          ;(
+            this.$refs.observer as InstanceType<typeof ValidationObserver>
+          ).setErrors(error.response.data.errors)
         })
       }
     },

@@ -187,7 +187,6 @@
         <v-btn @click="deleteRoutine">削除</v-btn>
       </template>
     </BaseDialog>
-
   </div>
 </template>
 
@@ -315,13 +314,15 @@ export default windowWidthMixin.extend({
       const sendData = {
         routine_id: this.target.id,
       }
-      await this.$axios.$post('routines/archive', sendData)
+      await this.$axios.$post('users/routines/archive', sendData)
       this.target = {}
       this.getUserRoutines()
     },
 
     async getUserRoutines() {
-      const response = await this.$axios.$get(`users/${this.$auth.user.id}/routines/archive`)
+      const response = await this.$axios.$get(
+        `users/${this.$auth.user.id}/routines/archive`
+      )
       this.routines = response.data
     },
 
@@ -349,7 +350,7 @@ export default windowWidthMixin.extend({
 
     // 記録
     async getRecords(routineId: number) {
-      const response = await this.$axios.$get('records/' + routineId)
+      const response = await this.$axios.$get(`routines/records/${routineId}`)
       this.records = response.data
     },
 
@@ -362,7 +363,7 @@ export default windowWidthMixin.extend({
       }
     },
 
-      // 習慣の編集
+    // 習慣の編集
     openEditDialog() {
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).openDialog()
       this.updatedName = this.target.name
@@ -372,7 +373,7 @@ export default windowWidthMixin.extend({
       const sendData = {
         name: this.updatedName,
       }
-      await this.$axios.$put('routines/' + this.target.id, sendData)
+      await this.$axios.$put(`users/routines/${this.target.id}`, sendData)
       await this.getUserRoutines()
       this.reloadRoutineDetail(this.target.id)
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
@@ -384,7 +385,7 @@ export default windowWidthMixin.extend({
     },
 
     async deleteRoutine() {
-      await this.$axios.$delete('routines/' + this.target.id)
+      await this.$axios.$delete(`users/routines/${this.target.id}`)
       this.getUserRoutines()
       this.target = {} as routineType
       ;(

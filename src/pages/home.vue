@@ -361,13 +361,15 @@ export default windowWidthMixin.extend({
       const sendData = {
         routine_id: this.target.id,
       }
-      await this.$axios.$post('routines/archive', sendData)
+      await this.$axios.$post('users/routines/archive', sendData)
       this.target = {}
       this.getUserRoutines()
     },
 
     async getUserRoutines() {
-      const response = await this.$axios.$get('routines/' + this.$auth.user.id)
+      const response = await this.$axios.$get(
+        `users/${this.$auth.user.id}/routines`
+      )
       this.routines = response.data
     },
 
@@ -395,7 +397,7 @@ export default windowWidthMixin.extend({
 
     // 記録
     async getRecords(routineId: number) {
-      const response = await this.$axios.$get('records/' + routineId)
+      const response = await this.$axios.$get(`routines/records/${routineId}`)
       this.records = response.data
     },
 
@@ -411,8 +413,7 @@ export default windowWidthMixin.extend({
       const sendData = {
         routine_id: routineId,
       }
-      const response = await this.$axios.$post('records', sendData)
-      console.log(response)
+      const response = await this.$axios.$post('routines/records', sendData)
       await this.getUserRoutines()
       this.reloadRoutineDetail(routineId)
       this.notifyRankUp(response.rank_up)
@@ -431,7 +432,7 @@ export default windowWidthMixin.extend({
     },
 
     async deleteRecord(routine: routineType) {
-      await this.$axios.$delete('records/' + routine.today_record?.id)
+      await this.$axios.$delete(`routines/records/${routine.today_record?.id}`)
       await this.getUserRoutines()
       this.reloadRoutineDetail(routine.id)
     },
@@ -455,23 +456,23 @@ export default windowWidthMixin.extend({
         name: this.name,
         user_id: this.$auth.user.id,
       }
-      await this.$axios.$post('routines', sendData)
+      await this.$axios.$post('users/routines', sendData)
       this.getUserRoutines()
       this.name = ''
       ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
 
+    // 習慣の編集
     openEditDialog() {
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).openDialog()
       this.updatedName = this.target.name
     },
 
-    // 習慣の編集
     async editRoutine() {
       const sendData = {
         name: this.updatedName,
       }
-      await this.$axios.$put('routines/' + this.target.id, sendData)
+      await this.$axios.$put(`users/routines/${this.target.id}`, sendData)
       await this.getUserRoutines()
       this.reloadRoutineDetail(this.target.id)
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
@@ -483,7 +484,7 @@ export default windowWidthMixin.extend({
     },
 
     async deleteRoutine() {
-      await this.$axios.$delete('routines/' + this.target.id)
+      await this.$axios.$delete(`users/routines/${this.target.id}`)
       this.getUserRoutines()
       this.target = {} as routineType
       ;(

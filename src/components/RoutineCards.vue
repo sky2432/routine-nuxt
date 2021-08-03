@@ -43,6 +43,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import { routineType } from '../lib/interface'
+import { $_returnColor } from '../plugins/helper'
 
 export default Vue.extend({
   props: {
@@ -58,26 +59,14 @@ export default Vue.extend({
 
   computed: {
     chipColor() {
-      return function (rank: string): string {
-        if (rank === '初級') return 'blue-grey lighten-3'
-        if (rank === '中級') return 'brown lighten-3'
-        if (rank === '上級') return 'deep-orange lighten-3'
-        if (rank === '聖級') return 'yellow lighten-3'
-        if (rank === '王級') return 'indigo lighten-3'
-        if (rank === '帝級') return 'deep-purple lighten-3'
-        if (rank === '神級') return 'pink lighten-3'
-        if (rank === '復活') return 'green lighten-3'
-        if (rank === '不屈') return 'purple lighten-3'
-        if (rank === '蘇生') return 'lime lighten-3'
-        if (rank === '転生') return 'light-blue lighten-3'
-        if (rank === '不死') return 'red lighten-3'
-        return 'grey lighten-2'
+      return (rank: string): string => {
+        return $_returnColor(rank)
       }
     },
 
     doneRoutine() {
-      return function (routine: routineType): string {
-        if ((this as any).isHome) {
+      return (routine: routineType): string => {
+        if (this.isHome) {
           if (routine.today_record !== null) {
             return 'grey lighten-3'
           }

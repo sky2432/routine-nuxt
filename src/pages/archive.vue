@@ -12,45 +12,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 import { $axios } from '@/util/axios'
-
-export interface routineType {
-  id: number
-  name: string
-  user_id: number
-  total_days: number
-  continuous_days: number
-  highest_continuous_days: number
-  recovery_count: number
-  total_rank: rank
-  highest_continuous_rank: rank
-  recovery_rank: rank
-  today_record: record | null
-  created_at: string
-  updated_at: string
-}
-
-interface rank {
-  id: number
-  name: string
-  created_at: string
-  updated_at: string
-}
-
-interface record {
-  id: number
-  routine_id: number
-  created_at: string
-  updated_at: string
-}
-
-export interface records {
-  id: number
-  routine_id: number
-  created_at: string
-  updated_at: string
-}
+import { routineType } from '../lib/interface'
+import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 
 export default Vue.extend({
   layout: 'home',

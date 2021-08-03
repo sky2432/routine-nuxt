@@ -5,7 +5,7 @@
         class="routine-card"
         height="150"
         :color="doneRoutine(routine)"
-        @click="$emit('showRoutineDetail', routine)"
+        @click="$emit('clickRoutine', routine)"
         hover
       >
         <div v-if="isHome" class="routine-checkbox">
@@ -13,7 +13,7 @@
             type="checkbox"
             class="ml-2 mt-2"
             :checked="routine.today_record !== null"
-            @click="$emit('changeRecord', routine)"
+            @click="$emit('clickCheckbox', routine)"
           />
         </div>
         <div class="d-flex justify-center align-center" style="height: 100%">
@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropType } from 'vue'
 
 export interface routineType {
   id: number
@@ -76,7 +76,7 @@ interface records {
 export default Vue.extend({
   props: {
     routines: {
-      type: Array,
+      type: Array as PropType<routineType[]>,
       required: true,
     },
     isHome: {
@@ -128,5 +128,4 @@ export default Vue.extend({
 .routine-checkbox {
   position: absolute;
 }
-
 </style>

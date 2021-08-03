@@ -1,30 +1,10 @@
 <template>
   <div>
-    <v-row class="ma-0">
-      <v-col cols="12" sm="6" v-for="routine in routines" :key="routine.id">
-        <v-card height="150" @click="showRoutineDetail(routine)" hover>
-          <div class="d-flex justify-center align-center" style="height: 100%">
-            <div>
-              <div class="text-center">
-                <p>{{ routine.name }}</p>
-              </div>
-              <div>
-                <v-chip :color="chipColor(routine.total_rank.name)">{{
-                  routine.total_rank.name
-                }}</v-chip>
-                <v-chip
-                  :color="chipColor(routine.highest_continuous_rank.name)"
-                  >{{ routine.highest_continuous_rank.name }}</v-chip
-                >
-                <v-chip :color="chipColor(routine.recovery_rank.name)">{{
-                  routine.recovery_rank.name
-                }}</v-chip>
-              </div>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
+    <RoutineCards
+      :routines="routines"
+      @showRoutineDetail="showRoutineDetail"
+    >
+    </RoutineCards>
 
     <v-navigation-drawer
       v-model="drawer"

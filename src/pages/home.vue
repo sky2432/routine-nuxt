@@ -1,43 +1,12 @@
 <template>
   <div>
-    <v-row class="ma-0">
-      <v-col cols="12" sm="6" v-for="routine in routines" :key="routine.id">
-        <v-card
-          :color="doneRoutine(routine)"
-          height="150"
-          @click="showRoutineDetail(routine)"
-          hover
-        >
-          <div>
-            <input
-              type="checkbox"
-              class="ml-2 mt-2"
-              :checked="routine.today_record !== null"
-              @click="changeRecord(routine)"
-            />
-          </div>
-          <div class="mt-4 d-flex justify-center align-center">
-            <div>
-              <div class="text-center">
-                <p>{{ routine.name }}</p>
-              </div>
-              <div>
-                <v-chip :color="chipColor(routine.total_rank.name)">{{
-                  routine.total_rank.name
-                }}</v-chip>
-                <v-chip
-                  :color="chipColor(routine.highest_continuous_rank.name)"
-                  >{{ routine.highest_continuous_rank.name }}</v-chip
-                >
-                <v-chip :color="chipColor(routine.recovery_rank.name)">{{
-                  routine.recovery_rank.name
-                }}</v-chip>
-              </div>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
+    <RoutineCards
+      :routines="routines"
+      :isHome="true"
+      @changeRecord="changeRecord"
+      @showRoutineDetail="showRoutineDetail"
+    >
+    </RoutineCards>
 
     <v-btn class="add-btn" color="indigo" fab dark large @click="openAddDialog">
       <v-icon dark> mdi-plus </v-icon>
@@ -318,15 +287,6 @@ export default windowWidthMixin.extend({
         if (rank === '転生') return 'light-blue lighten-3'
         if (rank === '不死') return 'red lighten-3'
         return 'grey lighten-2'
-      }
-    },
-
-    doneRoutine() {
-      return function (routine: routineType): string {
-        if (routine.today_record !== null) {
-          return 'grey lighten-3'
-        }
-        return ''
       }
     },
 

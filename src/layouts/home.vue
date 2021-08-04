@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title>{{ headerTitle }}</v-toolbar-title>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" mobile-breakpoint="1264" fixed app>
@@ -93,6 +93,12 @@ export default Vue.extend({
 
     userImage() {
       return this.$auth.user.image_url
+    },
+
+    headerTitle() {
+      if(this.$route.name === 'home') return 'ホーム'
+      if(this.$route.name === 'archive') return 'アーカイブ'
+      if(this.$route.name === 'setting') return '設定'
     },
   },
 

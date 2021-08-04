@@ -1,6 +1,12 @@
 <template>
   <div>
-    <RoutineCards :routines="routines" @clickRoutine="showRoutineDetail">
+    <RoutineCards
+      v-bind="{
+        loaded: loaded,
+        routines: routines,
+      }"
+      @clickRoutine="showRoutineDetail"
+    >
     </RoutineCards>
 
     <RoutineDetailDrawer
@@ -25,6 +31,7 @@ export default Vue.extend({
 
   data() {
     return {
+      loaded: false,
       routines: [] as routineType[],
       name: '',
     }
@@ -40,6 +47,7 @@ export default Vue.extend({
         `users/${this.$auth.user.id}/routines/archive`
       )
       this.routines = response.data
+      this.loaded = true
     },
 
     showRoutineDetail(routine: routineType): void {

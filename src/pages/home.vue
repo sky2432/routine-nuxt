@@ -1,8 +1,11 @@
 <template>
   <div>
     <RoutineCards
-      :routines="routines"
-      :isHome="true"
+      v-bind="{
+        loaded: loaded,
+        routines: routines,
+        isHome: true,
+      }"
       @clickRoutine="showRoutineDetail"
       @clickCheckbox="changeRecord"
     >
@@ -55,6 +58,7 @@ export default Vue.extend({
 
   data() {
     return {
+      loaded: false,
       routines: [] as routineType[],
       name: '',
     }
@@ -70,6 +74,7 @@ export default Vue.extend({
         `users/${this.$auth.user.id}/routines`
       )
       this.routines = response.data
+      this.loaded = true
     },
 
     showRoutineDetail(routine: routineType): void {

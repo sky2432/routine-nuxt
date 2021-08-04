@@ -1,43 +1,57 @@
 <template>
-  <v-row ref="wrapper" class="ma-0">
-    <v-col :style="colWidth" v-for="routine in routines" :key="routine.id">
-      <v-card
-        class="routine-card"
-        height="150"
-        :color="doneRoutine(routine)"
-        @click="$emit('clickRoutine', routine)"
-        hover
-      >
-        <div v-if="isHome" class="routine-checkbox">
-          <input
-            type="checkbox"
-            class="ml-2 mt-2"
-            :checked="routine.today_record !== null"
-            @click="$emit('clickCheckbox', routine)"
-          />
-        </div>
-        <div class="d-flex justify-center align-center" style="height: 100%">
-          <div>
-            <div class="text-center">
-              <p>{{ routine.name }}</p>
+  <div ref="root">
+    <div class="wrapper" v-if="!loaded">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </div>
+    <div v-if="loaded">
+      <div class="wrapper" v-if="routines.length === 0">
+        <p v-if="isHome">習慣を登録しましょう！</p>
+        <p v-if="!isHome">アーカイブされた習慣はありません</p>
+      </div>
+      <v-row class="ma-0" v-if="routines.length !== 0">
+        <v-col :style="colWidth" v-for="routine in routines" :key="routine.id">
+          <v-card
+            class="routine-card"
+            height="150"
+            :color="doneRoutine(routine)"
+            @click="$emit('clickRoutine', routine)"
+            hover
+          >
+            <div v-if="isHome" class="routine-checkbox">
+              <input
+                type="checkbox"
+                class="ml-2 mt-2"
+                :checked="routine.today_record !== null"
+                @click="$emit('clickCheckbox', routine)"
+              />
             </div>
-            <div>
-              <v-chip :color="chipColor(routine.total_rank.name)">{{
-                routine.total_rank.name
-              }}</v-chip>
-              <v-chip
-                :color="chipColor(routine.highest_continuous_rank.name)"
-                >{{ routine.highest_continuous_rank.name }}</v-chip
-              >
-              <v-chip :color="chipColor(routine.recovery_rank.name)">{{
-                routine.recovery_rank.name
-              }}</v-chip>
+            <div
+              class="d-flex justify-center align-center"
+              style="height: 100%"
+            >
+              <div>
+                <div class="text-center">
+                  <p>{{ routine.name }}</p>
+                </div>
+                <div>
+                  <v-chip :color="chipColor(routine.total_rank.name)">{{
+                    routine.total_rank.name
+                  }}</v-chip>
+                  <v-chip
+                    :color="chipColor(routine.highest_continuous_rank.name)"
+                    >{{ routine.highest_continuous_rank.name }}</v-chip
+                  >
+                  <v-chip :color="chipColor(routine.recovery_rank.name)">{{
+                    routine.recovery_rank.name
+                  }}</v-chip>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </v-card>
-    </v-col>
-  </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -54,6 +68,9 @@ export default Vue.extend({
     isHome: {
       type: Boolean,
       default: false,
+    },
+    loaded: {
+      type: Boolean,
     },
   },
 
@@ -109,7 +126,7 @@ export default Vue.extend({
     },
 
     getTargetWidth() {
-      this.cardWidth = this.refs().wrapper.clientWidth
+      this.cardWidth = this.refs().root.clientWidth
     },
   },
 })
@@ -122,5 +139,12 @@ export default Vue.extend({
 
 .routine-checkbox {
   position: absolute;
+}
+
+.wrapper {
+  height: calc(100vh - 88px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

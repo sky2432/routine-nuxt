@@ -40,6 +40,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
   data() {
     return {
@@ -77,16 +78,20 @@ export default Vue.extend({
       formData.append('image', this.image)
       const headers: object = {
         headers: {
-          'content-type': 'multipart/form-data',
           'X-HTTP-Method-Override': 'PUT',
         },
       }
-      const response = await this.$axios.$post(
-        'users/' + this.$auth.user.id + '/image',
-        formData,
-        headers
-      )
-      this.$auth.setUser(response.data)
+      try {
+        const response = await this.$axios.$post(
+          'users/' + this.$auth.user.id + '/image',
+          formData,
+          headers
+        )
+        console.log(response)
+        this.$auth.setUser(response.data)
+      } catch (error) {
+        alert(error)
+      }
     },
   },
 })

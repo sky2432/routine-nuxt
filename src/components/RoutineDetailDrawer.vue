@@ -168,7 +168,7 @@
 
 <script lang="ts">
 import windowWidthMixin from '../mixins/windowWidthMixin'
-import BaseDialog from '../components/BaseDialog.vue'
+import BaseDialog from './BaseDialog.vue'
 import { routineType, record, VCalendar } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
 

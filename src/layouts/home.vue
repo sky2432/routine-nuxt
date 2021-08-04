@@ -5,7 +5,7 @@
       <v-toolbar-title v-text="title" />
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" mobile-breakpoint="960" fixed app>
+    <v-navigation-drawer v-model="drawer" mobile-breakpoint="1264" fixed app>
       <v-sheet color="grey">
         <v-row class="align-center ma-0 pt-4 pl-4">
           <v-avatar color="white" size="64">

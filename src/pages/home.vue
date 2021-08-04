@@ -152,8 +152,20 @@ export default Vue.extend({
 
 <style scoped>
 .add-btn {
-  position: absolute;
+  position: fixed;
   bottom: 10px;
-  right: 10px;
+  right: 1%;
+}
+
+@media screen and (min-width: 600px) {
+  .add-btn {
+    right: 41%;
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .add-btn {
+    right: 31%;
+  }
 }
 </style>

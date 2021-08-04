@@ -1,6 +1,6 @@
 <template>
-  <v-row class="ma-0">
-    <v-col cols="12" sm="6" v-for="routine in routines" :key="routine.id">
+  <v-row ref="wrapper" class="ma-0">
+    <v-col :style="colWidth" v-for="routine in routines" :key="routine.id">
       <v-card
         class="routine-card"
         height="150"
@@ -57,6 +57,12 @@ export default Vue.extend({
     },
   },
 
+  data() {
+    return {
+      cardWidth: 0,
+    }
+  },
+
   computed: {
     chipColor() {
       return (rank: string): string => {
@@ -75,6 +81,36 @@ export default Vue.extend({
           return ''
         }
       }
+    },
+
+    colWidth(): string {
+      if (this.cardWidth >= 1700) return 'flex: 0 0 20%'
+      if (this.cardWidth >= 1300) return 'flex: 0 0 25%'
+      if (this.cardWidth >= 960) return 'flex: 0 0 33.333%'
+      if (this.cardWidth >= 540) return 'flex: 0 0 50%'
+      return 'flex: 0 0 100%'
+    },
+  },
+
+  mounted() {
+    setTimeout(() => {
+      this.getTargetWidth()
+    }, 300)
+    window.addEventListener('resize', this.getTargetWidth)
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.getTargetWidth)
+  },
+
+  methods: {
+    refs(): any {
+      return this.$refs
+    },
+
+    getTargetWidth() {
+      this.cardWidth = this.refs().wrapper.clientWidth
+      console.log(this.cardWidth)
     },
   },
 })

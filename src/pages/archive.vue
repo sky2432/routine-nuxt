@@ -6,7 +6,9 @@
     <RoutineDetailDrawer
       ref="routineDetailDrawer"
       @reloadRoutines="getUserRoutines"
-    ></RoutineDetailDrawer>
+    >
+      <template #archiveButtonText>戻す</template>
+    </RoutineDetailDrawer>
   </div>
 </template>
 

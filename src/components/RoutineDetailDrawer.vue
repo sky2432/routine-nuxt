@@ -8,12 +8,7 @@
       :width="drawerWidth"
     >
       <div class="detail-header">
-        <v-btn
-          class="close-btn"
-          icon
-          @click="drawer = !drawer"
-          v-if="width < 600"
-        >
+        <v-btn class="close-btn" icon @click="drawer = !drawer">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -25,7 +20,7 @@
           </template>
           <v-list>
             <v-list-item @click="archiveRoutine">
-              <v-list-item-title>アーカイブ</v-list-item-title>
+              <v-list-item-title><slot name="archiveButtonText">アーカイブ</slot></v-list-item-title>
             </v-list-item>
             <v-list-item @click="openEditDialog">
               <v-list-item-title>編集</v-list-item-title>
@@ -172,7 +167,6 @@ import BaseDialog from './BaseDialog.vue'
 import { routineType, record, VCalendar } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
 
-
 export default windowWidthMixin.extend({
   data() {
     return {
@@ -212,6 +206,7 @@ export default windowWidthMixin.extend({
     drawerWidth(): string {
       if (this.width >= 960) return '30%'
       if (this.width >= 600) return '40%'
+      this.drawer = false
       return '100%'
     },
   },
@@ -265,8 +260,11 @@ export default windowWidthMixin.extend({
       const sendData = {
         name: this.updatedName,
       }
-      const response = await this.$axios.$put(`users/routines/${this.routine.id}`, sendData)
-      console.log(response);
+      const response = await this.$axios.$put(
+        `users/routines/${this.routine.id}`,
+        sendData
+      )
+      console.log(response)
       this.routine.name = response.data.name
       await this.$emit('reloadRoutines')
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()

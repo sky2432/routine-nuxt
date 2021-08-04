@@ -7,7 +7,7 @@
 
     <v-navigation-drawer v-model="drawer" mobile-breakpoint="1264" fixed app>
       <v-sheet color="grey">
-        <v-row class="align-center ma-0 pt-4 pl-4">
+        <v-row class="align-center ma-0 pt-4 pl-4 pb-4">
           <v-avatar color="white" size="64">
             <v-img :src="userImage"></v-img>
           </v-avatar>
@@ -15,10 +15,6 @@
             <span v-if="$auth.loggedIn">{{ userName }}</span>
           </div>
         </v-row>
-        <div class="d-flex pt-4 pl-4">
-          <p class="mr-4">フォロー<a href="#">8</a></p>
-          <p>フォロワー<a href="#">10</a></p>
-        </div>
       </v-sheet>
 
       <v-list>
@@ -84,21 +80,6 @@ export default Vue.extend({
           icon: 'mdi-archive',
           title: 'アーカイブ',
           to: '/archive',
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: '投稿',
-          to: '/post',
-        },
-        {
-          icon: 'mdi-chart-bar',
-          title: 'レポート',
-          to: '/report',
-        },
-        {
-          icon: 'mdi-bell-outline',
-          title: 'お知らせ',
-          to: '/notification',
         },
       ],
       title: 'RoutineQuest',

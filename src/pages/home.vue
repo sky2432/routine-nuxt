@@ -60,6 +60,7 @@ export default Vue.extend({
     return {
       loaded: false,
       routines: [] as routineType[],
+      target: {} as routineType,
       name: '',
     }
   },
@@ -78,6 +79,7 @@ export default Vue.extend({
     },
 
     showRoutineDetail(routine: routineType): void {
+      this.target = routine
       ;(
         this.$refs.routineDetailDrawer as InstanceType<
           typeof RoutineDetailDrawer
@@ -122,10 +124,12 @@ export default Vue.extend({
     },
 
     reloadRoutineDetail(routine_id: number) {
-      for (let i in this.routines) {
-        const routine = this.routines[i]
-        if (routine.id === routine_id) {
-          this.showRoutineDetail(routine)
+      if (this.target.id === routine_id) {
+        for (let i in this.routines) {
+          const routine = this.routines[i]
+          if (routine.id === routine_id) {
+            this.showRoutineDetail(routine)
+          }
         }
       }
     },

@@ -14,13 +14,12 @@
             class="routine-card"
             height="150"
             :color="doneRoutine(routine)"
-            @click="$emit('clickRoutine', routine)"
             hover
           >
             <div v-if="isHome" class="routine-checkbox">
               <input
                 type="checkbox"
-                class="ml-2 mt-2"
+                class="ml-2 mt-2 input-checkbox"
                 :checked="routine.today_record !== null"
                 @click="$emit('clickCheckbox', routine)"
               />
@@ -28,6 +27,7 @@
             <div
               class="d-flex justify-center align-center"
               style="height: 100%"
+              @click="$emit('clickRoutine', routine)"
             >
               <div>
                 <div class="text-center">
@@ -135,16 +135,19 @@ export default Vue.extend({
 <style scoped>
 .routine-card {
   position: relative;
+  cursor: default;
 }
 
 .routine-checkbox {
   position: absolute;
 }
 
+.input-checkbox {
+  cursor: pointer;
+  transform: scale(1.3);
+}
+
 .wrapper {
   height: calc(100vh - 88px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 </style>

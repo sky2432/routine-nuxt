@@ -36,103 +36,112 @@
         </v-menu>
       </div>
 
-      <div class="wrapper" v-if="!routine.id">
-        <div>習慣を選択してください</div>
+      <div class="wrapper" v-if="!loaded">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
       </div>
 
-      <div v-if="routine.id">
-        <h2 class="ml-2 mt-4">{{ routine.name }}</h2>
-        <div class="px-2">
-          <v-card class="mt-4">
-            <v-row class="ma-0 align-center">
-              <v-col>連続日数</v-col>
-              <v-col
-                >{{ routine.continuous_days
-                }}<span class="attach">日</span></v-col
-              >
-              <v-col></v-col>
-            </v-row>
-          </v-card>
-          <v-card class="mt-4">
-            <v-row class="ma-0 align-center">
-              <v-col>累計日数</v-col>
-              <v-col
-                >{{ routine.total_days }}<span class="attach">日</span></v-col
-              >
-              <v-col
-                ><v-chip :color="chipColor(routine.total_rank.name)">{{
-                  routine.total_rank.name
-                }}</v-chip></v-col
-              >
-            </v-row>
-          </v-card>
-          <v-card class="mt-4">
-            <v-row class="ma-0 align-center">
-              <v-col>最高連続日数</v-col>
-              <v-col
-                >{{ routine.highest_continuous_days
-                }}<span class="attach">日</span></v-col
-              >
-              <v-col
-                ><v-chip
-                  :color="chipColor(routine.highest_continuous_rank.name)"
-                  >{{ routine.highest_continuous_rank.name }}</v-chip
-                ></v-col
-              >
-            </v-row>
-          </v-card>
-          <v-card class="mt-4">
-            <v-row class="ma-0 align-center">
-              <v-col>リカバリー</v-col>
-              <v-col
-                >{{ routine.recovery_count
-                }}<span class="attach">回</span></v-col
-              >
-              <v-col
-                ><v-chip :color="chipColor(routine.recovery_rank.name)">{{
-                  routine.recovery_rank.name
-                }}</v-chip></v-col
-              >
-            </v-row>
-          </v-card>
-          <v-sheet class="mt-4 mb-2" tile>
-            <div class="d-flex align-center">
-              <div>
-                <v-btn outlined small @click="setToday">今日</v-btn>
-              </div>
-              <div>
-                <v-btn icon @click="prev">
-                  <v-icon>mdi-chevron-left</v-icon>
-                </v-btn>
-                <span>{{ calendarTitle }}</span>
-                <v-btn icon @click="next">
-                  <v-icon>mdi-chevron-right</v-icon>
-                </v-btn>
-              </div>
-            </div>
-          </v-sheet>
-          <v-sheet>
-            <v-calendar
-              ref="calendar"
-              locale="ja-jp"
-              color="primary"
-              :day-format="(timestamp) => new Date(timestamp.date).getDate()"
-              :month-format="
-                (timestamp) => new Date(timestamp.date).getMonth() + 1 + ' /'
-              "
-              v-model="value"
-            >
-              <template v-slot:day="{ date }">
-                <p
-                  v-if="doneDate(date)"
-                  class="mb-0 text-center"
-                  style="color: blue"
+      <div v-if="loaded">
+        <div class="wrapper" v-if="!routine.id">
+          <div>習慣を選択してください</div>
+        </div>
+
+        <div v-if="routine.id">
+          <h2 class="ml-2 mt-4">{{ routine.name }}</h2>
+          <div class="px-2">
+            <v-card class="mt-4">
+              <v-row class="ma-0 align-center">
+                <v-col>連続日数</v-col>
+                <v-col
+                  >{{ routine.continuous_days
+                  }}<span class="attach">日</span></v-col
                 >
-                  ✔︎
-                </p>
-              </template>
-            </v-calendar>
-          </v-sheet>
+                <v-col></v-col>
+              </v-row>
+            </v-card>
+            <v-card class="mt-4">
+              <v-row class="ma-0 align-center">
+                <v-col>累計日数</v-col>
+                <v-col
+                  >{{ routine.total_days }}<span class="attach">日</span></v-col
+                >
+                <v-col
+                  ><v-chip :color="chipColor(routine.total_rank.name)">{{
+                    routine.total_rank.name
+                  }}</v-chip></v-col
+                >
+              </v-row>
+            </v-card>
+            <v-card class="mt-4">
+              <v-row class="ma-0 align-center">
+                <v-col>最高連続日数</v-col>
+                <v-col
+                  >{{ routine.highest_continuous_days
+                  }}<span class="attach">日</span></v-col
+                >
+                <v-col
+                  ><v-chip
+                    :color="chipColor(routine.highest_continuous_rank.name)"
+                    >{{ routine.highest_continuous_rank.name }}</v-chip
+                  ></v-col
+                >
+              </v-row>
+            </v-card>
+            <v-card class="mt-4">
+              <v-row class="ma-0 align-center">
+                <v-col>リカバリー</v-col>
+                <v-col
+                  >{{ routine.recovery_count
+                  }}<span class="attach">回</span></v-col
+                >
+                <v-col
+                  ><v-chip :color="chipColor(routine.recovery_rank.name)">{{
+                    routine.recovery_rank.name
+                  }}</v-chip></v-col
+                >
+              </v-row>
+            </v-card>
+            <v-sheet class="mt-4 mb-2" tile>
+              <div class="d-flex align-center">
+                <div>
+                  <v-btn outlined small @click="setToday">今日</v-btn>
+                </div>
+                <div>
+                  <v-btn icon @click="prev">
+                    <v-icon>mdi-chevron-left</v-icon>
+                  </v-btn>
+                  <span>{{ calendarTitle }}</span>
+                  <v-btn icon @click="next">
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </v-btn>
+                </div>
+              </div>
+            </v-sheet>
+            <v-sheet>
+              <v-calendar
+                ref="calendar"
+                locale="ja-jp"
+                color="primary"
+                :day-format="(timestamp) => new Date(timestamp.date).getDate()"
+                :month-format="
+                  (timestamp) => new Date(timestamp.date).getMonth() + 1 + ' /'
+                "
+                v-model="value"
+              >
+                <template v-slot:day="{ date }">
+                  <p
+                    v-if="doneDate(date)"
+                    class="mb-0 text-center"
+                    style="color: blue"
+                  >
+                    ✔︎
+                  </p>
+                </template>
+              </v-calendar>
+            </v-sheet>
+          </div>
         </div>
       </div>
     </v-navigation-drawer>
@@ -179,6 +188,7 @@ export default windowWidthMixin.extend({
       updatedName: '',
       value: this.$dayjs().format('YYYY-MM-DD') as string,
       records: {} as record[],
+      loaded: true,
     }
   },
 
@@ -218,7 +228,7 @@ export default windowWidthMixin.extend({
   watch: {
     width() {
       this.drawer = false
-    }
+    },
   },
 
   methods: {
@@ -230,10 +240,12 @@ export default windowWidthMixin.extend({
     },
 
     async getRecords() {
+      this.loaded = false
       const response = await this.$axios.$get(
         `routines/records/${this.routine.id}`
       )
       this.records = response.data
+      this.loaded = true
     },
 
     async archiveRoutine() {

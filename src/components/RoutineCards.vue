@@ -110,7 +110,6 @@ export default Vue.extend({
 
     getTargetWidth() {
       this.cardWidth = this.refs().wrapper.clientWidth
-      console.log(this.cardWidth)
     },
   },
 })

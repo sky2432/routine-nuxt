@@ -20,7 +20,11 @@
           </template>
           <v-list>
             <v-list-item @click="archiveRoutine">
-              <v-list-item-title><slot name="archiveButtonText">アーカイブ</slot></v-list-item-title>
+              <v-list-item-title
+                ><slot name="archiveButtonText"
+                  >アーカイブ</slot
+                ></v-list-item-title
+              >
             </v-list-item>
             <v-list-item @click="openEditDialog">
               <v-list-item-title>編集</v-list-item-title>
@@ -209,6 +213,12 @@ export default windowWidthMixin.extend({
       this.drawer = false
       return '100%'
     },
+  },
+
+  watch: {
+    width() {
+      this.drawer = false
+    }
   },
 
   methods: {

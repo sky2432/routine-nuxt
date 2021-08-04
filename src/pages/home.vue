@@ -29,7 +29,10 @@
         <validation-observer ref="addobserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="name"></TextFieldRoutine>
           <v-card-actions class="justify-center"
-            ><v-btn :disabled="invalid" @click="addRoutine"
+            ><v-btn
+              :loading="btnLoading"
+              :disabled="invalid"
+              @click="addRoutine"
               >登録</v-btn
             ></v-card-actions
           >
@@ -59,6 +62,7 @@ export default Vue.extend({
   data() {
     return {
       loaded: false,
+      btnLoading: false,
       routines: [] as routineType[],
       target: {} as routineType,
       name: '',
@@ -146,14 +150,15 @@ export default Vue.extend({
     },
 
     async addRoutine() {
+      this.btnLoading = true
       const sendData = {
         name: this.name,
         user_id: this.$auth.user.id,
       }
       await this.$axios.$post('users/routines', sendData)
-      this.getUserRoutines()
-      this.name = ''
+      await this.getUserRoutines()
       ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      this.btnLoading = false
     },
   },
 })

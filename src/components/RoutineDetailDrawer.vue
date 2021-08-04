@@ -155,7 +155,10 @@
         <validation-observer ref="editObserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="updatedName"></TextFieldRoutine>
           <v-card-actions class="justify-center"
-            ><v-btn :disabled="invalid" @click="editRoutine"
+            ><v-btn
+              :loading="editBtnLoading"
+              :disabled="invalid"
+              @click="editRoutine"
               >変更</v-btn
             ></v-card-actions
           >
@@ -166,7 +169,11 @@
     <BaseDialog ref="deleteDialog" defaultButtonText="キャンセル">
       <template #title> 本当に削除しますか？ </template>
       <template #leftButton>
-        <v-btn class="mr-2" color="red white--text" @click="deleteRoutine"
+        <v-btn
+          class="mr-2"
+          color="red white--text"
+          :loading="deleteBtnLoading"
+          @click="deleteRoutine"
           >削除</v-btn
         >
       </template>
@@ -189,6 +196,8 @@ export default windowWidthMixin.extend({
       value: this.$dayjs().format('YYYY-MM-DD') as string,
       records: {} as record[],
       loaded: true,
+      editBtnLoading: false,
+      deleteBtnLoading: false,
     }
   },
 
@@ -279,6 +288,7 @@ export default windowWidthMixin.extend({
     },
 
     async editRoutine() {
+      this.editBtnLoading = true
       const sendData = {
         name: this.updatedName,
       }
@@ -286,10 +296,10 @@ export default windowWidthMixin.extend({
         `users/routines/${this.routine.id}`,
         sendData
       )
-      console.log(response)
       this.routine.name = response.data.name
-      await this.$emit('reloadRoutines')
+      this.$emit('reloadRoutines')
       ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      this.editBtnLoading = false
     },
 
     // 習慣の削除
@@ -298,12 +308,14 @@ export default windowWidthMixin.extend({
     },
 
     async deleteRoutine() {
+      this.deleteBtnLoading = true
       await this.$axios.$delete(`users/routines/${this.routine.id}`)
       this.$emit('reloadRoutines')
       this.routine = {} as routineType
       ;(
         this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
       ).closeDialog()
+      this.deleteBtnLoading = false
     },
   },
 })

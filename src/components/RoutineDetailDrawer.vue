@@ -113,7 +113,7 @@
                     <v-icon>mdi-chevron-left</v-icon>
                   </v-btn>
                   <span>{{ calendarTitle }}</span>
-                  <v-btn icon @click="next">
+                  <v-btn icon :disabled="desiableNextButton" @click="next">
                     <v-icon>mdi-chevron-right</v-icon>
                   </v-btn>
                 </div>
@@ -226,6 +226,15 @@ export default windowWidthMixin.extend({
       }
     },
 
+    desiableNextButton() {
+      const month = this.$dayjs(this.value.substring(0, 7))
+      const now = this.$dayjs().format('YYYY-MM')
+      if (month.isSame(now)) {
+        return true
+      }
+      return false
+    },
+
     drawerWidth(): string {
       if (this.width >= 960) return '30%'
       if (this.width >= 600) return '40%'
@@ -255,7 +264,6 @@ export default windowWidthMixin.extend({
       )
       this.records = response.data
       this.loaded = true
-      console.log(response.data)
     },
 
     async archiveRoutine() {

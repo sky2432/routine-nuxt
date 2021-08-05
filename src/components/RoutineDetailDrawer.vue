@@ -214,11 +214,11 @@ export default windowWidthMixin.extend({
 
     doneDate() {
       return (date: number) => {
-        const calendar = this.$dayjs(date)
+        const calendarDate = this.$dayjs(date)
         for (let i in this.records) {
           const record = this.records[i]
-          const day = this.$dayjs(record.created_at.substr(0, 10))
-          if (calendar.isSame(day)) {
+          const recordDate = this.$dayjs(record.created_at).format('YYYY-MM-DD')
+          if (calendarDate.isSame(recordDate)) {
             return true
           }
         }
@@ -255,6 +255,7 @@ export default windowWidthMixin.extend({
       )
       this.records = response.data
       this.loaded = true
+      console.log(response.data)
     },
 
     async archiveRoutine() {

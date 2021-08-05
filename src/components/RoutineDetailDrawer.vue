@@ -208,8 +208,8 @@ export default windowWidthMixin.extend({
       }
     },
 
-    calendarTitle() {
-      return this.$dayjs((this as any).value).format('YYYY-MM')
+    calendarTitle(): string {
+      return this.$dayjs(this.value).format('YYYY-MM')
     },
 
     doneDate() {
@@ -226,22 +226,12 @@ export default windowWidthMixin.extend({
       }
     },
 
-    desiableNextButton() {
-      const month = this.$dayjs(this.value.substring(0, 7))
-      const now = this.$dayjs().format('YYYY-MM')
-      if (month.isSame(now)) {
-        return true
-      }
-      return false
+    desiableNextButton(): boolean {
+      return this.isSameMonth()
     },
 
-    desiablePrevButton() {
-      const month = this.$dayjs(this.value.substring(0, 7))
-      const now = this.$dayjs(this.routine.created_at).format('YYYY-MM')
-      if (month.isSame(now)) {
-        return true
-      }
-      return false
+    desiablePrevButton(): boolean {
+      return this.isSameMonth(this.routine.created_at)
     },
 
     drawerWidth(): string {
@@ -259,6 +249,15 @@ export default windowWidthMixin.extend({
   },
 
   methods: {
+    isSameMonth(created_at?: string) {
+      const month = this.$dayjs(this.value.substring(0, 7))
+      const date = this.$dayjs(created_at).format('YYYY-MM')
+      if (month.isSame(date)) {
+        return true
+      }
+      return false
+    },
+
     setData(routine: routineType) {
       this.routine = routine
       this.drawer = true

@@ -29,9 +29,8 @@ export interface record {
 }
 
 export interface rankUp {
-  total_rank: boolean
-  highest_continuous_rank: boolean
-  recovery_rank: boolean
+  name: string
+  rank_name: string
 }
 
 export interface VCalendar extends Vue {

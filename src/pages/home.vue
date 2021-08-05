@@ -40,8 +40,21 @@
       </template>
     </BaseDialog>
 
-    <BaseDialog ref="rankUpDialog">
-      <template #title>ランクアップ</template>
+    <BaseDialog ref="rankUpDialog" :body="true" textClass="text-center pb-0 px-16">
+      <template #title>「{{ rankUpRoutineName }}」ランクアップ</template>
+      <template #body>
+        <v-row v-for="rank in rankUpInfo" :key="rank.name">
+          <v-col>
+            {{ rank.name }}
+          </v-col>
+          <v-col cols="1"> → </v-col>
+          <v-col>
+            <v-chip :color="chipColor(rank.rank_name)">{{
+              rank.rank_name
+            }}</v-chip>
+          </v-col>
+        </v-row>
+      </template>
     </BaseDialog>
   </div>
 </template>
@@ -51,6 +64,7 @@ import Vue from 'vue'
 import { $axios } from '@/util/axios'
 import { ValidationObserver } from 'vee-validate'
 import { routineType, rankUp } from '../lib/interface'
+import { $_returnColor } from '../plugins/helper'
 import BaseDialog from '../components/BaseDialog.vue'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 
@@ -66,7 +80,17 @@ export default Vue.extend({
       routines: [] as routineType[],
       target: {} as routineType,
       name: '',
+      rankUpInfo: {} as rankUp[],
+      rankUpRoutineName: '' as string,
     }
+  },
+
+  computed: {
+    chipColor() {
+      return (rank: string): string => {
+        return $_returnColor(rank)
+      }
+    },
   },
 
   created() {
@@ -92,6 +116,8 @@ export default Vue.extend({
     },
 
     changeRecord(routine: routineType) {
+      console.log(routine.id)
+
       if (routine.today_record === null) {
         this.createRecord(routine.id)
       } else {
@@ -107,14 +133,12 @@ export default Vue.extend({
       await this.getUserRoutines()
       this.reloadRoutineDetail(routineId)
       this.notifyRankUp(response.rank_up)
+      this.rankUpRoutineName = response.routine_name
     },
 
-    notifyRankUp(rank_up: rankUp) {
-      if (
-        rank_up.total_rank ||
-        rank_up.highest_continuous_rank ||
-        rank_up.recovery_rank
-      ) {
+    notifyRankUp(rank_up: rankUp[]) {
+      if (rank_up.length !== 0) {
+        this.rankUpInfo = rank_up
         ;(
           this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
         ).openDialog()

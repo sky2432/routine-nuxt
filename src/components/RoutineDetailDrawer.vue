@@ -109,7 +109,7 @@
                   <v-btn outlined small @click="setToday">今日</v-btn>
                 </div>
                 <div>
-                  <v-btn icon @click="prev">
+                  <v-btn icon :disabled="desiablePrevButton" @click="prev">
                     <v-icon>mdi-chevron-left</v-icon>
                   </v-btn>
                   <span>{{ calendarTitle }}</span>
@@ -229,6 +229,15 @@ export default windowWidthMixin.extend({
     desiableNextButton() {
       const month = this.$dayjs(this.value.substring(0, 7))
       const now = this.$dayjs().format('YYYY-MM')
+      if (month.isSame(now)) {
+        return true
+      }
+      return false
+    },
+
+    desiablePrevButton() {
+      const month = this.$dayjs(this.value.substring(0, 7))
+      const now = this.$dayjs(this.routine.created_at).format('YYYY-MM')
       if (month.isSame(now)) {
         return true
       }

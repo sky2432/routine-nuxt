@@ -1,8 +1,18 @@
 <template>
-  <v-app>
+  <div>
     <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ headerTitle }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <div v-if="serach">
+        <BaseTextField
+          name="serach"
+          innerIcon="mdi-magnify"
+          :details="true"
+          :value="value"
+          @input="$emit('input', $event)"
+        ></BaseTextField>
+      </div>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" mobile-breakpoint="1264" fixed app>
@@ -55,18 +65,53 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-main>
-      <v-container>
-        <Nuxt />
-      </v-container>
-    </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  drawer: boolean | null
+  items: navitem[]
+}
+
+interface navitem {
+  icon: string
+  title: string
+  to: string
+}
+
+interface MethodType {
+  logout(): void
+}
+
+interface ComputedType {
+  userName(): string
+  userImage(): string
+}
+
+interface PropsType {
+  headerTitle: string
+  value: string
+  serach: boolean
+}
 
 export default Vue.extend({
+  props: {
+    headerTitle: {
+      type: String,
+    },
+    value: {
+      type: String,
+    },
+    serach: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
   data() {
     return {
       drawer: null as boolean | null,
@@ -82,7 +127,6 @@ export default Vue.extend({
           to: '/archive',
         },
       ],
-      title: 'RoutineQuest',
     }
   },
 
@@ -93,12 +137,6 @@ export default Vue.extend({
 
     userImage() {
       return this.$auth.user.image_url
-    },
-
-    headerTitle() {
-      if(this.$route.name === 'home') return 'ホーム'
-      if(this.$route.name === 'archive') return 'アーカイブ'
-      if(this.$route.name === 'setting') return '設定'
     },
   },
 
@@ -111,5 +149,5 @@ export default Vue.extend({
       }
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

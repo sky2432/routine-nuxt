@@ -1,19 +1,33 @@
 <template>
   <div>
-    <RoutineCards
-      v-bind="{
-        loaded: loaded,
-        routines: routines,
-        isHome: true,
-      }"
-      @clickRoutine="showRoutineDetail"
-      @clickCheckbox="changeRecord"
-    >
-    </RoutineCards>
+    <HeaderDrawer headerTitle="ホーム" v-model="keyword"></HeaderDrawer>
 
-    <v-btn class="add-btn" color="indigo" fab dark large @click="openAddDialog">
-      <v-icon dark> mdi-plus </v-icon>
-    </v-btn>
+    <v-main>
+      <v-container>
+        <RoutineCards
+          v-bind="{
+            loaded: loaded,
+            routines: routines,
+            isHome: true,
+            keyword: keyword
+          }"
+          @clickRoutine="showRoutineDetail"
+          @clickCheckbox="changeRecord"
+        >
+        </RoutineCards>
+
+        <v-btn
+          class="add-btn"
+          color="indigo"
+          fab
+          dark
+          large
+          @click="openAddDialog"
+        >
+          <v-icon dark> mdi-plus </v-icon>
+        </v-btn>
+      </v-container>
+    </v-main>
 
     <RoutineDetailDrawer
       ref="routineDetailDrawer"
@@ -40,7 +54,11 @@
       </template>
     </BaseDialog>
 
-    <BaseDialog ref="rankUpDialog" :body="true" textClass="text-center pb-0 px-16">
+    <BaseDialog
+      ref="rankUpDialog"
+      :body="true"
+      textClass="text-center pb-0 px-16"
+    >
       <template #title>「{{ rankUpRoutineName }}」ランクアップ</template>
       <template #body>
         <v-row v-for="rank in rankUpInfo" :key="rank.name">
@@ -69,8 +87,6 @@ import BaseDialog from '../components/BaseDialog.vue'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 
 export default Vue.extend({
-  layout: 'home',
-
   middleware: 'auth',
 
   data() {
@@ -82,6 +98,7 @@ export default Vue.extend({
       name: '',
       rankUpInfo: {} as rankUp[],
       rankUpRoutineName: '' as string,
+      keyword: ''
     }
   },
 

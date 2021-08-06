@@ -9,7 +9,11 @@
         <p v-if="!isHome">アーカイブされた習慣はありません</p>
       </div>
       <v-row class="ma-0" v-if="routines.length !== 0">
-        <v-col :style="colWidth" v-for="routine in routines" :key="routine.id">
+        <v-col
+          :style="colWidth"
+          v-for="routine in filterdRoutines"
+          :key="routine.id"
+        >
           <v-card
             class="routine-card"
             height="150"
@@ -58,6 +62,30 @@
 import Vue, { PropType } from 'vue'
 import { routineType } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  cardWidth: number
+}
+
+interface MethodType {
+  refs(): any
+  getTargetWidth(): void
+}
+
+interface ComputedType {
+  chipColor(rank: string): string
+  doneRoutine(routine: routineType): string
+  colWidth(): string
+  filterdRoutines(): routineType[]
+}
+
+interface PropsType {
+  routines: routineType[]
+  isHome: boolean
+  loaded: boolean
+  keyword: string
+}
 
 export default Vue.extend({
   props: {
@@ -72,6 +100,9 @@ export default Vue.extend({
     loaded: {
       type: Boolean,
     },
+    keyword: {
+      type: String,
+    },
   },
 
   data() {
@@ -81,6 +112,20 @@ export default Vue.extend({
   },
 
   computed: {
+    filterdRoutines(): routineType[] {
+      if (this.keyword) {
+        let filterdRoutines = []
+        for (let i in this.routines) {
+          let routine = this.routines[i]
+          if (routine.name.indexOf(this.keyword) !== -1) {
+            filterdRoutines.push(routine)
+          }
+        }
+        return filterdRoutines
+      }
+      return this.routines
+    },
+
     chipColor() {
       return (rank: string): string => {
         return $_returnColor(rank)
@@ -129,7 +174,7 @@ export default Vue.extend({
       this.cardWidth = this.refs().root.clientWidth
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>

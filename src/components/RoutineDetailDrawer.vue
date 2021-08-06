@@ -9,7 +9,7 @@
     >
       <div class="detail-header">
         <v-btn class="close-btn" icon @click="drawer = !drawer">
-          <v-icon>mdi-chevron-left</v-icon>
+          <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-menu offset-y v-if="routine.id">
@@ -120,21 +120,7 @@
               </div>
             </v-sheet>
             <v-sheet>
-              <!-- :day-format="(timestamp) => new Date(timestamp.date).getDate()" -->
-              <!-- :month-format="
-                  (timestamp) => new Date(timestamp.date).getMonth() + 1 + ' /'
-                " -->
-              <!-- color="primary" -->
               <v-calendar ref="calendar" locale="ja-jp" v-model="value">
-                <!-- <template v-slot:day="{ date }">
-                  <p
-                    v-if="doneDate(date)"
-                    class="mb-0 text-center"
-                    style="color: blue"
-                  >
-                    ✔︎
-                  </p>
-                </template> -->
                 <template v-slot:day-label="{ date, day, month, present }">
                   <v-btn
                     class="calendar-day"
@@ -376,6 +362,5 @@ export default windowWidthMixin.extend({
   font-size: 12px;
   color: #000000de;
   margin: 6px 0 6px 0;
-  /* background-color: rgb(165, 162, 162); */
 }
 </style>

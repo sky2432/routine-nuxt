@@ -1,13 +1,20 @@
 <template>
   <div>
-    <RoutineCards
-      v-bind="{
-        loaded: loaded,
-        routines: routines,
-      }"
-      @clickRoutine="showRoutineDetail"
-    >
-    </RoutineCards>
+    <HeaderDrawer headerTitle="アーカイブ" v-model="keyword"></HeaderDrawer>
+
+    <v-main>
+      <v-container>
+        <RoutineCards
+          v-bind="{
+            loaded: loaded,
+            routines: routines,
+            keyword: keyword,
+          }"
+          @clickRoutine="showRoutineDetail"
+        >
+        </RoutineCards>
+      </v-container>
+    </v-main>
 
     <RoutineDetailDrawer
       ref="routineDetailDrawer"
@@ -25,8 +32,6 @@ import { routineType } from '../lib/interface'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 
 export default Vue.extend({
-  layout: 'home',
-
   middleware: 'auth',
 
   data() {
@@ -34,6 +39,7 @@ export default Vue.extend({
       loaded: false,
       routines: [] as routineType[],
       name: '',
+      keyword: '',
     }
   },
 

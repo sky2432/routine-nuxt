@@ -12,7 +12,6 @@
 
               <TextFieldPassword v-model="password"></TextFieldPassword>
               <v-card-actions class="justify-center">
-                <v-btn @click="guestlogin"> ゲストログイン </v-btn>
                 <v-btn :disabled="invalid" @click="login"> ログイン </v-btn>
               </v-card-actions>
             </v-form>
@@ -37,20 +36,6 @@ export default Vue.extend({
   },
 
   methods: {
-    async guestlogin() {
-      try {
-        await this.$auth.loginWith('laravelJWT', {
-          data: {
-            email: 'guest@user.com',
-            password: 1234,
-          },
-        })
-        this.$router.push('/home')
-      } catch {
-        alert('エラーが発生しました')
-      }
-    },
-
     async login() {
       try {
         await this.$auth.loginWith('laravelJWT', {

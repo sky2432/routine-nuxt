@@ -12,6 +12,7 @@ export interface routineType {
   today_record: record | null
   created_at: string
   updated_at: string
+  records: record[]
 }
 
 interface rank {

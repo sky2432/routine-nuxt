@@ -186,7 +186,6 @@ export default windowWidthMixin.extend({
       drawer: null as boolean | null,
       updatedName: '',
       value: this.$dayjs().format('YYYY-MM-DD') as string,
-      records: {} as record[],
       loaded: true,
       editBtnLoading: false,
       deleteBtnLoading: false,
@@ -207,8 +206,8 @@ export default windowWidthMixin.extend({
     doneDate() {
       return (date: number): string => {
         const calendarDate = this.$dayjs(date)
-        for (let i in this.records) {
-          const record = this.records[i]
+        for (let i in this.routine.records) {
+          const record = this.routine.records[i]
           const recordDate = this.$dayjs(record.created_at).format('YYYY-MM-DD')
           if (calendarDate.isSame(recordDate)) {
             return 'background-color: lightblue'
@@ -261,16 +260,6 @@ export default windowWidthMixin.extend({
       this.routine = routine
       this.drawer = true
       this.setToday()
-      this.getRecords()
-    },
-
-    async getRecords() {
-      this.loaded = false
-      const response = await this.$axios.$get(
-        `routines/records/${this.routine.id}`
-      )
-      this.records = response.data
-      this.loaded = true
     },
 
     async archiveRoutine() {

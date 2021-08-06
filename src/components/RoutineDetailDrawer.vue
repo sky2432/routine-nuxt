@@ -55,8 +55,7 @@
               <v-row class="ma-0 align-center">
                 <v-col>連続日数</v-col>
                 <v-col
-                  >{{ routine.continuous_days
-                  }}<span class="attach">日</span></v-col
+                  >{{ routine.continuous_days }}<span class="attach">日</span></v-col
                 >
                 <v-col></v-col>
               </v-row>
@@ -280,6 +279,7 @@ export default windowWidthMixin.extend({
       }
       await this.$axios.$post('users/routines/archive', sendData)
       this.routine = {} as routineType
+      this.$emit('startLoading')
       this.$emit('reloadRoutines')
     },
 

@@ -32,6 +32,7 @@
     <RoutineDetailDrawer
       ref="routineDetailDrawer"
       @reloadRoutines="getUserRoutines"
+      @startLoading="loaded = false"
     ></RoutineDetailDrawer>
 
     <BaseDialog
@@ -116,7 +117,6 @@ export default Vue.extend({
 
   methods: {
     async getUserRoutines() {
-      this.loaded = false
       const response = await this.$axios.$get(
         `users/${this.$auth.user.id}/routines`
       )
@@ -134,8 +134,6 @@ export default Vue.extend({
     },
 
     changeRecord(routine: routineType) {
-      console.log(routine.id)
-
       if (routine.today_record === null) {
         this.createRecord(routine.id)
       } else {

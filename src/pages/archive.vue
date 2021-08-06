@@ -19,6 +19,7 @@
     <RoutineDetailDrawer
       ref="routineDetailDrawer"
       @reloadRoutines="getUserRoutines"
+      @startLoading="loaded = false"
     >
       <template #archiveButtonText>戻す</template>
     </RoutineDetailDrawer>
@@ -49,7 +50,6 @@ export default Vue.extend({
 
   methods: {
     async getUserRoutines() {
-      this.loaded = false
       const response = await this.$axios.$get(
         `users/${this.$auth.user.id}/routines/archive`
       )

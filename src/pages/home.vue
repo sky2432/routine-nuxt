@@ -9,7 +9,7 @@
             loaded: loaded,
             routines: routines,
             isHome: true,
-            keyword: keyword
+            keyword: keyword,
           }"
           @clickRoutine="showRoutineDetail"
           @clickCheckbox="changeRecord"
@@ -98,7 +98,7 @@ export default Vue.extend({
       name: '',
       rankUpInfo: {} as rankUp[],
       rankUpRoutineName: '' as string,
-      keyword: ''
+      keyword: '',
     }
   },
 
@@ -116,6 +116,7 @@ export default Vue.extend({
 
   methods: {
     async getUserRoutines() {
+      this.loaded = false
       const response = await this.$axios.$get(
         `users/${this.$auth.user.id}/routines`
       )

@@ -49,6 +49,7 @@ export default Vue.extend({
 
   methods: {
     async getUserRoutines() {
+      this.loaded = false
       const response = await this.$axios.$get(
         `users/${this.$auth.user.id}/routines/archive`
       )

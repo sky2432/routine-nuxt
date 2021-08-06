@@ -120,17 +120,13 @@
               </div>
             </v-sheet>
             <v-sheet>
-              <v-calendar
-                ref="calendar"
-                locale="ja-jp"
-                color="primary"
-                :day-format="(timestamp) => new Date(timestamp.date).getDate()"
-                :month-format="
+              <!-- :day-format="(timestamp) => new Date(timestamp.date).getDate()" -->
+              <!-- :month-format="
                   (timestamp) => new Date(timestamp.date).getMonth() + 1 + ' /'
-                "
-                v-model="value"
-              >
-                <template v-slot:day="{ date }">
+                " -->
+              <!-- color="primary" -->
+              <v-calendar ref="calendar" locale="ja-jp" v-model="value">
+                <!-- <template v-slot:day="{ date }">
                   <p
                     v-if="doneDate(date)"
                     class="mb-0 text-center"
@@ -138,6 +134,17 @@
                   >
                     ✔︎
                   </p>
+                </template> -->
+                <template v-slot:day-label="{ date, day, month, present }">
+                  <v-btn
+                    class="calendar-day"
+                    :color="isPresent(present)"
+                    :style="doneDate(date)"
+                    icon
+                  >
+                    <span v-if="day === 1">{{ month }}/</span>
+                    {{ day }}</v-btn
+                  >
                 </template>
               </v-calendar>
             </v-sheet>
@@ -213,16 +220,16 @@ export default windowWidthMixin.extend({
     },
 
     doneDate() {
-      return (date: number) => {
+      return (date: number): string => {
         const calendarDate = this.$dayjs(date)
         for (let i in this.records) {
           const record = this.records[i]
           const recordDate = this.$dayjs(record.created_at).format('YYYY-MM-DD')
           if (calendarDate.isSame(recordDate)) {
-            return true
+            return 'background-color: lightblue'
           }
         }
-        return false
+        return ''
       }
     },
 
@@ -232,6 +239,13 @@ export default windowWidthMixin.extend({
 
     desiablePrevButton(): boolean {
       return this.isSameMonth(this.routine.created_at)
+    },
+
+    isPresent() {
+      return (present: boolean): string => {
+        if (present) return 'blue'
+        return 'grey darken-1'
+      }
     },
 
     drawerWidth(): string {
@@ -356,5 +370,12 @@ export default windowWidthMixin.extend({
 .attach {
   font-size: 0.7rem;
   margin-left: 2px;
+}
+
+.calendar-day {
+  font-size: 12px;
+  color: #000000de;
+  margin: 6px 0 6px 0;
+  /* background-color: rgb(165, 162, 162); */
 }
 </style>

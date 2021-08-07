@@ -59,9 +59,11 @@
       ref="rankUpDialog"
       :body="true"
       textClass="text-center pb-0 px-16"
+      defaultButtonText="Ok"
     >
-      <template #title>「{{ rankUpRoutineName }}」ランクアップ</template>
+      <template #title>Congratulations!!</template>
       <template #body>
+        <p>「{{ rankUpRoutineName }}」ランクアップ</p>
         <v-row v-for="rank in rankUpInfo" :key="rank.name">
           <v-col>
             {{ rank.name }}

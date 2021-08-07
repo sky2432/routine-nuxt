@@ -162,7 +162,6 @@
 
     <BaseDialog
       ref="deleteDialog"
-      defaultButtonText="キャンセル"
       :body="true"
       textClass="text-center"
     >
@@ -171,7 +170,6 @@
       <template #leftButton>
         <ButtonOk
           :loading="deleteBtnLoading"
-          :disabled="invalid"
           @click="deleteRoutine"
         ></ButtonOk>
       </template>

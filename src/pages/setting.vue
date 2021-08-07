@@ -9,18 +9,35 @@
             <v-card tile>
               <v-list>
                 <v-list-item @click="currentComponent = 'FormUpdateImage'">
+                  <v-list-item-action>
+                    <v-icon>mdi-image-size-select-actual</v-icon>
+                  </v-list-item-action>
                   <v-list-item-content>
-                    <v-list-item-title>画像</v-list-item-title>
+                    <v-list-item-title>プロフィール画像</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item @click="currentComponent = 'FormUpdateNameEmail'">
+                  <v-list-item-action>
+                    <v-icon>mdi-email</v-icon>
+                  </v-list-item-action>
                   <v-list-item-content>
                     <v-list-item-title>名前・メールアドレス</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item @click="currentComponent = 'FormUpdatePassword'">
+                  <v-list-item-action>
+                    <v-icon>mdi-key</v-icon>
+                  </v-list-item-action>
                   <v-list-item-content>
                     <v-list-item-title>パスワード</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item @click="currentComponent = 'FormDeleteAccount'">
+                  <v-list-item-action>
+                    <v-icon>mdi-delete</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>アカウント削除</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>

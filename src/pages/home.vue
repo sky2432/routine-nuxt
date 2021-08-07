@@ -35,34 +35,21 @@
       @startLoading="loaded = false"
     ></RoutineDetailDrawer>
 
-    <BaseDialog
-      ref="addDialog"
-      v-bind="{ body: true, button: false }"
-    >
+    <BaseDialog ref="addDialog" v-bind="{ body: true, button: false }">
       <template #title><div class="text-center">Register</div></template>
       <template #body>
         <validation-observer ref="addobserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="name"></TextFieldRoutine>
           <v-card-actions class="justify-center">
-            <v-btn
-              class="mr-16"
-              color="red"
-              icon
-              x-large
+            <ButtonCancel
+              btnClass="mr-16"
               @click="closeAddDialog"
-            >
-              <v-icon>mdi-close-circle-outline</v-icon>
-            </v-btn>
-            <v-btn
-              color="primary"
+            ></ButtonCancel>
+            <ButtonOk
               :loading="btnLoading"
               :disabled="invalid"
-              icon
-              x-large
               @click="addRoutine"
-            >
-              <v-icon>mdi-circle-double</v-icon>
-            </v-btn>
+            ></ButtonOk>
           </v-card-actions>
         </validation-observer>
       </template>

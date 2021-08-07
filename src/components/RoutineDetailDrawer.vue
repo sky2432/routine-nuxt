@@ -145,25 +145,16 @@
         <validation-observer ref="editObserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="updatedName"></TextFieldRoutine>
           <v-card-actions class="justify-center">
-            <v-btn
-              class="mr-16"
-              color="red"
-              icon
-              x-large
+            <ButtonCancel
+              btnClass="mr-16"
               @click="closeEditDialog"
-            >
-              <v-icon>mdi-close-circle-outline</v-icon>
-            </v-btn>
-            <v-btn
+            ></ButtonCancel>
+
+            <ButtonOk
               :loading="editBtnLoading"
               :disabled="invalid"
-              color="primary"
-              icon
-              x-large
               @click="editRoutine"
-            >
-              <v-icon>mdi-circle-double</v-icon>
-            </v-btn>
+            ></ButtonOk>
           </v-card-actions>
         </validation-observer>
       </template>
@@ -178,21 +169,17 @@
       <template #title>Confirm</template>
       <template #body>この習慣を削除しますか？</template>
       <template #leftButton>
-        <v-btn
-          class="mr-2"
-          color="primary"
+        <ButtonOk
           :loading="deleteBtnLoading"
-          icon
-          x-large
+          :disabled="invalid"
           @click="deleteRoutine"
-        >
-          <v-icon>mdi-circle-double</v-icon>
-        </v-btn>
+        ></ButtonOk>
       </template>
       <template #defaultButton>
-        <v-btn icon x-large color="red" class="ml-16" @click="closeDeleteDialog">
-          <v-icon>mdi-close-circle-outline</v-icon>
-        </v-btn>
+        <ButtonCancel
+          btnClass="ml-16"
+          @click="closeDeleteDialog"
+        ></ButtonCancel>
       </template>
     </BaseDialog>
   </div>
@@ -353,7 +340,9 @@ export default windowWidthMixin.extend({
     },
 
     closeDeleteDialog() {
-      ;(this.$refs.deleteDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      ;(
+        this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
+      ).closeDialog()
     },
   },
 })

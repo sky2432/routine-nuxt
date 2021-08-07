@@ -55,7 +55,8 @@
               <v-row class="ma-0 align-center">
                 <v-col>連続日数</v-col>
                 <v-col
-                  >{{ routine.continuous_days }}<span class="attach">日</span></v-col
+                  >{{ routine.continuous_days
+                  }}<span class="attach">日</span></v-col
                 >
                 <v-col></v-col>
               </v-row>
@@ -138,36 +139,60 @@
       </div>
     </v-navigation-drawer>
 
-    <BaseDialog
-      ref="editDialog"
-      v-bind="{ body: true, closeIcon: true, button: false }"
-    >
-      <template #title>習慣を編集</template>
+    <BaseDialog ref="editDialog" v-bind="{ body: true, button: false }">
+      <template #title>Edit</template>
       <template #body>
         <validation-observer ref="editObserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="updatedName"></TextFieldRoutine>
-          <v-card-actions class="justify-center"
-            ><v-btn
+          <v-card-actions class="justify-center">
+            <v-btn
+              class="mr-16"
+              color="red"
+              icon
+              x-large
+              @click="closeEditDialog"
+            >
+              <v-icon>mdi-close-circle-outline</v-icon>
+            </v-btn>
+            <v-btn
               :loading="editBtnLoading"
               :disabled="invalid"
+              color="primary"
+              icon
+              x-large
               @click="editRoutine"
-              >変更</v-btn
-            ></v-card-actions
-          >
+            >
+              <v-icon>mdi-circle-double</v-icon>
+            </v-btn>
+          </v-card-actions>
         </validation-observer>
       </template>
     </BaseDialog>
 
-    <BaseDialog ref="deleteDialog" defaultButtonText="キャンセル">
-      <template #title> 本当に削除しますか？ </template>
+    <BaseDialog
+      ref="deleteDialog"
+      defaultButtonText="キャンセル"
+      :body="true"
+      textClass="text-center"
+    >
+      <template #title>Confirm</template>
+      <template #body>この習慣を削除しますか？</template>
       <template #leftButton>
         <v-btn
           class="mr-2"
-          color="red white--text"
+          color="primary"
           :loading="deleteBtnLoading"
+          icon
+          x-large
           @click="deleteRoutine"
-          >削除</v-btn
         >
+          <v-icon>mdi-circle-double</v-icon>
+        </v-btn>
+      </template>
+      <template #defaultButton>
+        <v-btn icon x-large color="red" class="ml-16" @click="closeDeleteDialog">
+          <v-icon>mdi-close-circle-outline</v-icon>
+        </v-btn>
       </template>
     </BaseDialog>
   </div>
@@ -304,8 +329,13 @@ export default windowWidthMixin.extend({
       )
       this.routine.name = response.data.name
       this.$emit('reloadRoutines')
-      ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      // ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      this.closeEditDialog()
       this.editBtnLoading = false
+    },
+
+    closeEditDialog() {
+      ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
 
     // 習慣の削除
@@ -318,10 +348,12 @@ export default windowWidthMixin.extend({
       await this.$axios.$delete(`users/routines/${this.routine.id}`)
       this.$emit('reloadRoutines')
       this.routine = {} as routineType
-      ;(
-        this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
-      ).closeDialog()
+      this.closeDeleteDialog()
       this.deleteBtnLoading = false
+    },
+
+    closeDeleteDialog() {
+      ;(this.$refs.deleteDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
   },
 })

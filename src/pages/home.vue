@@ -37,20 +37,33 @@
 
     <BaseDialog
       ref="addDialog"
-      v-bind="{ body: true, closeIcon: true, button: false }"
+      v-bind="{ body: true, button: false }"
     >
-      <template #title>習慣を登録</template>
+      <template #title><div class="text-center">Register</div></template>
       <template #body>
         <validation-observer ref="addobserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="name"></TextFieldRoutine>
-          <v-card-actions class="justify-center"
-            ><v-btn
+          <v-card-actions class="justify-center">
+            <v-btn
+              class="mr-16"
+              color="red"
+              icon
+              x-large
+              @click="closeAddDialog"
+            >
+              <v-icon>mdi-close-circle-outline</v-icon>
+            </v-btn>
+            <v-btn
+              color="primary"
               :loading="btnLoading"
               :disabled="invalid"
+              icon
+              x-large
               @click="addRoutine"
-              >登録</v-btn
-            ></v-card-actions
-          >
+            >
+              <v-icon>mdi-circle-double</v-icon>
+            </v-btn>
+          </v-card-actions>
         </validation-observer>
       </template>
     </BaseDialog>
@@ -199,8 +212,12 @@ export default Vue.extend({
       }
       await this.$axios.$post('users/routines', sendData)
       await this.getUserRoutines()
-      ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      this.closeAddDialog()
       this.btnLoading = false
+    },
+
+    closeAddDialog() {
+      ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).closeDialog()
     },
   },
 })

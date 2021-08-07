@@ -49,7 +49,7 @@ export default Vue.extend({
       }
       try {
         const response = await this.$axios.$post('users', sendData)
-        this.$router.push('/login')
+        this.$router.push('/thanks')
       } catch (error) {
         this.$nextTick(() => {
           ;(

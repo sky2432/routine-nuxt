@@ -17,6 +17,10 @@
             </v-form>
           </validation-observer>
         </v-card-text>
+        <v-card-text class="pt-0">
+          アカウントをお持ちではないですか？
+          <NuxtLink to="/signup">サインアップ</NuxtLink>
+        </v-card-text>
       </v-card>
     </div>
   </div>

@@ -21,6 +21,10 @@
             </v-form>
           </validation-observer>
         </v-card-text>
+        <v-card-text class="pt-0">
+          すでにアカウントをお持ちですか？
+          <NuxtLink to="/login">ログイン</NuxtLink>
+        </v-card-text>
       </v-card>
     </div>
   </div>

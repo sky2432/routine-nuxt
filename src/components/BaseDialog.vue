@@ -12,6 +12,7 @@
           </slot>
         </template>
       </v-card-title>
+      <v-divider v-if="divider" class="pb-5"></v-divider>
       <v-card-text v-if="body" :class="textClass">
         <slot name="body"></slot>
       </v-card-text>
@@ -49,14 +50,6 @@ export default Vue.extend({
     defaultButtonType: {
       type: String,
     },
-    divider: {
-      type: Boolean,
-      default: false,
-    },
-    closeIcon: {
-      type: Boolean,
-      default: false,
-    },
     titleClass: {
       type: String,
       default: 'justify-center',
@@ -75,6 +68,14 @@ export default Vue.extend({
     maxWidth: {
       type: String,
       default: '500px',
+    },
+    closeIcon: {
+      type: Boolean,
+      default: false,
+    },
+    divider: {
+      type: Boolean,
+      default: false,
     },
   },
 

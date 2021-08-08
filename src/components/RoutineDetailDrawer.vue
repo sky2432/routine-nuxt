@@ -139,7 +139,7 @@
       </div>
     </v-navigation-drawer>
 
-    <BaseDialog ref="editDialog" v-bind="{ body: true, button: false }">
+    <BaseDialog ref="editDialog" v-bind="{ body: true, button: false }" textClass="pb-0">
       <template #title>Edit</template>
       <template #body>
         <validation-observer ref="editObserver" v-slot="{ invalid }">
@@ -162,6 +162,7 @@
     <BaseDialog
       ref="deleteDialog"
       :body="true"
+      :divider="true"
       textClass="text-center"
       defaultButtonType="cancel"
     >

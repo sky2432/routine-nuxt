@@ -4,11 +4,13 @@
       <div class="wrapper">
         <v-card width="500" tile>
           <v-card-title class="justify-center"> Thanks!!</v-card-title>
-          <v-card-text class="text-center">
+          <v-divider></v-divider>
+          <v-card-text class="text-center py-5">
             会員登録ありがとうございます！
           </v-card-text>
+          <v-divider></v-divider>
           <v-card-actions class="justify-center">
-            <v-btn @click="$router.push('/login')">Login</v-btn>
+            <ButtonOk @click="$router.push('/login')"></ButtonOk>
           </v-card-actions>
         </v-card>
       </div>

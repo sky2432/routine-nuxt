@@ -25,6 +25,7 @@
       <BaseDialog
         ref="deleteDialog"
         :body="true"
+        :divider="true"
         textClass="text-center"
         defaultButtonType="cancel"
       >

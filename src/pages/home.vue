@@ -35,8 +35,8 @@
       @startLoading="loaded = false"
     ></RoutineDetailDrawer>
 
-    <BaseDialog ref="addDialog" v-bind="{ body: true, button: false }">
-      <template #title><div class="text-center">Register</div></template>
+    <BaseDialog ref="addDialog" v-bind="{ body: true, button: false }" textClass="pb-0">
+      <template #title>Register</template>
       <template #body>
         <validation-observer ref="addobserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="name"></TextFieldRoutine>
@@ -58,6 +58,7 @@
     <BaseDialog
       ref="rankUpDialog"
       :body="true"
+      :divider="true"
       textClass="text-center pb-0 px-16"
       defaultButtonType="ok"
     >
@@ -184,6 +185,7 @@ export default Vue.extend({
     openAddDialog() {
       ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).openDialog()
       this.name = ''
+      // ;(this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>).openDialog()
       this.$nextTick(() => {
         ;(
           this.$refs.addobserver as InstanceType<typeof ValidationObserver>

@@ -13,7 +13,11 @@
             <TextFieldEmail v-model="email"></TextFieldEmail>
 
             <v-card-actions class="justify-center">
-              <v-btn :disabled="invalid" @click="updateNameEmail"> 更新 </v-btn>
+              <ButtonOk
+                :loading="btnLoading"
+                :disabled="invalid"
+                @click="updateNameEmail"
+              ></ButtonOk>
             </v-card-actions>
           </v-form>
         </validation-observer>
@@ -44,6 +48,7 @@ export default Vue.extend({
       name: '',
       email: '',
       formValid: false,
+      btnLoading: false,
     }
   },
 
@@ -58,6 +63,7 @@ export default Vue.extend({
     },
 
     async updateNameEmail() {
+      this.btnLoading = true
       const sendData = {
         name: this.name,
         email: this.email,
@@ -69,10 +75,12 @@ export default Vue.extend({
         )
         this.$auth.setUser(response.data)
         this.baseDialog().openDialog()
+        this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
           this.observer().setErrors(error.response.data.errors)
         })
+        this.btnLoading = false
       }
     },
 

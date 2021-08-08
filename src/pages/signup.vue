@@ -5,6 +5,7 @@
         <v-avatar class="mb-4" color="grey" size="100"></v-avatar>
       </div>
       <v-card class="pa-5" elevation="2" width="400px" outlined shaped tile>
+        <v-card-title class="justify-center">SignUp</v-card-title>
         <v-card-text>
           <validation-observer ref="observer" v-slot="{ invalid }">
             <v-form v-model="formValid">
@@ -14,9 +15,11 @@
 
               <TextFieldPassword v-model="password"></TextFieldPassword>
               <v-card-actions class="justify-center">
-                <v-btn :disabled="invalid" @click="signup">
-                  サインアップ
-                </v-btn>
+                <ButtonOk
+                  :loading="btnLoading"
+                  :disabled="invalid"
+                  @click="signup"
+                ></ButtonOk>
               </v-card-actions>
             </v-form>
           </validation-observer>
@@ -37,15 +40,17 @@ import { ValidationObserver } from 'vee-validate'
 export default Vue.extend({
   data() {
     return {
-      formValid: false,
       name: '',
       email: '',
       password: '',
+      formValid: false,
+      btnLoading: false,
     }
   },
 
   methods: {
     async signup() {
+      this.btnLoading = true
       const sendData = {
         name: this.name,
         email: this.email,
@@ -54,13 +59,17 @@ export default Vue.extend({
       try {
         const response = await this.$axios.$post('users', sendData)
         this.$router.push('/thanks')
+        this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
-          ;(
-            this.$refs.observer as InstanceType<typeof ValidationObserver>
-          ).setErrors(error.response.data.errors)
+          this.observer().setErrors(error.response.data.errors)
         })
+        this.btnLoading = false
       }
+    },
+
+    observer() {
+      return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
 })

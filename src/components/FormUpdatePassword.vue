@@ -23,7 +23,11 @@
             ></TextFieldPassword>
 
             <v-card-actions class="justify-center">
-              <v-btn :disabled="invalid" @click="updatePassword"> 更新 </v-btn>
+              <ButtonOk
+                :loading="btnLoading"
+                :disabled="invalid"
+                @click="updatePassword"
+              ></ButtonOk>
             </v-card-actions>
           </v-form>
         </validation-observer>
@@ -46,6 +50,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
+import BaseDialog from '../components/BaseDialog'
 
 export default Vue.extend({
   data() {
@@ -53,11 +58,13 @@ export default Vue.extend({
       password: '',
       newPassword: '',
       formValid: false,
+      btnLoading: false,
     }
   },
 
   methods: {
     async updatePassword() {
+      this.btnLoading = true
       const sendData = {
         password: this.password,
         new_password: this.newPassword,
@@ -72,10 +79,12 @@ export default Vue.extend({
         this.$nextTick(() => {
           this.observer().reset()
         })
+        this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
           this.observer().setErrors(error.response.data.errors)
         })
+        this.btnLoading = false
       }
     },
 

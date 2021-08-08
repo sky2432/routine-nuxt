@@ -2,7 +2,7 @@
   <validation-provider
     v-slot="{ errors }"
     :name="name"
-    rules="required|min:4|max:255|alpha_num"
+    rules="required|min:4|max:255"
     :mode="mode"
     :vid="vid"
   >

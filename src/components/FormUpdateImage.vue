@@ -24,7 +24,11 @@
                 ></v-file-input>
               </validation-provider>
               <v-card-actions class="justify-center">
-                <v-btn :disabled="invalid" @click="updateImage"> 更新 </v-btn>
+                <ButtonOk
+                  :loading="btnLoading"
+                  :disabled="invalid"
+                  @click="updateImage"
+                ></ButtonOk>
               </v-card-actions>
             </v-form>
           </validation-observer>
@@ -47,6 +51,7 @@ export default Vue.extend({
       image: null as null | any,
       imageUrl: '',
       formValid: false,
+      btnLoading: false,
     }
   },
 
@@ -74,6 +79,7 @@ export default Vue.extend({
     },
 
     async updateImage() {
+      this.btnLoading = true
       const formData = new FormData()
       formData.append('image', this.image)
       const headers: object = {
@@ -89,8 +95,10 @@ export default Vue.extend({
         )
         console.log(response)
         this.$auth.setUser(response.data)
+        this.btnLoading = false
       } catch (error) {
         alert(error)
+        this.btnLoading = false
       }
     },
   },

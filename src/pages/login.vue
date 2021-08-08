@@ -5,6 +5,7 @@
         <v-avatar class="mb-4" color="grey" size="100"></v-avatar>
       </div>
       <v-card class="pa-5" elevation="2" width="400px" outlined shaped tile>
+        <v-card-title class="justify-center">Login</v-card-title>
         <v-card-text>
           <validation-observer ref="observer" v-slot="{ invalid }">
             <v-form v-model="formValid">
@@ -12,7 +13,11 @@
 
               <TextFieldPassword v-model="password"></TextFieldPassword>
               <v-card-actions class="justify-center">
-                <v-btn :disabled="invalid" @click="login"> ログイン </v-btn>
+                <ButtonOk
+                  :loading="btnLoading"
+                  :disabled="invalid"
+                  @click="login"
+                ></ButtonOk>
               </v-card-actions>
             </v-form>
           </validation-observer>
@@ -33,14 +38,16 @@ import { ValidationObserver } from 'vee-validate'
 export default Vue.extend({
   data() {
     return {
-      formValid: false,
       email: '',
       password: '',
+      formValid: false,
+      btnLoading: false,
     }
   },
 
   methods: {
     async login() {
+      this.btnLoading = true
       try {
         await this.$auth.loginWith('laravelJWT', {
           data: {
@@ -48,13 +55,17 @@ export default Vue.extend({
             password: this.password,
           },
         })
+        this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
-          ;(
-            this.$refs.observer as InstanceType<typeof ValidationObserver>
-          ).setErrors(error.response.data.errors)
+          this.observer().setErrors(error.response.data.errors)
         })
+        this.btnLoading = false
       }
+    },
+
+    observer() {
+      return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
 })

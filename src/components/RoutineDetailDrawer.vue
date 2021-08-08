@@ -150,7 +150,7 @@
               :disabled="invalid"
               @click="editRoutine"
             ></ButtonOk>
-             <ButtonCancel
+            <ButtonCancel
               btnClass="ml-16"
               @click="closeEditDialog"
             ></ButtonCancel>
@@ -163,20 +163,16 @@
       ref="deleteDialog"
       :body="true"
       textClass="text-center"
+      defaultButtonType="cancel"
     >
       <template #title>Confirm</template>
       <template #body>この習慣を削除しますか？</template>
       <template #leftButton>
         <ButtonOk
           :loading="deleteBtnLoading"
+          btnClass="mr-16"
           @click="deleteRoutine"
         ></ButtonOk>
-      </template>
-      <template #defaultButton>
-        <ButtonCancel
-          btnClass="ml-16"
-          @click="closeDeleteDialog"
-        ></ButtonCancel>
       </template>
     </BaseDialog>
   </div>
@@ -185,7 +181,7 @@
 <script lang="ts">
 import windowWidthMixin from '../mixins/windowWidthMixin'
 import BaseDialog from './BaseDialog.vue'
-import { routineType, record, VCalendar } from '../lib/interface'
+import { routineType, VCalendar } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
 
 export default windowWidthMixin.extend({
@@ -313,7 +309,6 @@ export default windowWidthMixin.extend({
       )
       this.routine.name = response.data.name
       this.$emit('reloadRoutines')
-      // ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
       this.closeEditDialog()
       this.editBtnLoading = false
     },

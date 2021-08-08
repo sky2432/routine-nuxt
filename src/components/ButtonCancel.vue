@@ -10,7 +10,7 @@ export default Vue.extend({
   props: {
     btnClass: {
       type: String,
-    }
-  }
+    },
+  },
 })
 </script>

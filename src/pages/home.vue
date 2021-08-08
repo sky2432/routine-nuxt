@@ -59,7 +59,7 @@
       ref="rankUpDialog"
       :body="true"
       textClass="text-center pb-0 px-16"
-      defaultButtonText="Ok"
+      defaultButtonType="ok"
     >
       <template #title>Congratulations!!</template>
       <template #body>

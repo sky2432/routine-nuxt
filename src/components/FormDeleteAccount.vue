@@ -15,30 +15,27 @@
             </p>
           </v-alert>
           <div class="text-center">
-            <v-btn class="mt-2" color="red white--text" @click="openDialog">アカウントを削除</v-btn>
+            <v-btn class="mt-2" color="red white--text" @click="openDialog">
+              アカウントを削除
+            </v-btn>
           </div>
         </div>
       </div>
 
       <BaseDialog
         ref="deleteDialog"
-        defaultButtonText="キャンセル"
         :body="true"
         textClass="text-center"
+        defaultButtonType="cancel"
       >
         <template #title>Confirm</template>
         <template #body>本当にアカウントを削除しますか？</template>
         <template #leftButton>
           <ButtonOk
+            btnClass="mr-16"
             :loading="loading"
             @click="deleteAccount"
           ></ButtonOk>
-        </template>
-        <template #defaultButton>
-          <ButtonCancel
-            btnClass="ml-16"
-            @click="closeDialog"
-          ></ButtonCancel>
         </template>
       </BaseDialog>
     </v-card>
@@ -64,16 +61,16 @@ export default Vue.extend({
       this.$router.push('/deleted')
     },
 
+    deleteDialog() {
+      return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
+    },
+
     openDialog() {
-       ;(
-        this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
-      ).openDialog()
+      this.deleteDialog().openDialog()
     },
 
     closeDialog() {
-      ;(
-        this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
-      ).closeDialog()
+      this.deleteDialog().closeDialog()
     },
   },
 })

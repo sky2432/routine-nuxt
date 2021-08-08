@@ -29,6 +29,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
+import BaseDialog from '../components/BaseDialog'
 
 export default Vue.extend({
   data() {
@@ -60,6 +61,9 @@ export default Vue.extend({
           sendData
         )
         this.$auth.setUser(response.data)
+        ;(
+          this.$refs.baseDialog as InstanceType<typeof BaseDialog>
+        ).openDialog()
       } catch (error) {
         this.$nextTick(() => {
           ;(

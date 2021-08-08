@@ -19,9 +19,13 @@
       <v-card-actions :class="actionsClass" v-if="button">
         <slot name="leftButton"></slot>
         <slot name="defaultButton">
-          <v-btn @click="dialog = false">
-            {{ defaultButtonText }}
-          </v-btn>
+          <ButtonOk v-if="defaultButtonType === 'ok'" @click="dialog = false">
+          </ButtonOk>
+          <ButtonCancel
+            v-if="defaultButtonType === 'cancel'"
+            @click="dialog = false"
+          >
+          </ButtonCancel>
         </slot>
         <slot name="rightButton"></slot>
       </v-card-actions>
@@ -30,14 +34,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue'
 
 export default Vue.extend({
   props: {
-    defaultButtonText: {
-      type: String,
-      default: "閉じる",
-    },
     body: {
       type: Boolean,
       default: false,
@@ -45,6 +45,9 @@ export default Vue.extend({
     button: {
       type: Boolean,
       default: true,
+    },
+    defaultButtonType: {
+      type: String,
     },
     divider: {
       type: Boolean,
@@ -56,11 +59,11 @@ export default Vue.extend({
     },
     titleClass: {
       type: String,
-      default: "justify-center",
+      default: 'justify-center',
     },
     actionsClass: {
       type: String,
-      default: "justify-center",
+      default: 'justify-center',
     },
     textClass: {
       type: String,
@@ -71,7 +74,7 @@ export default Vue.extend({
     },
     maxWidth: {
       type: String,
-      default: "500px",
+      default: '500px',
     },
   },
 
@@ -79,24 +82,24 @@ export default Vue.extend({
     return {
       dialog: false,
       loading: false,
-    };
+    }
   },
 
   methods: {
     openDialog() {
-      this.dialog = true;
+      this.dialog = true
     },
 
     closeDialog() {
-      this.dialog = false;
+      this.dialog = false
     },
 
     startLoading() {
-      this.loading = true;
+      this.loading = true
     },
 
     stopLoading() {
-      this.loading = false;
+      this.loading = false
     },
   },
 })

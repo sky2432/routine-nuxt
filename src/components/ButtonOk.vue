@@ -1,5 +1,6 @@
 <template>
   <v-btn
+    :class="btnClass"
     color="primary"
     :loading="loading"
     :disabled="disabled"

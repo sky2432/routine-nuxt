@@ -1,6 +1,6 @@
 <template>
   <v-dialog :max-width="maxWidth" v-model="dialog" :persistent="persistent">
-    <v-card :loading="loading">
+    <v-card>
       <v-card-title :class="titleClass">
         <slot name="title"></slot>
       </v-card-title>
@@ -20,7 +20,6 @@
           >
           </ButtonCancel>
         </slot>
-        <slot name="rightButton"></slot>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -70,7 +69,6 @@ export default Vue.extend({
   data() {
     return {
       dialog: false,
-      loading: false,
     }
   },
 
@@ -81,14 +79,6 @@ export default Vue.extend({
 
     closeDialog() {
       this.dialog = false
-    },
-
-    startLoading() {
-      this.loading = true
-    },
-
-    stopLoading() {
-      this.loading = false
     },
   },
 })

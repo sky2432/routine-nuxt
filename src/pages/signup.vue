@@ -18,9 +18,9 @@
           <v-divider></v-divider>
           <v-card-actions class="justify-center">
             <ButtonOk
-              :loading="btnLoading"
+              :loading="confirmLoading"
               :disabled="invalid"
-              @click="signup"
+              @click="confirm"
             ></ButtonOk>
           </v-card-actions>
         </validation-observer>
@@ -29,6 +29,37 @@
           <NuxtLink to="/login">ログイン</NuxtLink>
         </v-card-text>
       </v-card>
+
+      <BaseDialog
+        ref="confirmDialog"
+        :text="true"
+        :divider="true"
+        textClass="text-center"
+        defaultButtonType="cancel"
+      >
+        <template #title>Confirm</template>
+        <template #text>
+          <v-row>
+            <v-col>Name:</v-col>
+            <v-col>{{ name }}</v-col>
+          </v-row>
+          <v-row>
+            <v-col>E-mail:</v-col>
+            <v-col>{{ email }}</v-col>
+          </v-row>
+          <v-row>
+            <v-col>Password:</v-col>
+            <v-col>{{ maskPassword }}</v-col>
+          </v-row>
+        </template>
+        <template #leftButton>
+          <ButtonOk
+            :loading="signupLoading"
+            btnClass="mr-16"
+            @click="signup"
+          ></ButtonOk>
+        </template>
+      </BaseDialog>
     </div>
   </div>
 </template>
@@ -36,6 +67,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
+import BaseDialog from '../components/BaseDialog.vue'
 
 export default Vue.extend({
   data() {
@@ -43,32 +75,65 @@ export default Vue.extend({
       name: '',
       email: '',
       password: '',
-      btnLoading: false,
+      confirmLoading: false,
+      signupLoading: false,
     }
   },
 
+  computed: {
+    maskPassword() {
+      let mask = ''
+      for (let i = 0; i < this.password.length; i++) {
+        mask = mask + '*'
+      }
+      return mask
+    },
+  },
+
   methods: {
-    async signup() {
-      this.btnLoading = true
-      const sendData = {
+    createSendData() {
+      return {
         name: this.name,
         email: this.email,
         password: this.password,
       }
+    },
+
+    async confirm() {
+      this.confirmLoading = true
       try {
-        const response = await this.$axios.$post('users', sendData)
-        this.$router.push('/thanks')
-        this.btnLoading = false
+        const response = await this.$axios.$post(
+          'users/confirm',
+          this.createSendData()
+        )
+        this.confirmDialog().openDialog()
+        this.confirmLoading = false
       } catch (error) {
         this.$nextTick(() => {
           this.observer().setErrors(error.response.data.errors)
         })
-        this.btnLoading = false
+        this.confirmLoading = false
       }
+    },
+
+    confirmDialog() {
+      return this.$refs.confirmDialog as InstanceType<typeof BaseDialog>
     },
 
     observer() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
+    },
+
+    async signup() {
+      this.signupLoading = true
+      try {
+        await this.$axios.$post('users', this.createSendData())
+        this.$router.push('/thanks')
+        this.signupLoading = false
+      } catch (error) {
+        alert(error)
+        this.signupLoading = false
+      }
     },
   },
 })

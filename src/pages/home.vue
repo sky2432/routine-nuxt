@@ -41,15 +41,15 @@
         <validation-observer ref="addobserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="name"></TextFieldRoutine>
           <v-card-actions class="justify-center">
-            <ButtonCancel
-              btnClass="mr-16"
-              @click="closeAddDialog"
-            ></ButtonCancel>
             <ButtonOk
               :loading="btnLoading"
               :disabled="invalid"
               @click="addRoutine"
             ></ButtonOk>
+            <ButtonCancel
+              btnClass="ml-16"
+              @click="closeAddDialog"
+            ></ButtonCancel>
           </v-card-actions>
         </validation-observer>
       </template>

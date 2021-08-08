@@ -145,16 +145,15 @@
         <validation-observer ref="editObserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="updatedName"></TextFieldRoutine>
           <v-card-actions class="justify-center">
-            <ButtonCancel
-              btnClass="mr-16"
-              @click="closeEditDialog"
-            ></ButtonCancel>
-
             <ButtonOk
               :loading="editBtnLoading"
               :disabled="invalid"
               @click="editRoutine"
             ></ButtonOk>
+             <ButtonCancel
+              btnClass="ml-16"
+              @click="closeEditDialog"
+            ></ButtonCancel>
           </v-card-actions>
         </validation-observer>
       </template>

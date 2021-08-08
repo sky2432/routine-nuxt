@@ -68,14 +68,20 @@ export default Vue.extend({
           sendData
         )
         this.$auth.setUser(response.data)
-        ;(this.$refs.baseDialog as InstanceType<typeof BaseDialog>).openDialog()
+        this.baseDialog().openDialog()
       } catch (error) {
         this.$nextTick(() => {
-          ;(
-            this.$refs.observer as InstanceType<typeof ValidationObserver>
-          ).setErrors(error.response.data.errors)
+          this.observer().setErrors(error.response.data.errors)
         })
       }
+    },
+
+    baseDialog() {
+      return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
+    },
+
+    observer() {
+      return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
 })

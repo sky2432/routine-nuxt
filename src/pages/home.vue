@@ -210,7 +210,11 @@ export default Vue.extend({
     },
 
     closeAddDialog() {
-      ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      this.addDialog().closeDialog()
+    },
+
+    addDialog() {
+      return this.$refs.addDialog as InstanceType<typeof BaseDialog>
     },
   },
 })

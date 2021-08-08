@@ -299,7 +299,7 @@ export default windowWidthMixin.extend({
 
     // 習慣の編集
     openEditDialog() {
-      ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).openDialog()
+      this.editDialog().openDialog()
       this.updatedName = this.routine.name
     },
 
@@ -319,12 +319,16 @@ export default windowWidthMixin.extend({
     },
 
     closeEditDialog() {
-      ;(this.$refs.editDialog as InstanceType<typeof BaseDialog>).closeDialog()
+      this.editDialog().closeDialog()
+    },
+
+    editDialog() {
+      return this.$refs.editDialog as InstanceType<typeof BaseDialog>
     },
 
     // 習慣の削除
     openDeleteDialog() {
-      ;(this.$refs.deleteDialog as InstanceType<typeof BaseDialog>).openDialog()
+      this.deleteDialog().openDialog()
     },
 
     async deleteRoutine() {
@@ -337,9 +341,11 @@ export default windowWidthMixin.extend({
     },
 
     closeDeleteDialog() {
-      ;(
-        this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
-      ).closeDialog()
+      this.deleteDialog().closeDialog()
+    },
+
+    deleteDialog() {
+      return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },
   },
 })

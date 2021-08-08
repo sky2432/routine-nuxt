@@ -54,6 +54,10 @@ export default Vue.extend({
   },
 
   methods: {
+    openDialog() {
+      this.deleteDialog().openDialog()
+    },
+
     async deleteAccount() {
       this.loading = true
       await this.$axios.$delete(`users/${this.$auth.user.id}`)
@@ -62,16 +66,12 @@ export default Vue.extend({
       this.$router.push('/deleted')
     },
 
-    deleteDialog() {
-      return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
-    },
-
-    openDialog() {
-      this.deleteDialog().openDialog()
-    },
-
     closeDialog() {
       this.deleteDialog().closeDialog()
+    },
+
+    deleteDialog() {
+      return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },
   },
 })

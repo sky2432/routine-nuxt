@@ -58,11 +58,13 @@ export default Vue.extend({
     },
 
     showRoutineDetail(routine: routineType): void {
-      ;(
-        this.$refs.routineDetailDrawer as InstanceType<
-          typeof RoutineDetailDrawer
-        >
-      ).setData(routine)
+      this.routineDetailDrawer().setData(routine)
+    },
+
+    routineDetailDrawer() {
+      return this.$refs.routineDetailDrawer as InstanceType<
+        typeof RoutineDetailDrawer
+      >
     },
   },
 })

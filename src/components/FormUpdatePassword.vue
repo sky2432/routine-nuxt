@@ -67,20 +67,24 @@ export default Vue.extend({
           'users/' + this.$auth.user.id + '/password',
           sendData
         )
-        ;(this.$refs.baseDialog as InstanceType<typeof BaseDialog>).openDialog()
+        this.baseDialog().openDialog()
         this.password = this.newPassword = ''
         this.$nextTick(() => {
-          ;(
-            this.$refs.observer as InstanceType<typeof ValidationObserver>
-          ).reset()
+          this.observer().reset()
         })
       } catch (error) {
         this.$nextTick(() => {
-          ;(
-            this.$refs.observer as InstanceType<typeof ValidationObserver>
-          ).setErrors(error.response.data.errors)
+          this.observer().setErrors(error.response.data.errors)
         })
       }
+    },
+
+    baseDialog() {
+      return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
+    },
+
+    observer() {
+      return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
 })

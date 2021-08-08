@@ -28,8 +28,15 @@
           </v-form>
         </validation-observer>
 
-        <BaseDialog ref="baseDialog">
-          <template #title>パスワードを更新しました</template>
+        <BaseDialog
+          ref="baseDialog"
+          defaultButtonType="ok"
+          :body="true"
+          :divider="true"
+          textClass="text-center"
+        >
+          <template #title>Done</template>
+          <template #body>パスワードを変更しました</template>
         </BaseDialog>
       </div>
     </v-card>
@@ -60,13 +67,18 @@ export default Vue.extend({
           'users/' + this.$auth.user.id + '/password',
           sendData
         )
+        ;(this.$refs.baseDialog as InstanceType<typeof BaseDialog>).openDialog()
         this.password = this.newPassword = ''
         this.$nextTick(() => {
-          (this.$refs.observer as InstanceType<typeof ValidationObserver>).reset()
+          ;(
+            this.$refs.observer as InstanceType<typeof ValidationObserver>
+          ).reset()
         })
       } catch (error) {
         this.$nextTick(() => {
-          (this.$refs.observer as InstanceType<typeof ValidationObserver>).setErrors(error.response.data.errors)
+          ;(
+            this.$refs.observer as InstanceType<typeof ValidationObserver>
+          ).setErrors(error.response.data.errors)
         })
       }
     },

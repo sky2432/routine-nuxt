@@ -35,6 +35,7 @@
           <ButtonOk
             btnClass="mr-16"
             :loading="loading"
+
             @click="deleteAccount"
           ></ButtonOk>
         </template>

@@ -20,8 +20,15 @@
       </div>
     </v-card>
 
-    <BaseDialog ref="baseDialog">
-      <template #title>名前・メールアドレスを更新しました</template>
+    <BaseDialog
+      ref="baseDialog"
+      defaultButtonType="ok"
+      :body="true"
+      :divider="true"
+      textClass="text-center"
+    >
+      <template #title>Done</template>
+      <template #body>名前・メールアドレスを変更しました</template>
     </BaseDialog>
   </div>
 </template>
@@ -61,9 +68,7 @@ export default Vue.extend({
           sendData
         )
         this.$auth.setUser(response.data)
-        ;(
-          this.$refs.baseDialog as InstanceType<typeof BaseDialog>
-        ).openDialog()
+        ;(this.$refs.baseDialog as InstanceType<typeof BaseDialog>).openDialog()
       } catch (error) {
         this.$nextTick(() => {
           ;(

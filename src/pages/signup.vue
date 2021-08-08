@@ -6,24 +6,24 @@
       </div>
       <v-card class="pa-5" elevation="2" width="400px" outlined shaped tile>
         <v-card-title class="justify-center">SignUp</v-card-title>
-        <v-card-text>
-          <validation-observer ref="observer" v-slot="{ invalid }">
-            <v-form v-model="formValid">
-              <TextFieldName v-model="name"></TextFieldName>
+        <v-divider></v-divider>
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <v-card-text>
+            <TextFieldName v-model="name"></TextFieldName>
 
-              <TextFieldEmail v-model="email"></TextFieldEmail>
+            <TextFieldEmail v-model="email"></TextFieldEmail>
 
-              <TextFieldPassword v-model="password"></TextFieldPassword>
-              <v-card-actions class="justify-center">
-                <ButtonOk
-                  :loading="btnLoading"
-                  :disabled="invalid"
-                  @click="signup"
-                ></ButtonOk>
-              </v-card-actions>
-            </v-form>
-          </validation-observer>
-        </v-card-text>
+            <TextFieldPassword v-model="password"></TextFieldPassword>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions class="justify-center">
+            <ButtonOk
+              :loading="btnLoading"
+              :disabled="invalid"
+              @click="signup"
+            ></ButtonOk>
+          </v-card-actions>
+        </validation-observer>
         <v-card-text class="pt-0">
           すでにアカウントをお持ちですか？
           <NuxtLink to="/login">ログイン</NuxtLink>
@@ -43,7 +43,6 @@ export default Vue.extend({
       name: '',
       email: '',
       password: '',
-      formValid: false,
       btnLoading: false,
     }
   },

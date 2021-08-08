@@ -5,13 +5,15 @@
       <v-toolbar-title>{{ headerTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <div v-if="serach">
-        <BaseTextField
+        <v-text-field
           name="serach"
-          innerIcon="mdi-magnify"
-          :details="true"
+          prepend-inner-icon="mdi-magnify"
+          hide-details="true"
           :value="value"
+          clearable
           @input="$emit('input', $event)"
-        ></BaseTextField>
+        >
+        </v-text-field>
       </div>
     </v-app-bar>
 

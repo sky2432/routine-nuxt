@@ -31,12 +31,12 @@
         <BaseDialog
           ref="baseDialog"
           defaultButtonType="ok"
-          :body="true"
+          :text="true"
           :divider="true"
           textClass="text-center"
         >
           <template #title>Done</template>
-          <template #body>パスワードを変更しました</template>
+          <template #text>パスワードを変更しました</template>
         </BaseDialog>
       </div>
     </v-card>

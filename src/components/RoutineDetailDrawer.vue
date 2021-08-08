@@ -139,9 +139,13 @@
       </div>
     </v-navigation-drawer>
 
-    <BaseDialog ref="editDialog" v-bind="{ body: true, button: false }" textClass="pb-0">
+    <BaseDialog
+      ref="editDialog"
+      v-bind="{ text: true, actions: false }"
+      textClass="pb-0"
+    >
       <template #title>Edit</template>
-      <template #body>
+      <template #text>
         <validation-observer ref="editObserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="updatedName"></TextFieldRoutine>
           <v-card-actions class="justify-center">
@@ -161,13 +165,13 @@
 
     <BaseDialog
       ref="deleteDialog"
-      :body="true"
+      :text="true"
       :divider="true"
       textClass="text-center"
       defaultButtonType="cancel"
     >
       <template #title>Confirm</template>
-      <template #body>この習慣を削除しますか？</template>
+      <template #text>この習慣を削除しますか？</template>
       <template #leftButton>
         <ButtonOk
           :loading="deleteBtnLoading"

@@ -35,9 +35,13 @@
       @startLoading="loaded = false"
     ></RoutineDetailDrawer>
 
-    <BaseDialog ref="addDialog" v-bind="{ body: true, button: false }" textClass="pb-0">
+    <BaseDialog
+      ref="addDialog"
+      v-bind="{ text: true, actions: false }"
+      textClass="pb-0"
+    >
       <template #title>Register</template>
-      <template #body>
+      <template #text>
         <validation-observer ref="addobserver" v-slot="{ invalid }">
           <TextFieldRoutine v-model="name"></TextFieldRoutine>
           <v-card-actions class="justify-center">
@@ -57,13 +61,13 @@
 
     <BaseDialog
       ref="rankUpDialog"
-      :body="true"
+      :text="true"
       :divider="true"
       textClass="text-center pb-0 px-16"
       defaultButtonType="ok"
     >
       <template #title>Congratulations!!</template>
-      <template #body>
+      <template #text>
         <p>「{{ rankUpRoutineName }}」ランクアップ</p>
         <v-row v-for="rank in rankUpInfo" :key="rank.name">
           <v-col>

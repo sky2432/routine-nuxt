@@ -23,12 +23,12 @@
     <BaseDialog
       ref="baseDialog"
       defaultButtonType="ok"
-      :body="true"
+      :text="true"
       :divider="true"
       textClass="text-center"
     >
       <template #title>Done</template>
-      <template #body>名前・メールアドレスを変更しました</template>
+      <template #text>名前・メールアドレスを変更しました</template>
     </BaseDialog>
   </div>
 </template>

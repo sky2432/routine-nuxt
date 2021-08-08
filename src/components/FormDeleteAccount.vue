@@ -24,18 +24,17 @@
 
       <BaseDialog
         ref="deleteDialog"
-        :body="true"
+        :text="true"
         :divider="true"
         textClass="text-center"
         defaultButtonType="cancel"
       >
         <template #title>Confirm</template>
-        <template #body>本当にアカウントを削除しますか？</template>
+        <template #text>本当にアカウントを削除しますか？</template>
         <template #leftButton>
           <ButtonOk
             btnClass="mr-16"
             :loading="loading"
-
             @click="deleteAccount"
           ></ButtonOk>
         </template>

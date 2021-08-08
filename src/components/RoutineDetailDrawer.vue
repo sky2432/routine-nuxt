@@ -139,29 +139,9 @@
       </div>
     </v-navigation-drawer>
 
-    <BaseDialog
-      ref="editDialog"
-      v-bind="{ text: true, actions: false }"
-      textClass="pb-0"
-    >
+    <DialogRoutine ref="editDialog" v-model="updatedName" @click="editRoutine">
       <template #title>Edit</template>
-      <template #text>
-        <validation-observer ref="editObserver" v-slot="{ invalid }">
-          <TextFieldRoutine v-model="updatedName"></TextFieldRoutine>
-          <v-card-actions class="justify-center">
-            <ButtonOk
-              :loading="editBtnLoading"
-              :disabled="invalid"
-              @click="editRoutine"
-            ></ButtonOk>
-            <ButtonCancel
-              btnClass="ml-16"
-              @click="closeEditDialog"
-            ></ButtonCancel>
-          </v-card-actions>
-        </validation-observer>
-      </template>
-    </BaseDialog>
+    </DialogRoutine>
 
     <BaseDialog
       ref="deleteDialog"
@@ -197,7 +177,6 @@ export default windowWidthMixin.extend({
       updatedName: '',
       value: this.$dayjs().format('YYYY-MM-DD') as string,
       loaded: true,
-      editBtnLoading: false,
       deleteBtnLoading: false,
     }
   },
@@ -304,7 +283,7 @@ export default windowWidthMixin.extend({
     },
 
     async editRoutine() {
-      this.editBtnLoading = true
+      this.editDialog().startLoading()
       const sendData = {
         name: this.updatedName,
       }
@@ -314,12 +293,8 @@ export default windowWidthMixin.extend({
       )
       this.routine.name = response.data.name
       this.$emit('reloadRoutines')
-      this.closeEditDialog()
-      this.editBtnLoading = false
-    },
-
-    closeEditDialog() {
       this.editDialog().closeDialog()
+      this.editDialog().stopLoading()
     },
 
     editDialog() {
@@ -336,12 +311,8 @@ export default windowWidthMixin.extend({
       await this.$axios.$delete(`users/routines/${this.routine.id}`)
       this.$emit('reloadRoutines')
       this.routine = {} as routineType
-      this.closeDeleteDialog()
-      this.deleteBtnLoading = false
-    },
-
-    closeDeleteDialog() {
       this.deleteDialog().closeDialog()
+      this.deleteBtnLoading = false
     },
 
     deleteDialog() {

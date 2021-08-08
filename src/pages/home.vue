@@ -8,8 +8,8 @@
           v-bind="{
             loaded: loaded,
             routines: routines,
-            isHome: true,
             keyword: keyword,
+            isHome: true,
           }"
           @clickRoutine="showRoutineDetail"
           @clickCheckbox="changeRecord"
@@ -35,29 +35,9 @@
       @startLoading="loaded = false"
     ></RoutineDetailDrawer>
 
-    <BaseDialog
-      ref="addDialog"
-      v-bind="{ text: true, actions: false }"
-      textClass="pb-0"
-    >
+    <DialogRoutine ref="addDialog" v-model="name" @click="addRoutine">
       <template #title>Register</template>
-      <template #text>
-        <validation-observer ref="addobserver" v-slot="{ invalid }">
-          <TextFieldRoutine v-model="name"></TextFieldRoutine>
-          <v-card-actions class="justify-center">
-            <ButtonOk
-              :loading="btnLoading"
-              :disabled="invalid"
-              @click="addRoutine"
-            ></ButtonOk>
-            <ButtonCancel
-              btnClass="ml-16"
-              @click="closeAddDialog"
-            ></ButtonCancel>
-          </v-card-actions>
-        </validation-observer>
-      </template>
-    </BaseDialog>
+    </DialogRoutine>
 
     <BaseDialog
       ref="rankUpDialog"
@@ -88,9 +68,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { $axios } from '@/util/axios'
-import { ValidationObserver } from 'vee-validate'
 import { routineType, rankUp } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
+import DialogRoutine from '../components/DialogRoutine.vue'
 import BaseDialog from '../components/BaseDialog.vue'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 
@@ -100,13 +80,12 @@ export default Vue.extend({
   data() {
     return {
       loaded: false,
-      btnLoading: false,
       routines: [] as routineType[],
       target: {} as routineType,
       name: '',
+      keyword: '',
       rankUpInfo: {} as rankUp[],
       rankUpRoutineName: '' as string,
-      keyword: '',
     }
   },
 
@@ -187,34 +166,25 @@ export default Vue.extend({
 
     // 習慣の追加
     openAddDialog() {
-      ;(this.$refs.addDialog as InstanceType<typeof BaseDialog>).openDialog()
+      this.addDialog().openDialog()
       this.name = ''
-      // ;(this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>).openDialog()
-      this.$nextTick(() => {
-        ;(
-          this.$refs.addobserver as InstanceType<typeof ValidationObserver>
-        ).reset()
-      })
+      this.addDialog().resetForm()
     },
 
     async addRoutine() {
-      this.btnLoading = true
+      this.addDialog().startLoading()
       const sendData = {
         name: this.name,
         user_id: this.$auth.user.id,
       }
       await this.$axios.$post('users/routines', sendData)
       await this.getUserRoutines()
-      this.closeAddDialog()
-      this.btnLoading = false
-    },
-
-    closeAddDialog() {
       this.addDialog().closeDialog()
+      this.addDialog().stopLoading()
     },
 
     addDialog() {
-      return this.$refs.addDialog as InstanceType<typeof BaseDialog>
+      return this.$refs.addDialog as InstanceType<typeof DialogRoutine>
     },
   },
 })

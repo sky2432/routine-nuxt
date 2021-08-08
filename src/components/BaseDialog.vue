@@ -1,6 +1,6 @@
 <template>
   <v-dialog :max-width="maxWidth" v-model="dialog" :persistent="persistent">
-    <v-card>
+    <v-card tile>
       <v-card-title :class="titleClass">
         <slot name="title"></slot>
       </v-card-title>
@@ -83,3 +83,9 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style scoped>
+/deep/ .v-dialog {
+  border-radius: 0px;
+}
+</style>

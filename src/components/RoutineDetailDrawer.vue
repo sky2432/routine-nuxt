@@ -89,20 +89,25 @@
                 >
               </v-row>
             </v-card>
-            <v-card class="mt-4">
-              <v-row class="ma-0 align-center">
-                <v-col>リカバリー</v-col>
-                <v-col
-                  >{{ routine.recovery_count
-                  }}<span class="attach">回</span></v-col
-                >
-                <v-col
-                  ><v-chip :color="chipColor(routine.recovery_rank.name)">{{
-                    routine.recovery_rank.name
-                  }}</v-chip></v-col
-                >
-              </v-row>
-            </v-card>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-card class="mt-4" v-bind="attrs" v-on="on">
+                  <v-row class="ma-0 align-center">
+                    <v-col>リカバリー</v-col>
+                    <v-col
+                      >{{ routine.recovery_count
+                      }}<span class="attach">回</span></v-col
+                    >
+                    <v-col
+                      ><v-chip :color="chipColor(routine.recovery_rank.name)">{{
+                        routine.recovery_rank.name
+                      }}</v-chip></v-col
+                    >
+                  </v-row>
+                </v-card>
+              </template>
+              <span>連続日数が途切れてから2日連続で達成してプラス1回</span>
+            </v-tooltip>
             <v-sheet class="mt-4 mb-2" tile>
               <div class="d-flex align-center">
                 <div>
@@ -166,6 +171,7 @@
 <script lang="ts">
 import windowWidthMixin from '../mixins/windowWidthMixin'
 import BaseDialog from './BaseDialog.vue'
+import DialogRoutine from './DialogRoutine.vue'
 import { routineType, VCalendar } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
 
@@ -298,7 +304,7 @@ export default windowWidthMixin.extend({
     },
 
     editDialog() {
-      return this.$refs.editDialog as InstanceType<typeof BaseDialog>
+      return this.$refs.editDialog as InstanceType<typeof DialogRoutine>
     },
 
     // 習慣の削除

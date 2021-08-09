@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import BaseDialog from '../components/BaseDialog'
+import BaseDialog from '../components/BaseDialog.vue'
 
 export default Vue.extend({
   data() {

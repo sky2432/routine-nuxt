@@ -40,7 +40,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
-import BaseDialog from '../components/BaseDialog'
+import BaseDialog from '../components/BaseDialog.vue'
 
 export default Vue.extend({
   data() {

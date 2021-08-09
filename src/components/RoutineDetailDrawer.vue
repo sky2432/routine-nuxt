@@ -309,6 +309,7 @@ export default windowWidthMixin.extend({
     async deleteRoutine() {
       this.deleteBtnLoading = true
       await this.$axios.$delete(`users/routines/${this.routine.id}`)
+      this.$emit('startLoading')
       this.$emit('reloadRoutines')
       this.routine = {} as routineType
       this.deleteDialog().closeDialog()

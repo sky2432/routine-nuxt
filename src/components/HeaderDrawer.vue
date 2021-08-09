@@ -128,6 +128,11 @@ export default Vue.extend({
           title: 'アーカイブ',
           to: '/archive',
         },
+        {
+          icon: 'mdi-pencil-ruler',
+          title: 'ルール',
+          to: '/rule',
+        },
       ],
     }
   },

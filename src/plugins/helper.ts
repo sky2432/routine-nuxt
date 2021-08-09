@@ -4,7 +4,7 @@ export function $_returnColor(rank: string): string {
   if (rank === 'C') return 'yellow lighten-2'
   if (rank === 'B') return 'cyan lighten-3'
   if (rank === 'A') return 'purple lighten-3'
-  if (rank === 'S') return 'red lighten-3'
+  if (rank === 'S') return 'red lighten-1'
   if (rank === 'SS') return 'yellow accent-2'
   return 'grey lighten-1'
 }

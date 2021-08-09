@@ -133,6 +133,11 @@ export default Vue.extend({
           title: 'ルール',
           to: '/rule',
         },
+        {
+          icon: 'mdi-account',
+          title: 'プロフィール',
+          to: '/profile',
+        },
       ],
     }
   },

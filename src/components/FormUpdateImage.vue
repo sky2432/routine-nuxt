@@ -6,36 +6,45 @@
           <v-avatar size="128" color="grey">
             <v-img :src="imageUrl" v-if="imageUrl"></v-img>
           </v-avatar>
-          <validation-observer ref="observer" v-slot="{ invalid }">
-            <v-form v-model="formValid">
-              <validation-provider
-                v-slot="{ errors }"
-                ref="fileProvider"
-                rules="required|image"
-                name="画像"
-              >
-                <v-file-input
-                  accept="image/*"
-                  :error-messages="errors"
-                  label="画像を選択"
-                  chips
-                  :value="image"
-                  @change="setImage($event)"
-                ></v-file-input>
-              </validation-provider>
-              <v-card-actions class="justify-center">
-                <ButtonOk
-                  :loading="btnLoading"
-                  :disabled="invalid"
-                  @click="updateImage"
-                ></ButtonOk>
-              </v-card-actions>
-            </v-form>
+          <validation-observer
+            ref="observer"
+            v-slot="{ invalid }"
+            v-if="showForm"
+          >
+            <validation-provider
+              v-slot="{ errors }"
+              ref="fileProvider"
+              rules="required|image"
+              name="画像"
+            >
+              <v-file-input
+                accept="image/*"
+                :error-messages="errors"
+                label="画像を選択"
+                chips
+                :value="image"
+                @change="setImage($event)"
+              ></v-file-input>
+            </validation-provider>
+            <v-card-actions class="justify-center">
+              <ButtonOk
+                :loading="btnLoading"
+                :disabled="invalid"
+                @click="updateImage"
+              ></ButtonOk>
+            </v-card-actions>
           </validation-observer>
         </div>
 
-        <BaseDialog ref="baseDialog">
-          <template #title>画像を変更しました</template>
+        <BaseDialog
+          ref="baseDialog"
+          defaultButtonType="ok"
+          :text="true"
+          :divider="true"
+          textClass="text-center"
+        >
+          <template #title>Done</template>
+          <template #text>画像を変更しました</template>
         </BaseDialog>
       </div>
     </v-card>
@@ -44,14 +53,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ValidationObserver } from 'vee-validate'
+import BaseDialog from '../components/BaseDialog.vue'
 
 export default Vue.extend({
   data() {
     return {
       image: null as null | any,
       imageUrl: '',
-      formValid: false,
       btnLoading: false,
+      showForm: true,
     }
   },
 
@@ -82,7 +93,7 @@ export default Vue.extend({
       this.btnLoading = true
       const formData = new FormData()
       formData.append('image', this.image)
-      const headers: object = {
+      const config: object = {
         headers: {
           'X-HTTP-Method-Override': 'PUT',
         },
@@ -91,15 +102,27 @@ export default Vue.extend({
         const response = await this.$axios.$post(
           'users/' + this.$auth.user.id + '/image',
           formData,
-          headers
+          config
         )
-        console.log(response)
+        this.baseDialog().openDialog()
+        this.image = null
+        this.$nextTick(() => {
+          this.observer().reset()
+        })
         this.$auth.setUser(response.data)
         this.btnLoading = false
       } catch (error) {
         alert(error)
         this.btnLoading = false
       }
+    },
+
+    baseDialog() {
+      return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
+    },
+
+    observer() {
+      return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
 })

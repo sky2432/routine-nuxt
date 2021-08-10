@@ -7,19 +7,17 @@
           ref="observer"
           v-slot="{ invalid }"
         >
-          <v-form v-model="formValid">
-            <TextFieldName v-model="name"></TextFieldName>
+          <TextFieldName v-model="name"></TextFieldName>
 
-            <TextFieldEmail v-model="email"></TextFieldEmail>
+          <TextFieldEmail v-model="email"></TextFieldEmail>
 
-            <v-card-actions class="justify-center">
-              <ButtonOk
-                :loading="btnLoading"
-                :disabled="invalid"
-                @click="updateNameEmail"
-              ></ButtonOk>
-            </v-card-actions>
-          </v-form>
+          <v-card-actions class="justify-center">
+            <ButtonOk
+              :loading="btnLoading"
+              :disabled="invalid"
+              @click="updateNameEmail"
+            ></ButtonOk>
+          </v-card-actions>
         </validation-observer>
       </div>
     </v-card>
@@ -47,7 +45,6 @@ export default Vue.extend({
     return {
       name: '',
       email: '',
-      formValid: false,
       btnLoading: false,
     }
   },

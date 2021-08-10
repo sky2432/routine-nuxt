@@ -7,43 +7,41 @@
           v-slot="{ invalid }"
           style="width: 80%"
         >
-          <v-form v-model="formValid">
-            <TextFieldPassword
-              name="現在のパスワード"
-              label="Current Password"
-              mode="eager"
-              v-model="password"
-            ></TextFieldPassword>
+          <TextFieldPassword
+            name="現在のパスワード"
+            label="Current Password"
+            mode="eager"
+            v-model="password"
+          ></TextFieldPassword>
 
-            <TextFieldPassword
-              name="新しいパスワード"
-              label="New Password"
-              vid="new_password"
-              v-model="newPassword"
-            ></TextFieldPassword>
+          <TextFieldPassword
+            name="新しいパスワード"
+            label="New Password"
+            vid="new_password"
+            v-model="newPassword"
+          ></TextFieldPassword>
 
-            <v-card-actions class="justify-center">
-              <ButtonOk
-                :loading="btnLoading"
-                :disabled="invalid"
-                @click="updatePassword"
-              ></ButtonOk>
-            </v-card-actions>
-          </v-form>
+          <v-card-actions class="justify-center">
+            <ButtonOk
+              :loading="btnLoading"
+              :disabled="invalid"
+              @click="updatePassword"
+            ></ButtonOk>
+          </v-card-actions>
         </validation-observer>
-
-        <BaseDialog
-          ref="baseDialog"
-          defaultButtonType="ok"
-          :text="true"
-          :divider="true"
-          textClass="text-center"
-        >
-          <template #title>Done</template>
-          <template #text>パスワードを変更しました</template>
-        </BaseDialog>
       </div>
     </v-card>
+
+    <BaseDialog
+      ref="baseDialog"
+      defaultButtonType="ok"
+      :text="true"
+      :divider="true"
+      textClass="text-center"
+    >
+      <template #title>Done</template>
+      <template #text>パスワードを変更しました</template>
+    </BaseDialog>
   </div>
 </template>
 
@@ -57,7 +55,6 @@ export default Vue.extend({
     return {
       password: '',
       newPassword: '',
-      formValid: false,
       btnLoading: false,
     }
   },

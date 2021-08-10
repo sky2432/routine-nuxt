@@ -35,19 +35,19 @@
             </v-card-actions>
           </validation-observer>
         </div>
-
-        <BaseDialog
-          ref="baseDialog"
-          defaultButtonType="ok"
-          :text="true"
-          :divider="true"
-          textClass="text-center"
-        >
-          <template #title>Done</template>
-          <template #text>画像を変更しました</template>
-        </BaseDialog>
       </div>
     </v-card>
+
+    <BaseDialog
+      ref="baseDialog"
+      defaultButtonType="ok"
+      :text="true"
+      :divider="true"
+      textClass="text-center"
+    >
+      <template #title>Done</template>
+      <template #text>画像を変更しました</template>
+    </BaseDialog>
   </div>
 </template>
 

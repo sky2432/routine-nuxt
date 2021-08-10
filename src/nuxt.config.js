@@ -27,7 +27,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '@/plugins/vee-validate.js' }],
+  plugins: [{ src: '@/plugins/vee-validate.js' }, '@/plugins/axios-accessor'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -41,7 +41,7 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/dayjs'],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -64,4 +64,39 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  auth: {
+    plugins: ['./plugins/axios.js'],
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: false,
+      home: '/home',
+    },
+    strategies: {
+      laravelJWT: {
+        provider: 'laravel/jwt',
+        url: 'http://localhost:80',
+        token: {
+          maxAge: 60 * 60,
+        },
+        refreshToken: {
+          maxAge: 20160 * 60,
+        },
+      },
+      local: {
+        endpoints: {
+          user: {
+            url: '/api/auth/me',
+            method: 'get',
+            propertyName: 'user',
+          },
+        },
+      },
+    },
+  },
+
+  axios: {
+    baseURL: 'http://localhost:80/api',
+  },
 }

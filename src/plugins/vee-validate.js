@@ -9,7 +9,7 @@ import {
 import * as originalRules from 'vee-validate/dist/rules'
 import ja from 'vee-validate/dist/locale/ja.json'
 
-setInteractionMode('eager')
+setInteractionMode('aggressive')
 
 let rule
 for (rule in originalRules) {

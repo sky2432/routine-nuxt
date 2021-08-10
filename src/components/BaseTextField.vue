@@ -12,8 +12,10 @@
       :hint="hint"
       :label="label"
       :prepend-icon="icon"
+      :prepend-inner-icon="innerIcon"
       required
       :value="value"
+      :hide-details="details"
       @input="$emit('input', $event)"
     ></v-text-field>
   </validation-provider>
@@ -33,7 +35,6 @@ export default Vue.extend({
     },
     vid: {
       type: String,
-      required: true,
     },
     counter: {
       type: Number,
@@ -43,9 +44,11 @@ export default Vue.extend({
     },
     label: {
       type: String,
-      required: true,
     },
     icon: {
+      type: String,
+    },
+    innerIcon: {
       type: String,
     },
     value: {
@@ -53,6 +56,10 @@ export default Vue.extend({
     },
     mode: {
       type: String,
+    },
+    details: {
+      type: Boolean,
+      default: false
     }
   }
 })

@@ -29,7 +29,7 @@ export interface record {
   updated_at: string
 }
 
-export interface rankUp {
+export interface rankUpData {
   name: string
   rank_name: string
 }

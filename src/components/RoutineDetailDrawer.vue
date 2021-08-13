@@ -174,6 +174,7 @@ import BaseDialog from './BaseDialog.vue'
 import DialogRoutine from './DialogRoutine.vue'
 import { routineType, VCalendar } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
+import dayjs from 'dayjs'
 
 export default windowWidthMixin.extend({
   data() {
@@ -181,7 +182,7 @@ export default windowWidthMixin.extend({
       routine: {} as routineType,
       drawer: null as boolean | null,
       updatedName: '',
-      value: this.$dayjs().format('YYYY-MM-DD') as string,
+      value: dayjs().format('YYYY-MM-DD') as string,
       loaded: true,
       deleteBtnLoading: false,
     }
@@ -195,15 +196,15 @@ export default windowWidthMixin.extend({
     },
 
     calendarTitle(): string {
-      return this.$dayjs(this.value).format('YYYY-MM')
+      return dayjs(this.value).format('YYYY-MM')
     },
 
     doneDate() {
       return (date: number): string => {
-        const calendarDate = this.$dayjs(date)
+        const calendarDate = dayjs(date)
         for (let i in this.routine.records) {
           const record = this.routine.records[i]
-          const recordDate = this.$dayjs(record.created_at).format('YYYY-MM-DD')
+          const recordDate = dayjs(record.created_at).format('YYYY-MM-DD')
           if (calendarDate.isSame(recordDate)) {
             return 'background-color: lightblue'
           }
@@ -243,8 +244,8 @@ export default windowWidthMixin.extend({
 
   methods: {
     isSameMonth(created_at?: string) {
-      const month = this.$dayjs(this.value.substring(0, 7))
-      const date = this.$dayjs(created_at).format('YYYY-MM')
+      const month = dayjs(this.value.substring(0, 7))
+      const date = dayjs(created_at).format('YYYY-MM')
       if (month.isSame(date)) {
         return true
       }
@@ -269,7 +270,7 @@ export default windowWidthMixin.extend({
 
     // カレンダー
     setToday() {
-      this.value = this.$dayjs().format('YYYY-MM-DD')
+      this.value = dayjs().format('YYYY-MM-DD')
     },
 
     prev() {

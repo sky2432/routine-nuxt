@@ -28,7 +28,7 @@
       "@types/node",
       "@nuxtjs/axios",
       "vuetify",
-      "@nuxtjs/dayjs"
+      "jest"
     ]
   },
   "exclude": [

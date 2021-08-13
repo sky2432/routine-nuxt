@@ -49,7 +49,7 @@
       <template #title>Congratulations!!</template>
       <template #text>
         <p>「{{ rankUpRoutineName }}」ランクアップ</p>
-        <v-row v-for="rank in rankUpInfo" :key="rank.name">
+        <v-row class="ma-0" v-for="rank in rankUpData" :key="rank.name">
           <v-col>
             {{ rank.name }}
           </v-col>
@@ -68,7 +68,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { $axios } from '@/util/axios'
-import { routineType, rankUp } from '../lib/interface'
+import { routineType, rankUpData } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
 import DialogRoutine from '../components/DialogRoutine.vue'
 import BaseDialog from '../components/BaseDialog.vue'
@@ -84,7 +84,7 @@ export default Vue.extend({
       target: {} as routineType,
       name: '',
       keyword: '',
-      rankUpInfo: {} as rankUp[],
+      rankUpData: {} as rankUpData[],
       rankUpRoutineName: '' as string,
     }
   },
@@ -134,13 +134,13 @@ export default Vue.extend({
       const response = await this.$axios.$post('routines/records', sendData)
       await this.getUserRoutines()
       this.reloadRoutineDetail(routineId)
-      this.notifyRankUp(response.rank_up)
+      this.notifyRankUp(response.rank_up_data)
       this.rankUpRoutineName = response.routine_name
     },
 
-    notifyRankUp(rank_up: rankUp[]) {
-      if (rank_up.length !== 0) {
-        this.rankUpInfo = rank_up
+    notifyRankUp(rankUpData: rankUpData[]) {
+      if (rankUpData.length !== 0) {
+        this.rankUpData = rankUpData
         ;(
           this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
         ).openDialog()

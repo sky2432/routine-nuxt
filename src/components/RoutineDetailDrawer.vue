@@ -177,6 +177,11 @@ import { $_returnColor } from '../plugins/helper'
 import dayjs from 'dayjs'
 
 export default windowWidthMixin.extend({
+  components: {
+    BaseDialog,
+    DialogRoutine,
+  },
+
   data() {
     return {
       routine: {} as routineType,

@@ -85,7 +85,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-/deep/ .v-dialog {
+::v-deep .v-dialog {
   border-radius: 0px;
 }
 </style>

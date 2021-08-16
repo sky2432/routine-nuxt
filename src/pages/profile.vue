@@ -39,6 +39,22 @@
 import Vue from 'vue'
 import { $axios } from '@/util/axios'
 import { RANK_COLOR } from '../config/const'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  rankCounts: rankCounts[]
+}
+
+interface MethodType {
+  getUserRankCount(): Promise<void>
+  insertColor(rankCounts: rankCounts[]): rankCounts[]
+}
+
+interface ComputedType {
+  imageUrl(): string
+}
+
+interface PropsType {}
 
 export interface rankCounts {
   name: string
@@ -95,7 +111,7 @@ export default Vue.extend({
       return rankCounts
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style></style>

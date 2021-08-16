@@ -34,6 +34,22 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  email: string
+  password: string
+  btnLoading: boolean
+}
+
+interface MethodType {
+  login(): Promise<void>
+  observer(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
@@ -67,5 +83,5 @@ export default Vue.extend({
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

@@ -93,13 +93,35 @@
 <script lang="ts">
 import { windowWidthMixin } from '../mixins/windowWidthMixin'
 import { RANK_COLOR } from '../config/const'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  allTables: boolean
+  unitTable: boolean
+  items: tableItems[]
+}
+
+interface MethodType {
+  changeTable(): void
+}
+
+interface ComputedType {}
+
+interface PropsType {}
+
+export interface tableItems {
+  rank: string
+  all: string
+  highest_continuous: string
+  recovery: string
+  color: string
+}
 
 export default windowWidthMixin.extend({
   data() {
     return {
       allTables: true,
       unitTable: false,
-      color: 'red',
       items: [
         {
           rank: 'SS',
@@ -157,7 +179,7 @@ export default windowWidthMixin.extend({
           recovery: '0回〜',
           color: RANK_COLOR.F,
         },
-      ],
+      ] as tableItems[],
     }
   },
 
@@ -182,5 +204,5 @@ export default windowWidthMixin.extend({
       }
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

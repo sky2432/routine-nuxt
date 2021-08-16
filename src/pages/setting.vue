@@ -54,6 +54,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  currentComponent: string
+}
+
+interface MethodType {}
+
+interface ComputedType {}
+
+interface PropsType {}
+
 export default Vue.extend({
   middleware: 'auth',
 
@@ -62,5 +74,5 @@ export default Vue.extend({
       currentComponent: 'FormUpdateImage',
     }
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

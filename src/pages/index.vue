@@ -27,6 +27,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {}
+
+interface MethodType {
+  guestlogin(): Promise<void>
+}
+
+interface ComputedType {}
+
+interface PropsType {}
+
 export default Vue.extend({
   methods: {
     async guestlogin() {
@@ -43,7 +55,7 @@ export default Vue.extend({
       }
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>

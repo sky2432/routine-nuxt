@@ -73,6 +73,36 @@ import { $_returnColor } from '../plugins/helper'
 import DialogRoutine from '../components/DialogRoutine.vue'
 import BaseDialog from '../components/BaseDialog.vue'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  loaded: boolean
+  routines: routineType[]
+  target: routineType
+  name: string
+  keyword: string
+  rankUpData: rankUpData[]
+  rankUpRoutineName: string
+}
+
+interface MethodType {
+  getUserRoutines(): Promise<void>
+  showRoutineDetail(routine: routineType): void
+  changeRecord(routine: routineType): void
+  createRecord(routineId: number): Promise<void>
+  notifyRankUp(rankUpData: rankUpData[]): void
+  deleteRecord(routine: routineType): Promise<void>
+  reloadRoutineDetail(routine_id: number): void
+  openAddDialog(): void
+  addRoutine(): Promise<void>
+  addDialog(): any
+}
+
+interface ComputedType {
+  chipColor(rank: string): string
+}
+
+interface PropsType {}
 
 export default Vue.extend({
   middleware: 'auth',
@@ -187,7 +217,7 @@ export default Vue.extend({
       return this.$refs.addDialog as InstanceType<typeof DialogRoutine>
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>

@@ -68,6 +68,33 @@
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
 import BaseDialog from '../components/BaseDialog.vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  name: string
+  email: string
+  password: string
+  confirmLoading: boolean
+  signupLoading: boolean
+}
+
+interface MethodType {
+  createSendData(): {
+    name: string
+    email: string
+    password: string
+  }
+  confirm(): Promise<void>
+  confirmDialog(): any
+  observer(): any
+  signup(): Promise<void>
+}
+
+interface ComputedType {
+  maskPassword(): string
+}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
@@ -136,5 +163,5 @@ export default Vue.extend({
       }
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

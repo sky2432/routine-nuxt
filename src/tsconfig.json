@@ -29,7 +29,8 @@
       "@nuxtjs/axios",
       "vuetify",
       "jest"
-    ]
+    ],
+    "noImplicitThis": true
   },
   "exclude": [
     "node_modules",

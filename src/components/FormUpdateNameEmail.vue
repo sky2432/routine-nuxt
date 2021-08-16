@@ -39,6 +39,24 @@
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
 import BaseDialog from '../components/BaseDialog.vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  name: string
+  email: string
+  btnLoading: boolean
+}
+
+interface MethodType {
+  setUserNameEmail(): void
+  updateNameEmail(): Promise<void>
+  baseDialog(): any
+  observer(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
@@ -89,5 +107,5 @@ export default Vue.extend({
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

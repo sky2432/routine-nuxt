@@ -46,6 +46,22 @@
 <script lang="ts">
 import Vue from 'vue'
 import BaseDialog from '../components/BaseDialog.vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  loading: boolean
+}
+
+interface MethodType {
+  openDialog(): void
+  closeDialog(): void
+  deleteAccount(): Promise<void>
+  deleteDialog(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
@@ -75,5 +91,5 @@ export default Vue.extend({
       return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

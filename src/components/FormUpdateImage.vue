@@ -55,6 +55,27 @@
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
 import BaseDialog from '../components/BaseDialog.vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  image: null | any
+  imageUrl: string
+  btnLoading: boolean
+  showForm: boolean
+}
+
+interface MethodType {
+  setCurrentImage(): void
+  setImage(event: any): void
+  showImagePreview(): void
+  updateImage(): Promise<void>
+  baseDialog(): any
+  observer(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
@@ -125,5 +146,5 @@ export default Vue.extend({
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

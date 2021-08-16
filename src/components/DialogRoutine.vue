@@ -29,6 +29,27 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ValidationObserver } from 'vee-validate'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  dialog: boolean
+  loading: boolean
+}
+
+interface MethodType {
+  resetForm(): void
+  addobserver(): any
+  openDialog(): void
+  closeDialog(): void
+  startLoading(): void
+  stopLoading(): void
+}
+
+interface ComputedType {}
+
+interface PropsType {
+  value: string
+}
 
 export default Vue.extend({
   props: {
@@ -72,7 +93,7 @@ export default Vue.extend({
       this.loading = false
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>

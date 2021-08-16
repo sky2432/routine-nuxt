@@ -27,6 +27,30 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  dialog: boolean
+}
+
+interface MethodType {
+  openDialog(): void
+  closeDialog(): void
+}
+
+interface ComputedType {}
+
+interface PropsType {
+  defaultButtonType: string
+  text: boolean
+  actions: boolean
+  titleClass: string
+  textClass: string
+  actionsClass: string
+  persistent: boolean
+  maxWidth: string
+  divider: boolean
+}
 
 export default Vue.extend({
   props: {
@@ -81,7 +105,7 @@ export default Vue.extend({
       this.dialog = false
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>

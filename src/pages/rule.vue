@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import windowWidthMixin from '../mixins/windowWidthMixin'
+import { windowWidthMixin } from '../mixins/windowWidthMixin'
 import { RANK_COLOR } from '../config/const'
 
 export default windowWidthMixin.extend({

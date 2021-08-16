@@ -114,4 +114,3 @@ export default Vue.extend({
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
-<style></style>

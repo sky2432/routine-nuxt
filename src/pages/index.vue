@@ -14,6 +14,7 @@
         <v-btn class="mt-4 top-btn" large @click="guestlogin">試してみる</v-btn>
       </div>
     </v-main>
+    
     <v-footer>
       <a
         href="https://storyset.com/marketing"

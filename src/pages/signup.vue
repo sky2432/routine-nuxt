@@ -1,66 +1,80 @@
 <template>
-  <div class="wrapper">
-    <div>
-      <div class="text-center">
-        <v-avatar class="mb-4" color="grey" size="100"></v-avatar>
-      </div>
-      <v-card class="pa-5" elevation="2" width="400px" outlined shaped tile>
-        <v-card-title class="justify-center">SignUp</v-card-title>
-        <v-divider></v-divider>
-        <validation-observer ref="observer" v-slot="{ invalid }">
-          <v-card-text>
-            <TextFieldName v-model="name"></TextFieldName>
-
-            <TextFieldEmail v-model="email"></TextFieldEmail>
-
-            <TextFieldPassword v-model="password"></TextFieldPassword>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions class="justify-center">
-            <ButtonOk
-              :loading="confirmLoading"
-              :disabled="invalid"
-              @click="confirm"
-            ></ButtonOk>
-          </v-card-actions>
-        </validation-observer>
-        <v-card-text class="pt-0">
-          すでにアカウントをお持ちですか？
-          <NuxtLink to="/login">ログイン</NuxtLink>
-        </v-card-text>
-      </v-card>
-
-      <BaseDialog
-        ref="confirmDialog"
-        :text="true"
-        :divider="true"
-        textClass="text-center"
-        defaultButtonType="cancel"
+  <div>
+    <v-app-bar app>
+      <v-toolbar-title class="header-title" @click="$router.push('/')"
+        >RoutineQuest</v-toolbar-title
       >
-        <template #title>Confirm</template>
-        <template #text>
-          <v-row>
-            <v-col>Name:</v-col>
-            <v-col>{{ name }}</v-col>
-          </v-row>
-          <v-row>
-            <v-col>E-mail:</v-col>
-            <v-col>{{ email }}</v-col>
-          </v-row>
-          <v-row>
-            <v-col>Password:</v-col>
-            <v-col>{{ maskPassword }}</v-col>
-          </v-row>
-        </template>
-        <template #leftButton>
-          <ButtonOk
-            :loading="signupLoading"
-            btnClass="mr-16"
-            @click="signup"
-          ></ButtonOk>
-        </template>
-      </BaseDialog>
-    </div>
+    </v-app-bar>
+
+    <v-main>
+      <v-container>
+        <div class="wrapper">
+          <v-card
+            class="pa-5"
+            elevation="2"
+            max-width="400px"
+            outlined
+            shaped
+            tile
+          >
+            <v-card-title class="justify-center">SignUp</v-card-title>
+            <v-divider></v-divider>
+            <validation-observer ref="observer" v-slot="{ invalid }">
+              <v-card-text>
+                <TextFieldName v-model="name"></TextFieldName>
+
+                <TextFieldEmail v-model="email"></TextFieldEmail>
+
+                <TextFieldPassword v-model="password"></TextFieldPassword>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions class="justify-center">
+                <ButtonOk
+                  :loading="confirmLoading"
+                  :disabled="invalid"
+                  @click="confirm"
+                ></ButtonOk>
+              </v-card-actions>
+            </validation-observer>
+            <v-card-text class="pt-0">
+              すでにアカウントをお持ちですか？
+              <NuxtLink to="/login">ログイン</NuxtLink>
+            </v-card-text>
+          </v-card>
+        </div>
+      </v-container>
+    </v-main>
+
+    <BaseDialog
+      ref="confirmDialog"
+      :text="true"
+      :divider="true"
+      textClass="text-center"
+      defaultButtonType="cancel"
+    >
+      <template #title>Confirm</template>
+      <template #text>
+        <v-row>
+          <v-col>Name:</v-col>
+          <v-col>{{ name }}</v-col>
+        </v-row>
+        <v-row>
+          <v-col>E-mail:</v-col>
+          <v-col>{{ email }}</v-col>
+        </v-row>
+        <v-row>
+          <v-col>Password:</v-col>
+          <v-col>{{ maskPassword }}</v-col>
+        </v-row>
+      </template>
+      <template #leftButton>
+        <ButtonOk
+          :loading="signupLoading"
+          btnClass="mr-16"
+          @click="signup"
+        ></ButtonOk>
+      </template>
+    </BaseDialog>
   </div>
 </template>
 
@@ -165,3 +179,13 @@ export default Vue.extend({
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
+
+<style scoped>
+.wrapper {
+  height: calc(100vh - 88px);
+}
+
+.header-title {
+  cursor: pointer;
+}
+</style>

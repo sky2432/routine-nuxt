@@ -1,33 +1,47 @@
 <template>
-  <div class="wrapper">
-    <div>
-      <div class="text-center">
-        <v-avatar class="mb-4" color="grey" size="100"></v-avatar>
-      </div>
-      <v-card class="pa-5" elevation="2" width="400px" outlined shaped tile>
-        <v-card-title class="justify-center">Login</v-card-title>
-        <v-divider></v-divider>
-        <validation-observer ref="observer" v-slot="{ invalid }">
-          <v-card-text>
-            <TextFieldEmail v-model="email"></TextFieldEmail>
+  <div>
+    <v-app-bar app>
+      <v-toolbar-title class="header-title" @click="$router.push('/')"
+        >RoutineQuest</v-toolbar-title
+      >
+    </v-app-bar>
 
-            <TextFieldPassword v-model="password"></TextFieldPassword>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions class="justify-center">
-            <ButtonOk
-              :loading="btnLoading"
-              :disabled="invalid"
-              @click="login"
-            ></ButtonOk>
-          </v-card-actions>
-        </validation-observer>
-        <v-card-text class="pt-0">
-          アカウントをお持ちではないですか？
-          <NuxtLink to="/signup">サインアップ</NuxtLink>
-        </v-card-text>
-      </v-card>
-    </div>
+    <v-main>
+      <v-container>
+        <div class="wrapper">
+          <v-card
+            class="pa-5"
+            elevation="2"
+            max-width="400px"
+            outlined
+            shaped
+            tile
+          >
+            <v-card-title class="justify-center">Login</v-card-title>
+            <v-divider></v-divider>
+            <validation-observer ref="observer" v-slot="{ invalid }">
+              <v-card-text>
+                <TextFieldEmail v-model="email"></TextFieldEmail>
+
+                <TextFieldPassword v-model="password"></TextFieldPassword>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions class="justify-center">
+                <ButtonOk
+                  :loading="btnLoading"
+                  :disabled="invalid"
+                  @click="login"
+                ></ButtonOk>
+              </v-card-actions>
+            </validation-observer>
+            <v-card-text class="pt-0">
+              アカウントをお持ちではないですか？
+              <NuxtLink to="/signup">サインアップ</NuxtLink>
+            </v-card-text>
+          </v-card>
+        </div>
+      </v-container>
+    </v-main>
   </div>
 </template>
 
@@ -85,3 +99,13 @@ export default Vue.extend({
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
+
+<style scoped>
+.wrapper {
+  height: calc(100vh - 88px);
+}
+
+.header-title {
+  cursor: pointer;
+}
+</style>

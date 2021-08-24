@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderDrawer headerTitle="ホーム" v-model="keyword"></HeaderDrawer>
+    <HeaderDrawer headerTitle="ホーム" v-model="keywordForSearch"></HeaderDrawer>
 
     <v-main>
       <v-container>
@@ -8,11 +8,11 @@
           v-bind="{
             loaded: loaded,
             routines: routines,
-            keyword: keyword,
+            keyword: keywordForSearch,
             isHome: true,
           }"
           @clickRoutine="showRoutineDetail"
-          @clickCheckbox="changeRecord"
+          @clickCheckbox="createOrDeleteRecord"
         >
         </RoutineCards>
 
@@ -31,7 +31,7 @@
 
     <RoutineDetailDrawer
       ref="routineDetailDrawer"
-      @reloadRoutines="getUserRoutines"
+      @reloadRoutines="fetchUserRoutines"
       @startLoading="loaded = false"
     ></RoutineDetailDrawer>
 
@@ -78,19 +78,21 @@ import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 interface DataType {
   loaded: boolean
   routines: routineType[]
-  target: routineType
+  selectedRoutine: routineType
   name: string
-  keyword: string
+  keywordForSearch: string
   rankUpData: rankUpData[]
   rankUpRoutineName: string
 }
 
 interface MethodType {
-  getUserRoutines(): Promise<void>
+  fetchUserRoutines(): Promise<void>
   showRoutineDetail(routine: routineType): void
-  changeRecord(routine: routineType): void
+  routineDetailDrawer(): any
+  createOrDeleteRecord(routine: routineType): void
   createRecord(routineId: number): Promise<void>
   notifyRankUp(rankUpData: rankUpData[]): void
+  rankUpDialog(): any
   deleteRecord(routine: routineType): Promise<void>
   reloadRoutineDetail(routine_id: number): void
   openAddDialog(): void
@@ -111,9 +113,9 @@ export default Vue.extend({
     return {
       loaded: false,
       routines: [] as routineType[],
-      target: {} as routineType,
+      selectedRoutine: {} as routineType,
       name: '',
-      keyword: '',
+      keywordForSearch: '',
       rankUpData: {} as rankUpData[],
       rankUpRoutineName: '' as string,
     }
@@ -128,11 +130,11 @@ export default Vue.extend({
   },
 
   created() {
-    this.getUserRoutines()
+    this.fetchUserRoutines()
   },
 
   methods: {
-    async getUserRoutines() {
+    async fetchUserRoutines() {
       const response = await this.$axios.$get(
         `users/${this.$auth.user.id}/routines`
       )
@@ -141,15 +143,17 @@ export default Vue.extend({
     },
 
     showRoutineDetail(routine: routineType): void {
-      this.target = routine
-      ;(
-        this.$refs.routineDetailDrawer as InstanceType<
-          typeof RoutineDetailDrawer
-        >
-      ).setData(routine)
+      this.selectedRoutine = routine
+      this.routineDetailDrawer().setData(routine)
     },
 
-    changeRecord(routine: routineType) {
+    routineDetailDrawer() {
+      return this.$refs.routineDetailDrawer as InstanceType<
+        typeof RoutineDetailDrawer
+      >
+    },
+
+    createOrDeleteRecord(routine: routineType) {
       if (routine.today_record === null) {
         this.createRecord(routine.id)
       } else {
@@ -162,7 +166,7 @@ export default Vue.extend({
         routine_id: routineId,
       }
       const response = await this.$axios.$post('routines/records', sendData)
-      await this.getUserRoutines()
+      await this.fetchUserRoutines()
       this.reloadRoutineDetail(routineId)
       this.notifyRankUp(response.rank_up_data)
       this.rankUpRoutineName = response.routine_name
@@ -171,20 +175,22 @@ export default Vue.extend({
     notifyRankUp(rankUpData: rankUpData[]) {
       if (rankUpData.length !== 0) {
         this.rankUpData = rankUpData
-        ;(
-          this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
-        ).openDialog()
+        this.rankUpDialog().openDialog()
       }
+    },
+
+    rankUpDialog() {
+      return this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
     },
 
     async deleteRecord(routine: routineType) {
       await this.$axios.$delete(`routines/records/${routine.today_record?.id}`)
-      await this.getUserRoutines()
+      await this.fetchUserRoutines()
       this.reloadRoutineDetail(routine.id)
     },
 
     reloadRoutineDetail(routine_id: number) {
-      if (this.target.id === routine_id) {
+      if (this.selectedRoutine.id === routine_id) {
         for (let i in this.routines) {
           const routine = this.routines[i]
           if (routine.id === routine_id) {
@@ -208,7 +214,7 @@ export default Vue.extend({
         user_id: this.$auth.user.id,
       }
       await this.$axios.$post('users/routines', sendData)
-      await this.getUserRoutines()
+      await this.fetchUserRoutines()
       this.addDialog().closeDialog()
       this.addDialog().stopLoading()
     },

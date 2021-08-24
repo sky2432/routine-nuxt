@@ -14,7 +14,7 @@
         <v-btn class="mt-4 top-btn" large @click="guestlogin">試してみる</v-btn>
       </div>
     </v-main>
-    
+
     <v-footer>
       <a
         href="https://storyset.com/marketing"
@@ -44,10 +44,13 @@ export default Vue.extend({
   methods: {
     async guestlogin() {
       try {
+        const guestUserEmail = 'guest@user.com'
+        const guestUserPassword = 1234
+
         await this.$auth.loginWith('laravelJWT', {
           data: {
-            email: 'guest@user.com',
-            password: 1234,
+            email: guestUserEmail,
+            password: guestUserPassword,
           },
         })
         this.$router.push('/home')

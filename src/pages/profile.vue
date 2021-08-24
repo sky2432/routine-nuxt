@@ -14,7 +14,7 @@
             <div class="mt-4">
               <v-row
                 class="align-center mt-0"
-                v-for="rankCount in rankCounts"
+                v-for="rankCount in ranksCount"
                 :key="rankCount.name"
               >
                 <v-col>
@@ -42,12 +42,12 @@ import { RANK_COLOR } from '../config/const'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
 interface DataType {
-  rankCounts: rankCounts[]
+  ranksCount: ranksCount[]
 }
 
 interface MethodType {
-  getUserRankCount(): Promise<void>
-  insertColor(rankCounts: rankCounts[]): rankCounts[]
+  fetchUserRanksCount(): Promise<void>
+  insertColor(ranksCount: ranksCount[]): ranksCount[]
 }
 
 interface ComputedType {
@@ -56,7 +56,7 @@ interface ComputedType {
 
 interface PropsType {}
 
-export interface rankCounts {
+export interface ranksCount {
   name: string
   count: number
   color: string
@@ -65,7 +65,7 @@ export interface rankCounts {
 export default Vue.extend({
   data() {
     return {
-      rankCounts: [] as rankCounts[],
+      ranksCount: [] as ranksCount[],
     }
   },
 
@@ -76,19 +76,19 @@ export default Vue.extend({
   },
 
   created() {
-    this.getUserRankCount()
+    this.fetchUserRanksCount()
   },
 
   methods: {
-    async getUserRankCount() {
+    async fetchUserRanksCount() {
       const response = await this.$axios.$get(
         `users/${this.$auth.user.id}/routines/rank/count`
       )
-      this.rankCounts = this.insertColor(response.data)
+      this.ranksCount = this.insertColor(response.data)
     },
 
-    insertColor(rankCounts: rankCounts[]): rankCounts[] {
-      const rankColor: {
+    insertColor(ranksCount: ranksCount[]): ranksCount[] {
+      const rankColors: {
         name: string
         color: string
       }[] = [
@@ -101,14 +101,15 @@ export default Vue.extend({
         { name: 'E', color: RANK_COLOR.E },
         { name: 'F', color: RANK_COLOR.F },
       ]
-      for (let i in rankCounts) {
-        for (let i in rankColor) {
-          if (rankCounts[i].name === rankColor[i].name) {
-            rankCounts[i].color = rankColor[i].color
+
+      for (let i in ranksCount) {
+        for (let j in rankColors) {
+          if (ranksCount[i].name === rankColors[j].name) {
+            ranksCount[i].color = rankColors[j].color
           }
         }
       }
-      return rankCounts
+      return ranksCount
     },
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)

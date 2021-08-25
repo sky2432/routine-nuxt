@@ -1,6 +1,9 @@
 <template>
   <div>
-    <HeaderDrawer headerTitle="ホーム" v-model="keywordForSearch"></HeaderDrawer>
+    <HeaderDrawer
+      headerTitle="ホーム"
+      v-model="keywordForSearch"
+    ></HeaderDrawer>
 
     <v-main>
       <v-container>
@@ -55,7 +58,7 @@
           </v-col>
           <v-col cols="1"> → </v-col>
           <v-col>
-            <v-chip :color="chipColor(rank.rank_name)">{{
+            <v-chip :color="rankColor(rank.rank_name)">{{
               rank.rank_name
             }}</v-chip>
           </v-col>
@@ -88,20 +91,20 @@ interface DataType {
 interface MethodType {
   fetchUserRoutines(): Promise<void>
   showRoutineDetail(routine: routineType): void
-  routineDetailDrawer(): any
   createOrDeleteRecord(routine: routineType): void
   createRecord(routineId: number): Promise<void>
   notifyRankUp(rankUpData: rankUpData[]): void
-  rankUpDialog(): any
   deleteRecord(routine: routineType): Promise<void>
   reloadRoutineDetail(routine_id: number): void
   openAddDialog(): void
   addRoutine(): Promise<void>
-  addDialog(): any
+  refsRankUpDialog(): any
+  refsRoutineDetailDrawer(): any
+  refsAddDialog(): any
 }
 
 interface ComputedType {
-  chipColor(rank: string): string
+  rankColor(rank: string): string
 }
 
 interface PropsType {}
@@ -122,7 +125,7 @@ export default Vue.extend({
   },
 
   computed: {
-    chipColor() {
+    rankColor() {
       return (rank: string): string => {
         return $_returnColor(rank)
       }
@@ -144,13 +147,7 @@ export default Vue.extend({
 
     showRoutineDetail(routine: routineType): void {
       this.selectedRoutine = routine
-      this.routineDetailDrawer().setData(routine)
-    },
-
-    routineDetailDrawer() {
-      return this.$refs.routineDetailDrawer as InstanceType<
-        typeof RoutineDetailDrawer
-      >
+      this.refsRoutineDetailDrawer().setRoutine(routine)
     },
 
     createOrDeleteRecord(routine: routineType) {
@@ -175,12 +172,8 @@ export default Vue.extend({
     notifyRankUp(rankUpData: rankUpData[]) {
       if (rankUpData.length !== 0) {
         this.rankUpData = rankUpData
-        this.rankUpDialog().openDialog()
+        this.refsRankUpDialog().openDialog()
       }
-    },
-
-    rankUpDialog() {
-      return this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
     },
 
     async deleteRecord(routine: routineType) {
@@ -202,24 +195,34 @@ export default Vue.extend({
 
     // 習慣の追加
     openAddDialog() {
-      this.addDialog().openDialog()
+      this.refsAddDialog().openDialog()
       this.name = ''
-      this.addDialog().resetForm()
+      this.refsAddDialog().resetForm()
     },
 
     async addRoutine() {
-      this.addDialog().startLoading()
+      this.refsAddDialog().startLoading()
       const sendData = {
         name: this.name,
         user_id: this.$auth.user.id,
       }
       await this.$axios.$post('users/routines', sendData)
       await this.fetchUserRoutines()
-      this.addDialog().closeDialog()
-      this.addDialog().stopLoading()
+      this.refsAddDialog().closeDialog()
+      this.refsAddDialog().stopLoading()
     },
 
-    addDialog() {
+    refsRankUpDialog() {
+      return this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
+    },
+
+    refsRoutineDetailDrawer() {
+      return this.$refs.routineDetailDrawer as InstanceType<
+        typeof RoutineDetailDrawer
+      >
+    },
+
+    refsAddDialog() {
       return this.$refs.addDialog as InstanceType<typeof DialogRoutine>
     },
   },

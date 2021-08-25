@@ -43,7 +43,7 @@ interface DataType {
 interface MethodType {
   getUserRoutines(): Promise<void>
   showRoutineDetail(): void
-  routineDetailDrawer(): any
+  refsRoutineDetailDrawer(): any
 }
 
 interface ComputedType {}
@@ -76,10 +76,10 @@ export default Vue.extend({
     },
 
     showRoutineDetail(routine: routineType): void {
-      this.routineDetailDrawer().setData(routine)
+      this.refsRoutineDetailDrawer().setRoutine(routine)
     },
 
-    routineDetailDrawer() {
+    refsRoutineDetailDrawer() {
       return this.$refs.routineDetailDrawer as InstanceType<
         typeof RoutineDetailDrawer
       >

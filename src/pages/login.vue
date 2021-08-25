@@ -58,7 +58,7 @@ interface DataType {
 
 interface MethodType {
   login(): Promise<void>
-  observer(): any
+  refsObserver(): any
 }
 
 interface ComputedType {}
@@ -87,13 +87,13 @@ export default Vue.extend({
         this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
-          this.observer().setErrors(error.response.data.errors)
+          this.refsObserver().setErrors(error.response.data.errors)
         })
         this.btnLoading = false
       }
     },
 
-    observer() {
+    refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },

@@ -4,30 +4,7 @@
 
     <v-main>
       <v-container>
-        <v-simple-table v-if="allTables">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th></th>
-                <th class="text-left">累計日数</th>
-                <th class="text-left">最高連続日数</th>
-                <th class="text-left">リカバリー</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in items" :key="item.rank">
-                <td class="text-center">
-                  <v-chip :color="item.color">{{ item.rank }}</v-chip>
-                </td>
-                <td>{{ item.all }}</td>
-                <td>{{ item.highest_continuous }}</td>
-                <td>{{ item.recovery }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-
-        <div v-if="unitTable">
+        <div v-if="isMobileWidth">
           <v-simple-table>
             <template v-slot:default>
               <thead>
@@ -37,11 +14,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in items" :key="item.rank">
+                <tr v-for="tableItem in tableItems" :key="tableItem.rank">
                   <th class="text-center">
-                    <v-chip :color="item.color">{{ item.rank }}</v-chip>
+                    <v-chip :color="tableItem.color">{{ tableItem.rank }}</v-chip>
                   </th>
-                  <td>{{ item.all }}</td>
+                  <td>{{ tableItem.all }}</td>
                 </tr>
               </tbody>
             </template>
@@ -56,11 +33,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in items" :key="item.rank">
+                <tr v-for="tableItem in tableItems" :key="tableItem.rank">
                   <th class="text-center">
-                    <v-chip :color="item.color">{{ item.rank }}</v-chip>
+                    <v-chip :color="tableItem.color">{{ tableItem.rank }}</v-chip>
                   </th>
-                  <td>{{ item.highest_continuous }}</td>
+                  <td>{{ tableItem.highest_continuous }}</td>
                 </tr>
               </tbody>
             </template>
@@ -75,16 +52,39 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in items" :key="item.rank">
+                <tr v-for="tableItem in tableItems" :key="tableItem.rank">
                   <th class="text-center">
-                    <v-chip :color="item.color">{{ item.rank }}</v-chip>
+                    <v-chip :color="tableItem.color">{{ tableItem.rank }}</v-chip>
                   </th>
-                  <td>{{ item.recovery }}</td>
+                  <td>{{ tableItem.recovery }}</td>
                 </tr>
               </tbody>
             </template>
           </v-simple-table>
         </div>
+
+        <v-simple-table v-if="!isMobileWidth">
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th></th>
+                <th class="text-left">累計日数</th>
+                <th class="text-left">最高連続日数</th>
+                <th class="text-left">リカバリー</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="tableItem in tableItems" :key="tableItem.rank">
+                <td class="text-center">
+                  <v-chip :color="tableItem.color">{{ tableItem.rank }}</v-chip>
+                </td>
+                <td>{{ tableItem.all }}</td>
+                <td>{{ tableItem.highest_continuous }}</td>
+                <td>{{ tableItem.recovery }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </v-container>
     </v-main>
   </div>
@@ -96,13 +96,12 @@ import { RANK_COLOR } from '../config/const'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
 interface DataType {
-  allTables: boolean
-  unitTable: boolean
-  items: tableItems[]
+  isMobileWidth: boolean
+  tableItems: tableItems[]
 }
 
 interface MethodType {
-  changeTable(): void
+  switchTableType(): void
 }
 
 interface ComputedType {}
@@ -120,9 +119,8 @@ export interface tableItems {
 export default windowWidthMixin.extend({
   data() {
     return {
-      allTables: true,
-      unitTable: false,
-      items: [
+      isMobileWidth: false,
+      tableItems: [
         {
           rank: 'SS',
           all: '6ヶ月（180日）〜',
@@ -184,23 +182,21 @@ export default windowWidthMixin.extend({
   },
 
   created() {
-    this.changeTable()
+    this.switchTableType()
   },
 
   watch: {
     width() {
-      this.changeTable()
+      this.switchTableType()
     },
   },
 
   methods: {
-    changeTable() {
+    switchTableType() {
       if (this.width < 500) {
-        this.allTables = false
-        this.unitTable = true
+        this.isMobileWidth = true;
       } else {
-        this.allTables = true
-        this.unitTable = false
+        this.isMobileWidth = false;
       }
     },
   },

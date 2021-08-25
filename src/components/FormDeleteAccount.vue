@@ -29,7 +29,7 @@
         textClass="text-center"
         defaultButtonType="cancel"
       >
-        <template #title>Confirm</template>
+        <template #title>Caution</template>
         <template #text>本当にアカウントを削除しますか？</template>
         <template #leftButton>
           <ButtonOk

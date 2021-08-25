@@ -59,8 +59,8 @@ interface DataType {
 
 interface MethodType {
   updatePassword(): Promise<void>
-  baseDialog(): any
-  observer(): any
+  refsBaseDialog(): any
+  refsObserver(): any
 }
 
 interface ComputedType {}
@@ -88,25 +88,25 @@ export default Vue.extend({
           'users/' + this.$auth.user.id + '/password',
           sendData
         )
-        this.baseDialog().openDialog()
+        this.refsBaseDialog().openDialog()
         this.password = this.newPassword = ''
         this.$nextTick(() => {
-          this.observer().reset()
+          this.refsObserver().reset()
         })
         this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
-          this.observer().setErrors(error.response.data.errors)
+          this.refsObserver().setErrors(error.response.data.errors)
         })
         this.btnLoading = false
       }
     },
 
-    baseDialog() {
+    refsBaseDialog() {
       return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
     },
 
-    observer() {
+    refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },

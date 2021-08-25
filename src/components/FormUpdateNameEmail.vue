@@ -50,8 +50,8 @@ interface DataType {
 interface MethodType {
   setUserNameEmail(): void
   updateNameEmail(): Promise<void>
-  baseDialog(): any
-  observer(): any
+  refsBaseDialog(): any
+  refsObserver(): any
 }
 
 interface ComputedType {}
@@ -89,21 +89,21 @@ export default Vue.extend({
           sendData
         )
         this.$auth.setUser(response.data)
-        this.baseDialog().openDialog()
+        this.refsBaseDialog().openDialog()
         this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
-          this.observer().setErrors(error.response.data.errors)
+          this.refsObserver().setErrors(error.response.data.errors)
         })
         this.btnLoading = false
       }
     },
 
-    baseDialog() {
+    refsBaseDialog() {
       return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
     },
 
-    observer() {
+    refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },

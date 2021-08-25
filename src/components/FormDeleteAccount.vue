@@ -56,7 +56,7 @@ interface MethodType {
   openDialog(): void
   closeDialog(): void
   deleteAccount(): Promise<void>
-  deleteDialog(): any
+  refsDeleteDialog(): any
 }
 
 interface ComputedType {}
@@ -72,7 +72,7 @@ export default Vue.extend({
 
   methods: {
     openDialog() {
-      this.deleteDialog().openDialog()
+      this.refsDeleteDialog().openDialog()
     },
 
     async deleteAccount() {
@@ -84,10 +84,10 @@ export default Vue.extend({
     },
 
     closeDialog() {
-      this.deleteDialog().closeDialog()
+      this.refsDeleteDialog().closeDialog()
     },
 
-    deleteDialog() {
+    refsDeleteDialog() {
       return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },
   },

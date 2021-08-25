@@ -32,7 +32,7 @@
                 <ButtonOk
                   :loading="confirmLoading"
                   :disabled="invalid"
-                  @click="confirm"
+                  @click="validateUserInput"
                 ></ButtonOk>
               </v-card-actions>
             </validation-observer>
@@ -98,10 +98,10 @@ interface MethodType {
     email: string
     password: string
   }
-  confirm(): Promise<void>
-  confirmDialog(): any
-  observer(): any
+  validateUserInput(): Promise<void>
   signup(): Promise<void>
+  refsConfirmDialog(): any
+  refsObserver(): any
 }
 
 interface ComputedType {
@@ -140,29 +140,18 @@ export default Vue.extend({
       }
     },
 
-    async confirm() {
+    async validateUserInput() {
       this.confirmLoading = true
       try {
-        const response = await this.$axios.$post(
-          'users/confirm',
-          this.createSendData()
-        )
-        this.confirmDialog().openDialog()
+        await this.$axios.$post('users/confirm', this.createSendData())
+        this.refsConfirmDialog().openDialog()
         this.confirmLoading = false
       } catch (error) {
         this.$nextTick(() => {
-          this.observer().setErrors(error.response.data.errors)
+          this.refsObserver().setErrors(error.response.data.errors)
         })
         this.confirmLoading = false
       }
-    },
-
-    confirmDialog() {
-      return this.$refs.confirmDialog as InstanceType<typeof BaseDialog>
-    },
-
-    observer() {
-      return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
 
     async signup() {
@@ -175,6 +164,14 @@ export default Vue.extend({
         alert(error)
         this.signupLoading = false
       }
+    },
+
+    refsConfirmDialog() {
+      return this.$refs.confirmDialog as InstanceType<typeof BaseDialog>
+    },
+
+    refsObserver() {
+      return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)

@@ -69,8 +69,8 @@ interface MethodType {
   setImage(event: any): void
   showImagePreview(): void
   updateImage(): Promise<void>
-  baseDialog(): any
-  observer(): any
+  refsBaseDialog(): any
+  refsObserver(): any
 }
 
 interface ComputedType {}
@@ -125,10 +125,10 @@ export default Vue.extend({
           formData,
           config
         )
-        this.baseDialog().openDialog()
+        this.refsBaseDialog().openDialog()
         this.image = null
         this.$nextTick(() => {
-          this.observer().reset()
+          this.refsObserver().reset()
         })
         this.$auth.setUser(response.data)
         this.btnLoading = false
@@ -138,11 +138,11 @@ export default Vue.extend({
       }
     },
 
-    baseDialog() {
+    refsBaseDialog() {
       return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
     },
 
-    observer() {
+    refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
   },

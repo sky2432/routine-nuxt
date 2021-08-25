@@ -198,8 +198,8 @@ interface MethodType {
   openDeleteDialog(): void
   editRoutine(): Promise<void>
   deleteRoutine(): Promise<void>
-  editDialog(): any
-  deleteDialog(): any
+  refsEditDialog(): any
+  refsDeleteDialog(): any
 }
 
 interface ComputedType {
@@ -328,12 +328,12 @@ export default windowWidthMixin.extend({
 
     // 習慣の編集
     openEditDialog() {
-      this.editDialog().openDialog()
+      this.refsEditDialog().openDialog()
       this.updatedName = this.routine.name
     },
 
     async editRoutine() {
-      this.editDialog().startLoading()
+      this.refsEditDialog().startLoading()
       const sendData = {
         name: this.updatedName,
       }
@@ -343,17 +343,13 @@ export default windowWidthMixin.extend({
       )
       this.routine.name = response.data.name
       this.$emit('reloadRoutines')
-      this.editDialog().closeDialog()
-      this.editDialog().stopLoading()
-    },
-
-    editDialog() {
-      return this.$refs.editDialog as InstanceType<typeof DialogRoutine>
+      this.refsEditDialog().closeDialog()
+      this.refsEditDialog().stopLoading()
     },
 
     // 習慣の削除
     openDeleteDialog() {
-      this.deleteDialog().openDialog()
+      this.refsDeleteDialog().openDialog()
     },
 
     async deleteRoutine() {
@@ -362,11 +358,15 @@ export default windowWidthMixin.extend({
       this.$emit('startLoading')
       this.$emit('reloadRoutines')
       this.routine = {} as routineType
-      this.deleteDialog().closeDialog()
+      this.refsDeleteDialog().closeDialog()
       this.deleteBtnLoading = false
     },
 
-    deleteDialog() {
+     refsEditDialog() {
+      return this.$refs.editDialog as InstanceType<typeof DialogRoutine>
+    },
+
+    refsDeleteDialog() {
       return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },
   },

@@ -38,7 +38,7 @@ interface DataType {
 
 interface MethodType {
   resetForm(): void
-  addobserver(): any
+  refsAddObserver(): any
   openDialog(): void
   closeDialog(): void
   startLoading(): void
@@ -67,16 +67,6 @@ export default Vue.extend({
   },
 
   methods: {
-    resetForm() {
-      this.$nextTick(() => {
-        this.addobserver().reset()
-      })
-    },
-
-    addobserver() {
-      return this.$refs.addobserver as InstanceType<typeof ValidationObserver>
-    },
-
     openDialog() {
       this.dialog = true
     },
@@ -91,6 +81,16 @@ export default Vue.extend({
 
     stopLoading() {
       this.loading = false
+    },
+
+    resetForm() {
+      this.$nextTick(() => {
+        this.refsAddObserver().reset()
+      })
+    },
+
+    refsAddObserver() {
+      return this.$refs.addobserver as InstanceType<typeof ValidationObserver>
     },
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)

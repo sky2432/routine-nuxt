@@ -6,11 +6,7 @@
           <v-avatar size="128" color="grey">
             <v-img :src="imageUrl" v-if="imageUrl"></v-img>
           </v-avatar>
-          <validation-observer
-            ref="observer"
-            v-slot="{ invalid }"
-            v-if="showForm"
-          >
+          <validation-observer ref="observer" v-slot="{ invalid }">
             <validation-provider
               v-slot="{ errors }"
               ref="fileProvider"
@@ -61,14 +57,14 @@ interface DataType {
   image: null | any
   imageUrl: string
   btnLoading: boolean
-  showForm: boolean
 }
 
 interface MethodType {
   setCurrentImage(): void
   setImage(event: any): void
-  showImagePreview(): void
+  displayImagePreview(): void
   updateImage(): Promise<void>
+  resetFileInput(): void
   refsBaseDialog(): any
   refsObserver(): any
 }
@@ -83,7 +79,6 @@ export default Vue.extend({
       image: null as null | any,
       imageUrl: '',
       btnLoading: false,
-      showForm: true,
     }
   },
 
@@ -98,10 +93,10 @@ export default Vue.extend({
 
     setImage(event: any) {
       this.image = event
-      this.showImagePreview()
+      this.displayImagePreview()
     },
 
-    showImagePreview() {
+    displayImagePreview() {
       if (this.image) {
         this.imageUrl = URL.createObjectURL(this.image)
       }
@@ -126,16 +121,20 @@ export default Vue.extend({
           config
         )
         this.refsBaseDialog().openDialog()
-        this.image = null
-        this.$nextTick(() => {
-          this.refsObserver().reset()
-        })
+        this.resetFileInput()
         this.$auth.setUser(response.data)
         this.btnLoading = false
       } catch (error) {
         alert(error)
         this.btnLoading = false
       }
+    },
+
+    resetFileInput() {
+      this.image = null
+      this.$nextTick(() => {
+        this.refsObserver().reset()
+      })
     },
 
     refsBaseDialog() {

@@ -38,14 +38,14 @@
                   <p>{{ routine.name }}</p>
                 </div>
                 <div>
-                  <v-chip :color="chipColor(routine.total_rank.name)">{{
+                  <v-chip :color="rankColor(routine.total_rank.name)">{{
                     routine.total_rank.name
                   }}</v-chip>
                   <v-chip
-                    :color="chipColor(routine.highest_continuous_rank.name)"
+                    :color="rankColor(routine.highest_continuous_rank.name)"
                     >{{ routine.highest_continuous_rank.name }}</v-chip
                   >
-                  <v-chip :color="chipColor(routine.recovery_rank.name)">{{
+                  <v-chip :color="rankColor(routine.recovery_rank.name)">{{
                     routine.recovery_rank.name
                   }}</v-chip>
                 </div>
@@ -74,7 +74,7 @@ interface MethodType {
 }
 
 interface ComputedType {
-  chipColor(rank: string): string
+  rankColor(rank: string): string
   doneRoutine(routine: routineType): string
   colWidth(): string
   filterdRoutines(): routineType[]
@@ -126,7 +126,7 @@ export default Vue.extend({
       return this.routines
     },
 
-    chipColor() {
+    rankColor() {
       return (rank: string): string => {
         return $_returnColor(rank)
       }

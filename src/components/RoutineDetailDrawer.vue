@@ -68,7 +68,7 @@
                   >{{ routine.total_days }}<span class="attach">日</span></v-col
                 >
                 <v-col
-                  ><v-chip :color="chipColor(routine.total_rank.name)">{{
+                  ><v-chip :color="rankColor(routine.total_rank.name)">{{
                     routine.total_rank.name
                   }}</v-chip></v-col
                 >
@@ -83,7 +83,7 @@
                 >
                 <v-col
                   ><v-chip
-                    :color="chipColor(routine.highest_continuous_rank.name)"
+                    :color="rankColor(routine.highest_continuous_rank.name)"
                     >{{ routine.highest_continuous_rank.name }}</v-chip
                   ></v-col
                 >
@@ -99,7 +99,7 @@
                       }}<span class="attach">回</span></v-col
                     >
                     <v-col
-                      ><v-chip :color="chipColor(routine.recovery_rank.name)">{{
+                      ><v-chip :color="rankColor(routine.recovery_rank.name)">{{
                         routine.recovery_rank.name
                       }}</v-chip></v-col
                     >
@@ -114,23 +114,23 @@
                   <v-btn outlined small @click="setToday">今日</v-btn>
                 </div>
                 <div>
-                  <v-btn icon :disabled="desiablePrevButton" @click="prev">
+                  <v-btn icon :disabled="desiableCalenderPrevBtn" @click="prev">
                     <v-icon>mdi-chevron-left</v-icon>
                   </v-btn>
                   <span>{{ calendarTitle }}</span>
-                  <v-btn icon :disabled="desiableNextButton" @click="next">
+                  <v-btn icon :disabled="desiableCalenderNextBtn" @click="next">
                     <v-icon>mdi-chevron-right</v-icon>
                   </v-btn>
                 </div>
               </div>
             </v-sheet>
             <v-sheet>
-              <v-calendar ref="calendar" locale="ja-jp" v-model="value">
+              <v-calendar ref="calendar" locale="ja-jp" v-model="calendarDate">
                 <template v-slot:day-label="{ date, day, month, present }">
                   <v-btn
                     class="calendar-day"
-                    :color="isPresent(present)"
-                    :style="doneDate(date)"
+                    :color="calenderDayColor(present)"
+                    :style="calendarDayBackgroundColor(date)"
                     icon
                   >
                     <span v-if="day === 1">{{ month }}/</span>
@@ -182,33 +182,35 @@ interface DataType {
   routine: routineType
   drawer: boolean | null
   updatedName: string
-  value: string
+  calendarDate: string
   loaded: boolean
   deleteBtnLoading: boolean
 }
 
 interface MethodType {
-  isSameMonth(created_at?: string | undefined): boolean
-  setData(routine: routineType): void
+  setRoutine(routine: routineType): void
   archiveRoutine(): Promise<void>
   setToday(): void
   prev(): void
   next(): void
+  isSameMonth(created_at?: string | undefined): boolean
+  isDoneRoutineDate(date: number): boolean
   openEditDialog(): void
   openDeleteDialog(): void
   editRoutine(): Promise<void>
   deleteRoutine(): Promise<void>
+  refsCalendar(): VCalendar
   refsEditDialog(): any
   refsDeleteDialog(): any
 }
 
 interface ComputedType {
-  chipColor(rank: string): string
+  rankColor(rank: string): string
   calendarTitle(): string
-  doneDate(date: number): string
-  desiableNextButton(): boolean
-  desiablePrevButton(): boolean
-  isPresent(present: boolean): string
+  calendarDayBackgroundColor(date: number): string
+  desiableCalenderNextBtn(): boolean
+  desiableCalenderPrevBtn(): boolean
+  calenderDayColor(present: boolean): string
   drawerWidth(): string
 }
 
@@ -225,46 +227,42 @@ export default windowWidthMixin.extend({
       routine: {} as routineType,
       drawer: null as boolean | null,
       updatedName: '',
-      value: dayjs().format('YYYY-MM-DD') as string,
+      calendarDate: dayjs().format('YYYY-MM-DD') as string,
       loaded: true,
       deleteBtnLoading: false,
     }
   },
 
   computed: {
-    chipColor() {
+    rankColor() {
       return (rank: string): string => {
         return $_returnColor(rank)
       }
     },
 
     calendarTitle(): string {
-      return dayjs(this.value).format('YYYY-MM')
+      return dayjs(this.calendarDate).format('YYYY-MM')
     },
 
-    doneDate() {
+    calendarDayBackgroundColor() {
       return (date: number): string => {
-        const calendarDate = dayjs(date)
-        for (let i in this.routine.records) {
-          const record = this.routine.records[i]
-          const recordDate = dayjs(record.created_at).format('YYYY-MM-DD')
-          if (calendarDate.isSame(recordDate)) {
-            return 'background-color: lightblue'
-          }
+        const isDone = this.isDoneRoutineDate(date)
+        if (isDone === true) {
+          return 'background-color: lightblue'
         }
         return ''
       }
     },
 
-    desiableNextButton(): boolean {
+    desiableCalenderNextBtn(): boolean {
       return this.isSameMonth()
     },
 
-    desiablePrevButton(): boolean {
+    desiableCalenderPrevBtn(): boolean {
       return this.isSameMonth(this.routine.created_at)
     },
 
-    isPresent() {
+    calenderDayColor() {
       return (present: boolean): string => {
         if (present) return 'blue'
         return 'grey darken-1'
@@ -274,7 +272,6 @@ export default windowWidthMixin.extend({
     drawerWidth(): string {
       if (this.width >= 960) return '30%'
       if (this.width >= 600) return '40%'
-      this.drawer = false
       return '100%'
     },
   },
@@ -285,20 +282,14 @@ export default windowWidthMixin.extend({
     },
   },
 
-  methods: {
-    isSameMonth(created_at?: string) {
-      const month = dayjs(this.value.substring(0, 7))
-      const date = dayjs(created_at).format('YYYY-MM')
-      if (month.isSame(date)) {
-        return true
-      }
-      return false
-    },
+  created() {
+    this.setToday()
+  },
 
-    setData(routine: routineType) {
+  methods: {
+    setRoutine(routine: routineType) {
       this.routine = routine
       this.drawer = true
-      this.setToday()
     },
 
     async archiveRoutine() {
@@ -313,17 +304,36 @@ export default windowWidthMixin.extend({
 
     // カレンダー
     setToday() {
-      this.value = dayjs().format('YYYY-MM-DD')
+      this.calendarDate = dayjs().format('YYYY-MM-DD')
     },
 
     prev() {
-      const calendar = this.$refs.calendar as VCalendar
-      calendar.prev()
+      this.refsCalendar().prev()
     },
 
     next() {
-      const calendar = this.$refs.calendar as VCalendar
-      calendar.next()
+      this.refsCalendar().next()
+    },
+
+    isSameMonth(created_at?: string) {
+      const month = dayjs(this.calendarDate.substring(0, 7))
+      const date = dayjs(created_at).format('YYYY-MM')
+      if (month.isSame(date)) {
+        return true
+      }
+      return false
+    },
+
+    isDoneRoutineDate(date: number): boolean {
+      const calendarDate = dayjs(date)
+      for (let i in this.routine.records) {
+        const record = this.routine.records[i]
+        const recordDate = dayjs(record.created_at).format('YYYY-MM-DD')
+        if (calendarDate.isSame(recordDate)) {
+          return true
+        }
+      }
+      return false
     },
 
     // 習慣の編集
@@ -362,7 +372,11 @@ export default windowWidthMixin.extend({
       this.deleteBtnLoading = false
     },
 
-     refsEditDialog() {
+    refsCalendar() {
+      return this.$refs.calendar as VCalendar
+    },
+
+    refsEditDialog() {
       return this.$refs.editDialog as InstanceType<typeof DialogRoutine>
     },
 

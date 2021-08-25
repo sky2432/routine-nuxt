@@ -59,6 +59,7 @@ interface DataType {
 
 interface MethodType {
   updatePassword(): Promise<void>
+  resetPasswordTextField(): void
   refsBaseDialog(): any
   refsObserver(): any
 }
@@ -89,10 +90,7 @@ export default Vue.extend({
           sendData
         )
         this.refsBaseDialog().openDialog()
-        this.password = this.newPassword = ''
-        this.$nextTick(() => {
-          this.refsObserver().reset()
-        })
+        this.resetPasswordTextField()
         this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
@@ -100,6 +98,13 @@ export default Vue.extend({
         })
         this.btnLoading = false
       }
+    },
+
+    resetPasswordTextField() {
+      this.password = this.newPassword = ''
+      this.$nextTick(() => {
+        this.refsObserver().reset()
+      })
     },
 
     refsBaseDialog() {

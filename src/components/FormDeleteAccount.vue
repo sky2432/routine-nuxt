@@ -87,6 +87,7 @@ export default Vue.extend({
       this.refsDeleteDialog().closeDialog()
     },
 
+    // コンポーネント要素の型定義
     refsDeleteDialog() {
       return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },

@@ -196,8 +196,9 @@ interface MethodType {
   isSameMonth(created_at?: string | undefined): boolean
   isDoneRoutineDate(date: number): boolean
   openEditDialog(): void
-  openDeleteDialog(): void
+  setRoutineName(): void
   editRoutine(): Promise<void>
+  openDeleteDialog(): void
   deleteRoutine(): Promise<void>
   refsCalendar(): VCalendar
   refsEditDialog(): any
@@ -224,12 +225,12 @@ export default windowWidthMixin.extend({
 
   data() {
     return {
+      loaded: true,
+      deleteBtnLoading: false,
       routine: {} as routineType,
       drawer: null as boolean | null,
       updatedName: '',
       calendarDate: dayjs().format('YYYY-MM-DD') as string,
-      loaded: true,
-      deleteBtnLoading: false,
     }
   },
 
@@ -269,6 +270,7 @@ export default windowWidthMixin.extend({
       }
     },
 
+    // 画面幅によってdrawerの幅を変更
     drawerWidth(): string {
       if (this.width >= 960) return '30%'
       if (this.width >= 600) return '40%'
@@ -302,7 +304,8 @@ export default windowWidthMixin.extend({
       this.$emit('reloadRoutines')
     },
 
-    // カレンダー
+    // カレンダー関連 begin
+    //
     setToday() {
       this.calendarDate = dayjs().format('YYYY-MM-DD')
     },
@@ -335,10 +338,17 @@ export default windowWidthMixin.extend({
       }
       return false
     },
+    //
+    // end
 
-    // 習慣の編集
+    // 習慣の編集 begin
+    //
     openEditDialog() {
       this.refsEditDialog().openDialog()
+      this.setRoutineName()
+    },
+
+    setRoutineName() {
       this.updatedName = this.routine.name
     },
 
@@ -356,8 +366,11 @@ export default windowWidthMixin.extend({
       this.refsEditDialog().closeDialog()
       this.refsEditDialog().stopLoading()
     },
+    //
+    // end
 
     // 習慣の削除
+    //
     openDeleteDialog() {
       this.refsDeleteDialog().openDialog()
     },
@@ -371,7 +384,11 @@ export default windowWidthMixin.extend({
       this.refsDeleteDialog().closeDialog()
       this.deleteBtnLoading = false
     },
+    //
+    // end
 
+    // コンポーネント要素の型定義 begin
+    //
     refsCalendar() {
       return this.$refs.calendar as VCalendar
     },
@@ -383,6 +400,8 @@ export default windowWidthMixin.extend({
     refsDeleteDialog() {
       return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },
+    //
+    // end
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

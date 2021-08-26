@@ -74,10 +74,10 @@ interface MethodType {
 }
 
 interface ComputedType {
+  filterdRoutines(): routineType[]
   rankColor(rank: string): string
   doneRoutine(routine: routineType): string
   colWidth(): string
-  filterdRoutines(): routineType[]
 }
 
 interface PropsType {
@@ -134,17 +134,16 @@ export default Vue.extend({
 
     doneRoutine() {
       return (routine: routineType): string => {
-        if (this.isHome) {
-          if (routine.today_record !== null) {
-            return 'grey lighten-3'
-          }
-          return ''
+        if (this.isHome === false) return ''
+        if (this.isHome === true && routine.today_record !== null) {
+          return 'grey lighten-3'
         } else {
           return ''
         }
       }
     },
 
+    // 習慣カードの表示領域幅によって列数を変更
     colWidth(): string {
       if (this.cardWidth >= 1700) return 'flex: 0 0 20%'
       if (this.cardWidth >= 1300) return 'flex: 0 0 25%'

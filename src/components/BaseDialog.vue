@@ -54,6 +54,7 @@ interface PropsType {
 
 export default Vue.extend({
   props: {
+    // 'ok' or 'cancel'
     defaultButtonType: {
       type: String,
     },

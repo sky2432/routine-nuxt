@@ -71,9 +71,9 @@ interface PropsType {}
 export default Vue.extend({
   data() {
     return {
+      btnLoading: false,
       password: '',
       newPassword: '',
-      btnLoading: false,
     }
   },
 
@@ -107,6 +107,8 @@ export default Vue.extend({
       })
     },
 
+    // コンポーネント要素の型定義 begin
+    //
     refsBaseDialog() {
       return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
     },
@@ -114,6 +116,8 @@ export default Vue.extend({
     refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
+    //
+    // end
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

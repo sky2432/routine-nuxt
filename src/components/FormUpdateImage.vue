@@ -76,9 +76,9 @@ interface PropsType {}
 export default Vue.extend({
   data() {
     return {
+      btnLoading: false,
       image: null as null | any,
       imageUrl: '',
-      btnLoading: false,
     }
   },
 
@@ -107,8 +107,10 @@ export default Vue.extend({
 
     async updateImage() {
       this.btnLoading = true
+      // imageをバックエンドに送るためにformDataを使用
       const formData = new FormData()
       formData.append('image', this.image)
+      // putでformDataを送ると空になってしまうのでpostで送ってからputに上書きする
       const config: object = {
         headers: {
           'X-HTTP-Method-Override': 'PUT',
@@ -137,6 +139,8 @@ export default Vue.extend({
       })
     },
 
+    // コンポーネント要素の型定義 begin
+    //
     refsBaseDialog() {
       return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
     },
@@ -144,6 +148,8 @@ export default Vue.extend({
     refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
+    //
+    // end
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

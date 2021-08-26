@@ -38,11 +38,11 @@ interface DataType {
 
 interface MethodType {
   resetForm(): void
-  refsAddObserver(): any
   openDialog(): void
   closeDialog(): void
   startLoading(): void
   stopLoading(): void
+  refsAddObserver(): any
 }
 
 interface ComputedType {}
@@ -89,6 +89,7 @@ export default Vue.extend({
       })
     },
 
+    // コンポーネント要素の型定義
     refsAddObserver() {
       return this.$refs.addobserver as InstanceType<typeof ValidationObserver>
     },

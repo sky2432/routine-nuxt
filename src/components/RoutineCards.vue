@@ -11,7 +11,7 @@
       <v-row class="ma-0" v-if="routines.length !== 0">
         <v-col
           :style="colWidth"
-          v-for="routine in filterdRoutines"
+          v-for="routine in selectedRoutinesByKeyword"
           :key="routine.id"
         >
           <v-card
@@ -69,12 +69,13 @@ interface DataType {
 }
 
 interface MethodType {
+  selectRoutine(): routineType[]
   refs(): any
   getTargetWidth(): void
 }
 
 interface ComputedType {
-  filterdRoutines(): routineType[]
+  selectedRoutinesByKeyword(): routineType[]
   rankColor(rank: string): string
   doneRoutine(routine: routineType): string
   colWidth(): string
@@ -112,18 +113,10 @@ export default Vue.extend({
   },
 
   computed: {
-    filterdRoutines(): routineType[] {
-      if (this.keyword) {
-        let filterdRoutines = []
-        for (let i in this.routines) {
-          let routine = this.routines[i]
-          if (routine.name.indexOf(this.keyword) !== -1) {
-            filterdRoutines.push(routine)
-          }
-        }
-        return filterdRoutines
-      }
-      return this.routines
+    selectedRoutinesByKeyword(): routineType[] {
+      if (!this.keyword) return this.routines
+      const selectedRoutines = this.selectRoutine()
+      return selectedRoutines
     },
 
     rankColor() {
@@ -165,6 +158,17 @@ export default Vue.extend({
   },
 
   methods: {
+    selectRoutine(): routineType[] {
+      let selectedRoutines = []
+      for (let i in this.routines) {
+        let routine = this.routines[i]
+        if (routine.name.indexOf(this.keyword) !== -1) {
+          selectedRoutines.push(routine)
+        }
+      }
+      return selectedRoutines
+    },
+
     refs(): any {
       return this.$refs
     },

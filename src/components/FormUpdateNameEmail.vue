@@ -48,7 +48,7 @@ interface DataType {
 }
 
 interface MethodType {
-  setUserNameEmail(): void
+  setUserNameAndEmail(): void
   updateNameEmail(): Promise<void>
   refsBaseDialog(): any
   refsObserver(): any
@@ -68,11 +68,11 @@ export default Vue.extend({
   },
 
   created() {
-    this.setUserNameEmail()
+    this.setUserNameAndEmail()
   },
 
   methods: {
-    setUserNameEmail() {
+    setUserNameAndEmail() {
       this.name = this.$auth.user.name
       this.email = this.$auth.user.email
     },

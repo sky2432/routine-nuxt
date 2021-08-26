@@ -110,7 +110,7 @@ export default Vue.extend({
       // imageをバックエンドに送るためにformDataを使用
       const formData = new FormData()
       formData.append('image', this.image)
-      // putでformDataを送ると空になってしまうのでpostで送ってからputに上書きする
+      // putでformDataを送るとbodyが空になってしまうのでpostで送ってからputに上書きする
       const config: object = {
         headers: {
           'X-HTTP-Method-Override': 'PUT',

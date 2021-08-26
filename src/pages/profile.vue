@@ -87,6 +87,7 @@ export default Vue.extend({
       this.ranksCount = this.insertColor(response.data)
     },
 
+    //ランクの色情報をオブジェクトに追加する
     insertColor(ranksCount: ranksCount[]): ranksCount[] {
       const rankColors: {
         name: string

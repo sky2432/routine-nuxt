@@ -122,6 +122,7 @@ export default Vue.extend({
   },
 
   computed: {
+    // 入力されたパスワードを*に変換する
     maskPassword() {
       let mask = ''
       for (let i = 0; i < this.password.length; i++) {
@@ -166,6 +167,8 @@ export default Vue.extend({
       }
     },
 
+    // コンポーネント要素の型定義 begin
+    //
     refsConfirmDialog() {
       return this.$refs.confirmDialog as InstanceType<typeof BaseDialog>
     },
@@ -173,6 +176,8 @@ export default Vue.extend({
     refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
+    //
+    // end
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

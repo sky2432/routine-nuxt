@@ -193,6 +193,7 @@ export default windowWidthMixin.extend({
 
   methods: {
     switchTableType() {
+      // 画面横幅500px未満がスマホサイズ
       if (this.width < 500) {
         this.isMobileWidth = true;
       } else {

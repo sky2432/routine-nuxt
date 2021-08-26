@@ -97,6 +97,7 @@ interface MethodType {
   deleteRecord(routine: routineType): Promise<void>
   reloadRoutineDetail(routine_id: number): void
   openAddDialog(): void
+  resetNameTextField(): void
   addRoutine(): Promise<void>
   refsRankUpDialog(): any
   refsRoutineDetailDrawer(): any
@@ -147,9 +148,12 @@ export default Vue.extend({
 
     showRoutineDetail(routine: routineType): void {
       this.selectedRoutine = routine
+      // 子コンポーネントのメソッドを発火
       this.refsRoutineDetailDrawer().setRoutine(routine)
     },
 
+    // 習慣の履歴 begin
+    //
     createOrDeleteRecord(routine: routineType) {
       if (routine.today_record === null) {
         this.createRecord(routine.id)
@@ -192,10 +196,17 @@ export default Vue.extend({
         }
       }
     },
+    //
+    // end
 
-    // 習慣の追加
+    // 習慣の追加 begin
+    //
     openAddDialog() {
       this.refsAddDialog().openDialog()
+      this.resetNameTextField()
+    },
+
+    resetNameTextField() {
       this.name = ''
       this.refsAddDialog().resetForm()
     },
@@ -211,7 +222,11 @@ export default Vue.extend({
       this.refsAddDialog().closeDialog()
       this.refsAddDialog().stopLoading()
     },
+    //
+    // end
 
+    // コンポーネント要素の型定義 begin
+    //
     refsRankUpDialog() {
       return this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
     },
@@ -225,6 +240,8 @@ export default Vue.extend({
     refsAddDialog() {
       return this.$refs.addDialog as InstanceType<typeof DialogRoutine>
     },
+    //
+    // end
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

@@ -93,6 +93,7 @@ export default Vue.extend({
       }
     },
 
+    // コンポーネント要素の型定義
     refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },

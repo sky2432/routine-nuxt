@@ -79,6 +79,7 @@ export default Vue.extend({
       this.refsRoutineDetailDrawer().setRoutine(routine)
     },
 
+    // コンポーネント要素の型定義
     refsRoutineDetailDrawer() {
       return this.$refs.routineDetailDrawer as InstanceType<
         typeof RoutineDetailDrawer

@@ -190,17 +190,19 @@ interface DataType {
 
 interface MethodType {
   setRoutine(routine: routineType): void
-  archiveRoutine(): Promise<void>
+  showDrawer(): void
   setToday(): void
   prev(): void
   next(): void
   isSameMonth(created_at?: string | undefined): boolean
   isDoneRoutineDate(date: number): boolean
+  archiveRoutine(): Promise<void>
   openEditDialog(): void
   setRoutineName(): void
   editRoutine(): Promise<void>
   openDeleteDialog(): void
   deleteRoutine(): Promise<void>
+  reloadParentRoutines(): void
   refsCalendar(): VCalendar
   refsEditDialog(): any
   refsDeleteDialog(): any
@@ -228,7 +230,7 @@ export default Vue.extend({
 
   data() {
     return {
-      width: window.innerWidth as number,
+      width: window.innerWidth as number, // windowWidthMixinの変数
       loaded: true,
       deleteBtnLoading: false,
       drawer: null as boolean | null,
@@ -295,17 +297,11 @@ export default Vue.extend({
   methods: {
     setRoutine(routine: routineType) {
       this.routine = routine
-      this.drawer = true
+      this.showDrawer()
     },
 
-    async archiveRoutine() {
-      const sendData = {
-        routine_id: this.routine.id,
-      }
-      await this.$axios.$post('users/routines/archive', sendData)
-      this.routine = {} as routineType
-      this.$emit('startLoading')
-      this.$emit('reloadRoutines')
+    showDrawer() {
+      this.drawer = true
     },
 
     // カレンダー関連 begin
@@ -345,6 +341,15 @@ export default Vue.extend({
     //
     // end
 
+    async archiveRoutine() {
+      const sendData = {
+        routine_id: this.routine.id,
+      }
+      await this.$axios.$post('users/routines/archive', sendData)
+      this.routine = {} as routineType
+      this.reloadParentRoutines()
+    },
+
     // 習慣の編集 begin
     //
     openEditDialog() {
@@ -382,14 +387,18 @@ export default Vue.extend({
     async deleteRoutine() {
       this.deleteBtnLoading = true
       await this.$axios.$delete(`users/routines/${this.routine.id}`)
-      this.$emit('startLoading')
-      this.$emit('reloadRoutines')
+      this.reloadParentRoutines()
       this.routine = {} as routineType
       this.refsDeleteDialog().closeDialog()
       this.deleteBtnLoading = false
     },
     //
     // end
+
+    reloadParentRoutines() {
+      this.$emit('startLoading')
+      this.$emit('reloadRoutines')
+    },
 
     // コンポーネント要素の型定義 begin
     //

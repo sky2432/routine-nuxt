@@ -79,12 +79,12 @@ import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 
 interface DataType {
   loaded: boolean
-  routines: routineType[]
-  selectedRoutine: routineType
   name: string
   keywordForSearch: string
-  rankUpData: rankUpData[]
+  routines: routineType[]
+  selectedRoutine: routineType
   rankUpRoutineName: string
+  rankUpData: rankUpData[]
 }
 
 interface MethodType {
@@ -115,12 +115,12 @@ export default Vue.extend({
   data() {
     return {
       loaded: false,
-      routines: [] as routineType[],
-      selectedRoutine: {} as routineType,
       name: '',
       keywordForSearch: '',
+      routines: [] as routineType[],
+      selectedRoutine: {} as routineType,
+      rankUpRoutineName: '',
       rankUpData: {} as rankUpData[],
-      rankUpRoutineName: '' as string,
     }
   },
 

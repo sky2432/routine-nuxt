@@ -129,7 +129,7 @@ export default Vue.extend({
 
   data() {
     return {
-      width: window.innerWidth as number,
+      width: window.innerWidth as number, // windowWidthMixinの変数
       isMobileWidth: false,
       tableItems: [
         {

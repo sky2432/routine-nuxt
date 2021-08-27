@@ -54,8 +54,8 @@ export default Vue.extend({
           },
         })
         this.$router.push('/home')
-      } catch {
-        alert('エラーが発生しました')
+      } catch(error) {
+        alert(error)
       }
     },
   },

@@ -97,10 +97,10 @@
 </template>
 
 <script lang="ts">
-import { windowWidthMixin } from '../mixins/windowWidthMixin'
-import { RANK_COLOR } from '../config/const'
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+import { RANK_COLOR } from '../config/const'
+import { windowWidthMixin } from '../mixins/windowWidthMixin'
 
 interface DataType {
   width: number

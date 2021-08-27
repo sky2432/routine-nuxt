@@ -70,12 +70,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { routineType, rankUpData } from '../lib/interface'
-import { $_returnColor } from '../plugins/helper'
-import DialogRoutine from '../components/DialogRoutine.vue'
-import BaseDialog from '../components/BaseDialog.vue'
-import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+import { $_returnColor } from '../plugins/helper'
+import { routineType, rankUpData } from '../lib/interface'
+import BaseDialog from '../components/BaseDialog.vue'
+import DialogRoutine from '../components/DialogRoutine.vue'
+import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 
 interface DataType {
   loaded: boolean

@@ -28,9 +28,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { routineType } from '../lib/interface'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
-import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
 interface DataType {
   loaded: boolean

@@ -45,8 +45,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import BaseDialog from '../components/BaseDialog.vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+import BaseDialog from '../components/BaseDialog.vue'
 
 interface DataType {
   loading: boolean

@@ -47,8 +47,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { ValidationObserver } from 'vee-validate'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+import { ValidationObserver } from 'vee-validate'
 
 interface DataType {
   email: string

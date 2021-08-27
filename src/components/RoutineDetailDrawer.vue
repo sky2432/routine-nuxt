@@ -169,14 +169,14 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+import { $_returnColor } from '../plugins/helper'
+import { routineType, VCalendar } from '../lib/interface'
 import { windowWidthMixin } from '../mixins/windowWidthMixin'
 import BaseDialog from './BaseDialog.vue'
 import DialogRoutine from './DialogRoutine.vue'
-import { routineType, VCalendar } from '../lib/interface'
-import { $_returnColor } from '../plugins/helper'
 import dayjs from 'dayjs'
-import Vue from 'vue'
-import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
 interface DataType {
   width: number

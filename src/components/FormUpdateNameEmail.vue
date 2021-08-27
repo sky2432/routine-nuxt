@@ -37,9 +37,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { ValidationObserver } from 'vee-validate'
 import BaseDialog from '../components/BaseDialog.vue'
-import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
 interface DataType {
   name: string

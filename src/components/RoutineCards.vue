@@ -60,9 +60,9 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
-import { routineType } from '../lib/interface'
-import { $_returnColor } from '../plugins/helper'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+import { $_returnColor } from '../plugins/helper'
+import { routineType } from '../lib/interface'
 
 interface DataType {
   cardWidth: number

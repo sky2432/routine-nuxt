@@ -179,12 +179,13 @@ import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
 interface DataType {
-  routine: routineType
-  drawer: boolean | null
-  updatedName: string
-  calendarDate: string
+  width: number
   loaded: boolean
   deleteBtnLoading: boolean
+  drawer: boolean | null
+  routine: routineType
+  updatedName: string
+  calendarDate: string
 }
 
 interface MethodType {
@@ -217,18 +218,21 @@ interface ComputedType {
 
 interface PropsType {}
 
-export default windowWidthMixin.extend({
+export default Vue.extend({
   components: {
     BaseDialog,
     DialogRoutine,
   },
 
+  mixins: [windowWidthMixin],
+
   data() {
     return {
+      width: window.innerWidth as number,
       loaded: true,
       deleteBtnLoading: false,
-      routine: {} as routineType,
       drawer: null as boolean | null,
+      routine: {} as routineType,
       updatedName: '',
       calendarDate: dayjs().format('YYYY-MM-DD') as string,
     }

@@ -34,4 +34,4 @@ export const windowWidthMixin = Vue.extend({
       this.width = window.innerWidth
     },
   },
-} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
+}as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)

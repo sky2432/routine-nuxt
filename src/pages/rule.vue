@@ -16,7 +16,9 @@
               <tbody>
                 <tr v-for="tableItem in tableItems" :key="tableItem.rank">
                   <th class="text-center">
-                    <v-chip :color="tableItem.color">{{ tableItem.rank }}</v-chip>
+                    <v-chip :color="tableItem.color">{{
+                      tableItem.rank
+                    }}</v-chip>
                   </th>
                   <td>{{ tableItem.all }}</td>
                 </tr>
@@ -35,7 +37,9 @@
               <tbody>
                 <tr v-for="tableItem in tableItems" :key="tableItem.rank">
                   <th class="text-center">
-                    <v-chip :color="tableItem.color">{{ tableItem.rank }}</v-chip>
+                    <v-chip :color="tableItem.color">{{
+                      tableItem.rank
+                    }}</v-chip>
                   </th>
                   <td>{{ tableItem.highest_continuous }}</td>
                 </tr>
@@ -54,7 +58,9 @@
               <tbody>
                 <tr v-for="tableItem in tableItems" :key="tableItem.rank">
                   <th class="text-center">
-                    <v-chip :color="tableItem.color">{{ tableItem.rank }}</v-chip>
+                    <v-chip :color="tableItem.color">{{
+                      tableItem.rank
+                    }}</v-chip>
                   </th>
                   <td>{{ tableItem.recovery }}</td>
                 </tr>
@@ -93,9 +99,11 @@
 <script lang="ts">
 import { windowWidthMixin } from '../mixins/windowWidthMixin'
 import { RANK_COLOR } from '../config/const'
+import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
 interface DataType {
+  width: number
   isMobileWidth: boolean
   tableItems: tableItems[]
 }
@@ -116,9 +124,12 @@ export interface tableItems {
   color: string
 }
 
-export default windowWidthMixin.extend({
+export default Vue.extend({
+  mixins: [windowWidthMixin],
+
   data() {
     return {
+      width: window.innerWidth as number,
       isMobileWidth: false,
       tableItems: [
         {
@@ -187,6 +198,7 @@ export default windowWidthMixin.extend({
 
   watch: {
     width() {
+      console.log(this.width)
       this.switchTableType()
     },
   },
@@ -195,9 +207,9 @@ export default windowWidthMixin.extend({
     switchTableType() {
       // 画面横幅500px未満がスマホサイズ
       if (this.width < 500) {
-        this.isMobileWidth = true;
+        this.isMobileWidth = true
       } else {
-        this.isMobileWidth = false;
+        this.isMobileWidth = false
       }
     },
   },

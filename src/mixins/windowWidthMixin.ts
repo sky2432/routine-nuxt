@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import { $axios } from '@/util/axios'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
 interface DataType {

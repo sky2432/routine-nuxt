@@ -37,7 +37,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { $axios } from '@/util/axios'
 import { RANK_COLOR } from '../config/const'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 

@@ -70,7 +70,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { $axios } from '@/util/axios'
 import { routineType, rankUpData } from '../lib/interface'
 import { $_returnColor } from '../plugins/helper'
 import DialogRoutine from '../components/DialogRoutine.vue'

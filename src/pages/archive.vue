@@ -28,7 +28,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { $axios } from '@/util/axios'
 import { routineType } from '../lib/interface'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'

@@ -14,6 +14,7 @@
         <v-btn class="mt-4 top-btn" large @click="guestlogin">試してみる</v-btn>
       </div>
     </v-main>
+
     <v-footer>
       <a
         href="https://storyset.com/marketing"
@@ -27,23 +28,38 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {}
+
+interface MethodType {
+  guestlogin(): Promise<void>
+}
+
+interface ComputedType {}
+
+interface PropsType {}
+
 export default Vue.extend({
   methods: {
     async guestlogin() {
       try {
+        const guestUserEmail = 'guest@user.com'
+        const guestUserPassword = 1234
+
         await this.$auth.loginWith('laravelJWT', {
           data: {
-            email: 'guest@user.com',
-            password: 1234,
+            email: guestUserEmail,
+            password: guestUserPassword,
           },
         })
         this.$router.push('/home')
-      } catch {
-        alert('エラーが発生しました')
+      } catch(error) {
+        alert(error)
       }
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>

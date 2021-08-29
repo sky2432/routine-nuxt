@@ -28,7 +28,28 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { ValidationObserver } from 'vee-validate'
+
+interface DataType {
+  dialog: boolean
+  loading: boolean
+}
+
+interface MethodType {
+  resetForm(): void
+  openDialog(): void
+  closeDialog(): void
+  startLoading(): void
+  stopLoading(): void
+  refsAddObserver(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {
+  value: string
+}
 
 export default Vue.extend({
   props: {
@@ -46,16 +67,6 @@ export default Vue.extend({
   },
 
   methods: {
-    resetForm() {
-      this.$nextTick(() => {
-        this.addobserver().reset()
-      })
-    },
-
-    addobserver() {
-      return this.$refs.addobserver as InstanceType<typeof ValidationObserver>
-    },
-
     openDialog() {
       this.dialog = true
     },
@@ -71,12 +82,23 @@ export default Vue.extend({
     stopLoading() {
       this.loading = false
     },
+
+    resetForm() {
+      this.$nextTick(() => {
+        this.refsAddObserver().reset()
+      })
+    },
+
+    // コンポーネント要素の型定義
+    refsAddObserver() {
+      return this.$refs.addobserver as InstanceType<typeof ValidationObserver>
+    },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>
-/deep/ .v-dialog {
+::v-deep .v-dialog {
   border-radius: 0px;
 }
 </style>

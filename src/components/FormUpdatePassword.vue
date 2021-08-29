@@ -47,15 +47,33 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { ValidationObserver } from 'vee-validate'
 import BaseDialog from '../components/BaseDialog.vue'
+
+interface DataType {
+  password: string
+  newPassword: string
+  btnLoading: boolean
+}
+
+interface MethodType {
+  updatePassword(): Promise<void>
+  resetPasswordTextField(): void
+  refsBaseDialog(): any
+  refsObserver(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
     return {
+      btnLoading: false,
       password: '',
       newPassword: '',
-      btnLoading: false,
     }
   },
 
@@ -71,27 +89,35 @@ export default Vue.extend({
           'users/' + this.$auth.user.id + '/password',
           sendData
         )
-        this.baseDialog().openDialog()
-        this.password = this.newPassword = ''
-        this.$nextTick(() => {
-          this.observer().reset()
-        })
+        this.refsBaseDialog().openDialog()
+        this.resetPasswordTextField()
         this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
-          this.observer().setErrors(error.response.data.errors)
+          this.refsObserver().setErrors(error.response.data.errors)
         })
         this.btnLoading = false
       }
     },
 
-    baseDialog() {
+    resetPasswordTextField() {
+      this.password = this.newPassword = ''
+      this.$nextTick(() => {
+        this.refsObserver().reset()
+      })
+    },
+
+    // コンポーネント要素の型定義 begin
+    //
+    refsBaseDialog() {
       return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
     },
 
-    observer() {
+    refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
+    //
+    // end
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

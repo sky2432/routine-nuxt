@@ -37,24 +37,42 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { ValidationObserver } from 'vee-validate'
 import BaseDialog from '../components/BaseDialog.vue'
+
+interface DataType {
+  name: string
+  email: string
+  btnLoading: boolean
+}
+
+interface MethodType {
+  setUserNameAndEmail(): void
+  updateNameEmail(): Promise<void>
+  refsBaseDialog(): any
+  refsObserver(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
     return {
+      btnLoading: false,
       name: '',
       email: '',
-      btnLoading: false,
     }
   },
 
   created() {
-    this.setUserNameEmail()
+    this.setUserNameAndEmail()
   },
 
   methods: {
-    setUserNameEmail() {
+    setUserNameAndEmail() {
       this.name = this.$auth.user.name
       this.email = this.$auth.user.email
     },
@@ -71,23 +89,27 @@ export default Vue.extend({
           sendData
         )
         this.$auth.setUser(response.data)
-        this.baseDialog().openDialog()
+        this.refsBaseDialog().openDialog()
         this.btnLoading = false
       } catch (error) {
         this.$nextTick(() => {
-          this.observer().setErrors(error.response.data.errors)
+          this.refsObserver().setErrors(error.response.data.errors)
         })
         this.btnLoading = false
       }
     },
 
-    baseDialog() {
+    // コンポーネント要素の型定義 begin
+    //
+    refsBaseDialog() {
       return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
     },
 
-    observer() {
+    refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
+    //
+    // end
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

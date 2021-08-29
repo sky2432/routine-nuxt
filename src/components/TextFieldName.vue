@@ -11,9 +11,24 @@
   ></BaseTextField>
 </template>
 
-
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {}
+
+interface MethodType {}
+
+interface ComputedType {}
+
+interface PropsType {
+  value: string
+  name: string
+  label: string
+  icon: string
+  rules: string
+  counter: number
+}
 
 export default Vue.extend({
   props: {
@@ -34,11 +49,12 @@ export default Vue.extend({
     },
     rules: {
       type: String,
-      default: 'required|min:2|max:10'
+      default: 'required|min:2|max:10',
     },
     counter: {
+      type: Number,
       default: 10,
-    }
+    },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

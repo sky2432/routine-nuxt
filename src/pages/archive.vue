@@ -28,9 +28,26 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { $axios } from '@/util/axios'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { routineType } from '../lib/interface'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
+
+interface DataType {
+  loaded: boolean
+  routines: routineType[]
+  name: string
+  keyword: string
+}
+
+interface MethodType {
+  getUserRoutines(): Promise<void>
+  showRoutineDetail(): void
+  refsRoutineDetailDrawer(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   middleware: 'auth',
@@ -58,14 +75,15 @@ export default Vue.extend({
     },
 
     showRoutineDetail(routine: routineType): void {
-      this.routineDetailDrawer().setData(routine)
+      this.refsRoutineDetailDrawer().setRoutine(routine)
     },
 
-    routineDetailDrawer() {
+    // コンポーネント要素の型定義
+    refsRoutineDetailDrawer() {
       return this.$refs.routineDetailDrawer as InstanceType<
         typeof RoutineDetailDrawer
       >
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

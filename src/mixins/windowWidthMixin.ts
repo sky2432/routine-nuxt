@@ -1,7 +1,19 @@
 import Vue from 'vue'
-import { $axios } from '@/util/axios'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
-export default Vue.extend({
+interface DataType {
+  width: number
+}
+
+interface MethodType {
+  handleResize(): void
+}
+
+interface ComputedType {}
+
+interface PropsType {}
+
+export const windowWidthMixin = Vue.extend({
   data() {
     return {
       width: window.innerWidth as number,
@@ -21,4 +33,4 @@ export default Vue.extend({
       this.width = window.innerWidth
     },
   },
-})
+}as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)

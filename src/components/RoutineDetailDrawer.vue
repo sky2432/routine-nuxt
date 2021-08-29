@@ -68,7 +68,7 @@
                   >{{ routine.total_days }}<span class="attach">日</span></v-col
                 >
                 <v-col
-                  ><v-chip :color="chipColor(routine.total_rank.name)">{{
+                  ><v-chip :color="rankColor(routine.total_rank.name)">{{
                     routine.total_rank.name
                   }}</v-chip></v-col
                 >
@@ -83,7 +83,7 @@
                 >
                 <v-col
                   ><v-chip
-                    :color="chipColor(routine.highest_continuous_rank.name)"
+                    :color="rankColor(routine.highest_continuous_rank.name)"
                     >{{ routine.highest_continuous_rank.name }}</v-chip
                   ></v-col
                 >
@@ -99,7 +99,7 @@
                       }}<span class="attach">回</span></v-col
                     >
                     <v-col
-                      ><v-chip :color="chipColor(routine.recovery_rank.name)">{{
+                      ><v-chip :color="rankColor(routine.recovery_rank.name)">{{
                         routine.recovery_rank.name
                       }}</v-chip></v-col
                     >
@@ -114,23 +114,23 @@
                   <v-btn outlined small @click="setToday">今日</v-btn>
                 </div>
                 <div>
-                  <v-btn icon :disabled="desiablePrevButton" @click="prev">
+                  <v-btn icon :disabled="desiableCalenderPrevBtn" @click="prev">
                     <v-icon>mdi-chevron-left</v-icon>
                   </v-btn>
                   <span>{{ calendarTitle }}</span>
-                  <v-btn icon :disabled="desiableNextButton" @click="next">
+                  <v-btn icon :disabled="desiableCalenderNextBtn" @click="next">
                     <v-icon>mdi-chevron-right</v-icon>
                   </v-btn>
                 </div>
               </div>
             </v-sheet>
             <v-sheet>
-              <v-calendar ref="calendar" locale="ja-jp" v-model="value">
+              <v-calendar ref="calendar" locale="ja-jp" v-model="calendarDate">
                 <template v-slot:day-label="{ date, day, month, present }">
                   <v-btn
                     class="calendar-day"
-                    :color="isPresent(present)"
-                    :style="doneDate(date)"
+                    :color="calenderDayColor(present)"
+                    :style="calendarDayBackgroundColor(date)"
                     icon
                   >
                     <span v-if="day === 1">{{ month }}/</span>
@@ -169,74 +169,117 @@
 </template>
 
 <script lang="ts">
-import windowWidthMixin from '../mixins/windowWidthMixin'
+import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+import { $_returnColor } from '../plugins/helper'
+import { routineType, VCalendar } from '../lib/interface'
+import { windowWidthMixin } from '../mixins/windowWidthMixin'
 import BaseDialog from './BaseDialog.vue'
 import DialogRoutine from './DialogRoutine.vue'
-import { routineType, VCalendar } from '../lib/interface'
-import { $_returnColor } from '../plugins/helper'
 import dayjs from 'dayjs'
 
-export default windowWidthMixin.extend({
+interface DataType {
+  width: number
+  loaded: boolean
+  deleteBtnLoading: boolean
+  drawer: boolean | null
+  routine: routineType
+  updatedName: string
+  calendarDate: string
+}
+
+interface MethodType {
+  setRoutine(routine: routineType): void
+  showDrawer(): void
+  setToday(): void
+  prev(): void
+  next(): void
+  isSameMonth(created_at?: string | undefined): boolean
+  isDoneRoutineDate(date: number): boolean
+  archiveRoutine(): Promise<void>
+  openEditDialog(): void
+  setRoutineName(): void
+  editRoutine(): Promise<void>
+  openDeleteDialog(): void
+  deleteRoutine(): Promise<void>
+  reloadParentRoutines(): void
+  refsCalendar(): VCalendar
+  refsEditDialog(): any
+  refsDeleteDialog(): any
+}
+
+interface ComputedType {
+  rankColor(rank: string): string
+  calendarTitle(): string
+  calendarDayBackgroundColor(date: number): string
+  desiableCalenderNextBtn(): boolean
+  desiableCalenderPrevBtn(): boolean
+  calenderDayColor(present: boolean): string
+  drawerWidth(): string
+}
+
+interface PropsType {}
+
+export default Vue.extend({
   components: {
     BaseDialog,
     DialogRoutine,
   },
 
+  mixins: [windowWidthMixin],
+
   data() {
     return {
-      routine: {} as routineType,
-      drawer: null as boolean | null,
-      updatedName: '',
-      value: dayjs().format('YYYY-MM-DD') as string,
+      width: window.innerWidth as number, // windowWidthMixinの変数
       loaded: true,
       deleteBtnLoading: false,
+      drawer: null as boolean | null,
+      routine: {} as routineType,
+      updatedName: '',
+      calendarDate: dayjs().format('YYYY-MM-DD') as string,
     }
   },
 
   computed: {
-    chipColor() {
+    rankColor() {
       return (rank: string): string => {
         return $_returnColor(rank)
       }
     },
 
     calendarTitle(): string {
-      return dayjs(this.value).format('YYYY-MM')
+      return dayjs(this.calendarDate).format('YYYY-MM')
     },
 
-    doneDate() {
+    calendarDayBackgroundColor() {
       return (date: number): string => {
-        const calendarDate = dayjs(date)
-        for (let i in this.routine.records) {
-          const record = this.routine.records[i]
-          const recordDate = dayjs(record.created_at).format('YYYY-MM-DD')
-          if (calendarDate.isSame(recordDate)) {
-            return 'background-color: lightblue'
-          }
+        const isDone = this.isDoneRoutineDate(date)
+        if (isDone === true) {
+          return 'background-color: lightblue'
         }
         return ''
       }
     },
 
-    desiableNextButton(): boolean {
+    desiableCalenderNextBtn(): boolean {
       return this.isSameMonth()
     },
 
-    desiablePrevButton(): boolean {
+    desiableCalenderPrevBtn(): boolean {
       return this.isSameMonth(this.routine.created_at)
     },
 
-    isPresent() {
+    calenderDayColor() {
       return (present: boolean): string => {
         if (present) return 'blue'
         return 'grey darken-1'
       }
     },
 
+    // 画面幅によってdrawerの幅を変更
     drawerWidth(): string {
       if (this.width >= 960) return '30%'
       if (this.width >= 600) return '40%'
-      this.drawer = false
       return '100%'
     },
   },
@@ -247,9 +290,36 @@ export default windowWidthMixin.extend({
     },
   },
 
+  created() {
+    this.setToday()
+  },
+
   methods: {
+    setRoutine(routine: routineType) {
+      this.routine = routine
+      this.showDrawer()
+    },
+
+    showDrawer() {
+      this.drawer = true
+    },
+
+    // カレンダー関連 begin
+    //
+    setToday() {
+      this.calendarDate = dayjs().format('YYYY-MM-DD')
+    },
+
+    prev() {
+      this.refsCalendar().prev()
+    },
+
+    next() {
+      this.refsCalendar().next()
+    },
+
     isSameMonth(created_at?: string) {
-      const month = dayjs(this.value.substring(0, 7))
+      const month = dayjs(this.calendarDate.substring(0, 7))
       const date = dayjs(created_at).format('YYYY-MM')
       if (month.isSame(date)) {
         return true
@@ -257,11 +327,19 @@ export default windowWidthMixin.extend({
       return false
     },
 
-    setData(routine: routineType) {
-      this.routine = routine
-      this.drawer = true
-      this.setToday()
+    isDoneRoutineDate(date: number): boolean {
+      const calendarDate = dayjs(date)
+      for (let i in this.routine.records) {
+        const record = this.routine.records[i]
+        const recordDate = dayjs(record.created_at).format('YYYY-MM-DD')
+        if (calendarDate.isSame(recordDate)) {
+          return true
+        }
+      }
+      return false
     },
+    //
+    // end
 
     async archiveRoutine() {
       const sendData = {
@@ -269,33 +347,22 @@ export default windowWidthMixin.extend({
       }
       await this.$axios.$post('users/routines/archive', sendData)
       this.routine = {} as routineType
-      this.$emit('startLoading')
-      this.$emit('reloadRoutines')
+      this.reloadParentRoutines()
     },
 
-    // カレンダー
-    setToday() {
-      this.value = dayjs().format('YYYY-MM-DD')
-    },
-
-    prev() {
-      const calendar = this.$refs.calendar as VCalendar
-      calendar.prev()
-    },
-
-    next() {
-      const calendar = this.$refs.calendar as VCalendar
-      calendar.next()
-    },
-
-    // 習慣の編集
+    // 習慣の編集 begin
+    //
     openEditDialog() {
-      this.editDialog().openDialog()
+      this.refsEditDialog().openDialog()
+      this.setRoutineName()
+    },
+
+    setRoutineName() {
       this.updatedName = this.routine.name
     },
 
     async editRoutine() {
-      this.editDialog().startLoading()
+      this.refsEditDialog().startLoading()
       const sendData = {
         name: this.updatedName,
       }
@@ -305,34 +372,51 @@ export default windowWidthMixin.extend({
       )
       this.routine.name = response.data.name
       this.$emit('reloadRoutines')
-      this.editDialog().closeDialog()
-      this.editDialog().stopLoading()
+      this.refsEditDialog().closeDialog()
+      this.refsEditDialog().stopLoading()
     },
-
-    editDialog() {
-      return this.$refs.editDialog as InstanceType<typeof DialogRoutine>
-    },
+    //
+    // end
 
     // 習慣の削除
+    //
     openDeleteDialog() {
-      this.deleteDialog().openDialog()
+      this.refsDeleteDialog().openDialog()
     },
 
     async deleteRoutine() {
       this.deleteBtnLoading = true
       await this.$axios.$delete(`users/routines/${this.routine.id}`)
-      this.$emit('startLoading')
-      this.$emit('reloadRoutines')
+      this.reloadParentRoutines()
       this.routine = {} as routineType
-      this.deleteDialog().closeDialog()
+      this.refsDeleteDialog().closeDialog()
       this.deleteBtnLoading = false
     },
+    //
+    // end
 
-    deleteDialog() {
+    reloadParentRoutines() {
+      this.$emit('startLoading')
+      this.$emit('reloadRoutines')
+    },
+
+    // コンポーネント要素の型定義 begin
+    //
+    refsCalendar() {
+      return this.$refs.calendar as VCalendar
+    },
+
+    refsEditDialog() {
+      return this.$refs.editDialog as InstanceType<typeof DialogRoutine>
+    },
+
+    refsDeleteDialog() {
       return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },
+    //
+    // end
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>

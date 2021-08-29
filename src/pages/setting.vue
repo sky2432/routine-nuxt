@@ -8,36 +8,16 @@
           <v-col cols="12" sm="3">
             <v-card tile>
               <v-list>
-                <v-list-item @click="currentComponent = 'FormUpdateImage'">
+                <v-list-item
+                  v-for="listItem in listItems"
+                  :key="listItem.title"
+                  @click="currentComponent = listItem.componentName"
+                >
                   <v-list-item-action>
-                    <v-icon>mdi-image-size-select-actual</v-icon>
+                    <v-icon>{{ listItem.icon }}</v-icon>
                   </v-list-item-action>
                   <v-list-item-content>
-                    <v-list-item-title>プロフィール画像</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item @click="currentComponent = 'FormUpdateNameEmail'">
-                  <v-list-item-action>
-                    <v-icon>mdi-email</v-icon>
-                  </v-list-item-action>
-                  <v-list-item-content>
-                    <v-list-item-title>名前・メールアドレス</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item @click="currentComponent = 'FormUpdatePassword'">
-                  <v-list-item-action>
-                    <v-icon>mdi-key</v-icon>
-                  </v-list-item-action>
-                  <v-list-item-content>
-                    <v-list-item-title>パスワード</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item @click="currentComponent = 'FormDeleteAccount'">
-                  <v-list-item-action>
-                    <v-icon>mdi-delete</v-icon>
-                  </v-list-item-action>
-                  <v-list-item-content>
-                    <v-list-item-title>アカウント削除</v-list-item-title>
+                    <v-list-item-title>{{ listItem.title }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -54,13 +34,52 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  currentComponent: string
+  listItems: {
+    componentName: string
+    icon: string
+    title: string
+  }[]
+}
+
+interface MethodType {}
+
+interface ComputedType {}
+
+interface PropsType {}
+
 export default Vue.extend({
   middleware: 'auth',
 
   data() {
     return {
       currentComponent: 'FormUpdateImage',
+      listItems: [
+        {
+          componentName: 'FormUpdateImage',
+          icon: 'mdi-image-size-select-actual',
+          title: 'プロフィール画像',
+        },
+        {
+          componentName: 'FormUpdateNameEmail',
+          icon: 'mdi-email',
+          title: '名前・メールアドレス',
+        },
+        {
+          componentName: 'FormUpdatePassword',
+          icon: 'mdi-key',
+          title: 'パスワード',
+        },
+        {
+          componentName: 'FormDeleteAccount',
+          icon: 'mdi-delete',
+          title: 'アカウント削除',
+        },
+      ],
     }
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

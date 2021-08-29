@@ -1,6 +1,9 @@
 <template>
   <div>
-    <HeaderDrawer headerTitle="ホーム" v-model="keyword"></HeaderDrawer>
+    <HeaderDrawer
+      headerTitle="ホーム"
+      v-model="keywordForSearch"
+    ></HeaderDrawer>
 
     <v-main>
       <v-container>
@@ -8,11 +11,11 @@
           v-bind="{
             loaded: loaded,
             routines: routines,
-            keyword: keyword,
+            keyword: keywordForSearch,
             isHome: true,
           }"
           @clickRoutine="showRoutineDetail"
-          @clickCheckbox="changeRecord"
+          @clickCheckbox="createOrDeleteRecord"
         >
         </RoutineCards>
 
@@ -31,7 +34,7 @@
 
     <RoutineDetailDrawer
       ref="routineDetailDrawer"
-      @reloadRoutines="getUserRoutines"
+      @reloadRoutines="fetchUserRoutines"
       @startLoading="loaded = false"
     ></RoutineDetailDrawer>
 
@@ -55,7 +58,7 @@
           </v-col>
           <v-col cols="1"> → </v-col>
           <v-col>
-            <v-chip :color="chipColor(rank.rank_name)">{{
+            <v-chip :color="rankColor(rank.rank_name)">{{
               rank.rank_name
             }}</v-chip>
           </v-col>
@@ -67,12 +70,44 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { $axios } from '@/util/axios'
-import { routineType, rankUpData } from '../lib/interface'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { $_returnColor } from '../plugins/helper'
-import DialogRoutine from '../components/DialogRoutine.vue'
+import { routineType, rankUpData } from '../lib/interface'
 import BaseDialog from '../components/BaseDialog.vue'
+import DialogRoutine from '../components/DialogRoutine.vue'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
+
+interface DataType {
+  loaded: boolean
+  name: string
+  keywordForSearch: string
+  routines: routineType[]
+  selectedRoutine: routineType
+  rankUpRoutineName: string
+  rankUpData: rankUpData[]
+}
+
+interface MethodType {
+  fetchUserRoutines(): Promise<void>
+  showRoutineDetail(routine: routineType): void
+  createOrDeleteRecord(routine: routineType): void
+  createRecord(routineId: number): Promise<void>
+  notifyRankUp(rankUpData: rankUpData[]): void
+  deleteRecord(routine: routineType): Promise<void>
+  reloadRoutineDetail(routine_id: number): void
+  openAddDialog(): void
+  resetNameTextField(): void
+  addRoutine(): Promise<void>
+  refsRankUpDialog(): any
+  refsRoutineDetailDrawer(): any
+  refsAddDialog(): any
+}
+
+interface ComputedType {
+  rankColor(rank: string): string
+}
+
+interface PropsType {}
 
 export default Vue.extend({
   middleware: 'auth',
@@ -80,17 +115,17 @@ export default Vue.extend({
   data() {
     return {
       loaded: false,
-      routines: [] as routineType[],
-      target: {} as routineType,
       name: '',
-      keyword: '',
+      keywordForSearch: '',
+      routines: [] as routineType[],
+      selectedRoutine: {} as routineType,
+      rankUpRoutineName: '',
       rankUpData: {} as rankUpData[],
-      rankUpRoutineName: '' as string,
     }
   },
 
   computed: {
-    chipColor() {
+    rankColor() {
       return (rank: string): string => {
         return $_returnColor(rank)
       }
@@ -98,11 +133,11 @@ export default Vue.extend({
   },
 
   created() {
-    this.getUserRoutines()
+    this.fetchUserRoutines()
   },
 
   methods: {
-    async getUserRoutines() {
+    async fetchUserRoutines() {
       const response = await this.$axios.$get(
         `users/${this.$auth.user.id}/routines`
       )
@@ -111,15 +146,14 @@ export default Vue.extend({
     },
 
     showRoutineDetail(routine: routineType): void {
-      this.target = routine
-      ;(
-        this.$refs.routineDetailDrawer as InstanceType<
-          typeof RoutineDetailDrawer
-        >
-      ).setData(routine)
+      this.selectedRoutine = routine
+      // 子コンポーネントのメソッドを発火
+      this.refsRoutineDetailDrawer().setRoutine(routine)
     },
 
-    changeRecord(routine: routineType) {
+    // 習慣の履歴 begin
+    //
+    createOrDeleteRecord(routine: routineType) {
       if (routine.today_record === null) {
         this.createRecord(routine.id)
       } else {
@@ -132,7 +166,7 @@ export default Vue.extend({
         routine_id: routineId,
       }
       const response = await this.$axios.$post('routines/records', sendData)
-      await this.getUserRoutines()
+      await this.fetchUserRoutines()
       this.reloadRoutineDetail(routineId)
       this.notifyRankUp(response.rank_up_data)
       this.rankUpRoutineName = response.routine_name
@@ -141,20 +175,18 @@ export default Vue.extend({
     notifyRankUp(rankUpData: rankUpData[]) {
       if (rankUpData.length !== 0) {
         this.rankUpData = rankUpData
-        ;(
-          this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
-        ).openDialog()
+        this.refsRankUpDialog().openDialog()
       }
     },
 
     async deleteRecord(routine: routineType) {
       await this.$axios.$delete(`routines/records/${routine.today_record?.id}`)
-      await this.getUserRoutines()
+      await this.fetchUserRoutines()
       this.reloadRoutineDetail(routine.id)
     },
 
     reloadRoutineDetail(routine_id: number) {
-      if (this.target.id === routine_id) {
+      if (this.selectedRoutine.id === routine_id) {
         for (let i in this.routines) {
           const routine = this.routines[i]
           if (routine.id === routine_id) {
@@ -163,31 +195,54 @@ export default Vue.extend({
         }
       }
     },
+    //
+    // end
 
-    // 習慣の追加
+    // 習慣の追加 begin
+    //
     openAddDialog() {
-      this.addDialog().openDialog()
+      this.refsAddDialog().openDialog()
+      this.resetNameTextField()
+    },
+
+    resetNameTextField() {
       this.name = ''
-      this.addDialog().resetForm()
+      this.refsAddDialog().resetForm()
     },
 
     async addRoutine() {
-      this.addDialog().startLoading()
+      this.refsAddDialog().startLoading()
       const sendData = {
         name: this.name,
         user_id: this.$auth.user.id,
       }
       await this.$axios.$post('users/routines', sendData)
-      await this.getUserRoutines()
-      this.addDialog().closeDialog()
-      this.addDialog().stopLoading()
+      await this.fetchUserRoutines()
+      this.refsAddDialog().closeDialog()
+      this.refsAddDialog().stopLoading()
+    },
+    //
+    // end
+
+    // コンポーネント要素の型定義 begin
+    //
+    refsRankUpDialog() {
+      return this.$refs.rankUpDialog as InstanceType<typeof BaseDialog>
     },
 
-    addDialog() {
+    refsRoutineDetailDrawer() {
+      return this.$refs.routineDetailDrawer as InstanceType<
+        typeof RoutineDetailDrawer
+      >
+    },
+
+    refsAddDialog() {
       return this.$refs.addDialog as InstanceType<typeof DialogRoutine>
     },
+    //
+    // end
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>
 
 <style scoped>

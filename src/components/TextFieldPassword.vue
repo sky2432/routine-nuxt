@@ -20,23 +20,42 @@
   </validation-provider>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {
+  showPassword: boolean
+}
+
+interface MethodType {}
+
+interface ComputedType {}
+
+interface PropsType {
+  value: string
+  name: string
+  label: string
+  vid: string
+  mode: string
+}
+
+export default Vue.extend({
   props: {
     value: {
       type: String,
     },
     name: {
       type: String,
-      default: "パスワード",
+      default: 'パスワード',
     },
     label: {
       type: String,
-      default: "Password",
+      default: 'Password',
     },
     vid: {
       type: String,
-      default: "password",
+      default: 'password',
     },
     mode: {
       type: String,
@@ -46,7 +65,7 @@ export default {
   data() {
     return {
       showPassword: false,
-    };
+    }
   },
-};
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

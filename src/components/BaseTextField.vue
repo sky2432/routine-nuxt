@@ -23,6 +23,27 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
+
+interface DataType {}
+
+interface MethodType {}
+
+interface ComputedType {}
+
+interface PropsType {
+  name: string
+  rules: string
+  vid: string
+  counter: number
+  hint: string
+  label: string
+  icon: string
+  innerIcon: string
+  value: string
+  mode: string
+  details: boolean
+}
 
 export default Vue.extend({
   props: {
@@ -59,8 +80,8 @@ export default Vue.extend({
     },
     details: {
       type: Boolean,
-      default: false
-    }
-  }
-})
+      default: false,
+    },
+  },
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

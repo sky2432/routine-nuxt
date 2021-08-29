@@ -6,11 +6,7 @@
           <v-avatar size="128" color="grey">
             <v-img :src="imageUrl" v-if="imageUrl"></v-img>
           </v-avatar>
-          <validation-observer
-            ref="observer"
-            v-slot="{ invalid }"
-            v-if="showForm"
-          >
+          <validation-observer ref="observer" v-slot="{ invalid }">
             <validation-provider
               v-slot="{ errors }"
               ref="fileProvider"
@@ -53,16 +49,36 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { ValidationObserver } from 'vee-validate'
 import BaseDialog from '../components/BaseDialog.vue'
+
+interface DataType {
+  image: null | any
+  imageUrl: string
+  btnLoading: boolean
+}
+
+interface MethodType {
+  setCurrentImage(): void
+  setImage(event: any): void
+  displayImagePreview(): void
+  updateImage(): Promise<void>
+  resetFileInput(): void
+  refsBaseDialog(): any
+  refsObserver(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
     return {
+      btnLoading: false,
       image: null as null | any,
       imageUrl: '',
-      btnLoading: false,
-      showForm: true,
     }
   },
 
@@ -77,10 +93,10 @@ export default Vue.extend({
 
     setImage(event: any) {
       this.image = event
-      this.showImagePreview()
+      this.displayImagePreview()
     },
 
-    showImagePreview() {
+    displayImagePreview() {
       if (this.image) {
         this.imageUrl = URL.createObjectURL(this.image)
       }
@@ -91,8 +107,10 @@ export default Vue.extend({
 
     async updateImage() {
       this.btnLoading = true
+      // imageをバックエンドに送るためにformDataを使用
       const formData = new FormData()
       formData.append('image', this.image)
+      // putでformDataを送るとbodyが空になってしまうのでpostで送ってからputに上書きする
       const config: object = {
         headers: {
           'X-HTTP-Method-Override': 'PUT',
@@ -104,11 +122,8 @@ export default Vue.extend({
           formData,
           config
         )
-        this.baseDialog().openDialog()
-        this.image = null
-        this.$nextTick(() => {
-          this.observer().reset()
-        })
+        this.refsBaseDialog().openDialog()
+        this.resetFileInput()
         this.$auth.setUser(response.data)
         this.btnLoading = false
       } catch (error) {
@@ -117,13 +132,24 @@ export default Vue.extend({
       }
     },
 
-    baseDialog() {
+    resetFileInput() {
+      this.image = null
+      this.$nextTick(() => {
+        this.refsObserver().reset()
+      })
+    },
+
+    // コンポーネント要素の型定義 begin
+    //
+    refsBaseDialog() {
       return this.$refs.baseDialog as InstanceType<typeof BaseDialog>
     },
 
-    observer() {
+    refsObserver() {
       return this.$refs.observer as InstanceType<typeof ValidationObserver>
     },
+    //
+    // end
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

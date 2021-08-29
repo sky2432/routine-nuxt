@@ -29,7 +29,7 @@
         textClass="text-center"
         defaultButtonType="cancel"
       >
-        <template #title>Confirm</template>
+        <template #title>Caution</template>
         <template #text>本当にアカウントを削除しますか？</template>
         <template #leftButton>
           <ButtonOk
@@ -45,7 +45,23 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import BaseDialog from '../components/BaseDialog.vue'
+
+interface DataType {
+  loading: boolean
+}
+
+interface MethodType {
+  openDialog(): void
+  closeDialog(): void
+  deleteAccount(): Promise<void>
+  refsDeleteDialog(): any
+}
+
+interface ComputedType {}
+
+interface PropsType {}
 
 export default Vue.extend({
   data() {
@@ -56,7 +72,7 @@ export default Vue.extend({
 
   methods: {
     openDialog() {
-      this.deleteDialog().openDialog()
+      this.refsDeleteDialog().openDialog()
     },
 
     async deleteAccount() {
@@ -68,12 +84,13 @@ export default Vue.extend({
     },
 
     closeDialog() {
-      this.deleteDialog().closeDialog()
+      this.refsDeleteDialog().closeDialog()
     },
 
-    deleteDialog() {
+    // コンポーネント要素の型定義
+    refsDeleteDialog() {
       return this.$refs.deleteDialog as InstanceType<typeof BaseDialog>
     },
   },
-})
+} as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)
 </script>

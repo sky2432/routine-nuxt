@@ -1,6 +1,10 @@
 import colors from 'vuetify/es5/util/colors'
+const environment = process.env.NODE_ENV || 'dev'
+const envSet = require(`./env.${environment}.js`)
 
 export default {
+  env: envSet,
+
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -97,6 +101,6 @@ export default {
   },
 
   axios: {
-    baseURL: 'http://localhost:80/api',
+    baseURL: `${envSet.apiBaseUrl}/api`,
   },
 }

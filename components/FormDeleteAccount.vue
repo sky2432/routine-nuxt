@@ -27,7 +27,7 @@
         :text="true"
         :divider="true"
         text-class="text-center"
-        defaultbutton-type="cancel"
+        default-button-type="cancel"
       >
         <template #title>Caution</template>
         <template #text>本当にアカウントを削除しますか？</template>

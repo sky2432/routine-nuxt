@@ -3,7 +3,6 @@
     v-slot="{ errors }"
     :name="name"
     rules="required|min:4|max:255"
-    :mode="mode"
     :vid="vid"
   >
     <v-text-field

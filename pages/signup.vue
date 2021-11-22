@@ -12,6 +12,7 @@
           <v-card
             class="pa-5"
             elevation="2"
+            width="100%"
             max-width="400px"
             outlined
             shaped

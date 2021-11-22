@@ -18,7 +18,7 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" mobile-breakpoint="1264" fixed app>
-      <v-sheet color="grey">
+      <v-sheet color="grey lighten-2">
         <v-row class="align-center ma-0 pt-4 pl-4 pb-4">
           <v-avatar color="white" size="64">
             <v-img :src="userImage"></v-img>

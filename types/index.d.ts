@@ -7,7 +7,7 @@
     // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
     // TypeScript Version: 3.1
 
-    import Vue, { ComponentOptions } from 'vue';
+    import Vue from 'vue';
 
     export interface Storage {
       setUniversal(key: string, value: any, isJson?: boolean): string;

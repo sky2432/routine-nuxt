@@ -5,7 +5,6 @@
     vid="email"
     icon="mdi-email"
     label="E-mail"
-    :mode="mode"
     :value="value"
     @input="$emit('input', $event)"
   ></BaseTextField>
@@ -23,16 +22,13 @@ interface ComputedType {}
 
 interface PropsType {
   value: string
-  mode: string
 }
 
 export default Vue.extend({
   props: {
     value: {
       type: String,
-    },
-    mode: {
-      type: String,
+      default: ''
     },
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)

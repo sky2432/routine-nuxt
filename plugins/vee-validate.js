@@ -6,6 +6,7 @@ import {
   localize,
   setInteractionMode,
 } from 'vee-validate'
+/* eslint import/namespace: ['error', { allowComputed: true }] */
 import * as originalRules from 'vee-validate/dist/rules'
 import ja from 'vee-validate/dist/locale/ja.json'
 

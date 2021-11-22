@@ -8,17 +8,17 @@
           style="width: 80%"
         >
           <TextFieldPassword
+            v-model="password"
             name="現在のパスワード"
             label="Current Password"
             mode="eager"
-            v-model="password"
           ></TextFieldPassword>
 
           <TextFieldPassword
+            v-model="newPassword"
             name="新しいパスワード"
             label="New Password"
             vid="new_password"
-            v-model="newPassword"
           ></TextFieldPassword>
 
           <v-card-actions class="justify-center">
@@ -34,10 +34,10 @@
 
     <BaseDialog
       ref="baseDialog"
-      defaultButtonType="ok"
+      default-button-type="ok"
       :text="true"
       :divider="true"
-      textClass="text-center"
+      text-class="text-center"
     >
       <template #title>Done</template>
       <template #text>パスワードを変更しました</template>

@@ -1,21 +1,21 @@
 <template>
   <div>
-    <HeaderDrawer headerTitle="プロフィール" :serach="false"></HeaderDrawer>
+    <HeaderDrawer header-title="プロフィール" :serach="false"></HeaderDrawer>
 
     <v-main>
       <v-container>
         <div class="d-flex justify-center">
           <div class="mt-4">
             <v-avatar size="150" color="grey">
-              <v-img :src="imageUrl" v-if="imageUrl"></v-img>
+              <v-img v-if="imageUrl" :src="imageUrl"></v-img>
             </v-avatar>
             <p class="mt-4 text-center">{{ $auth.user.name }}</p>
             <v-divider></v-divider>
             <div class="mt-4">
               <v-row
-                class="align-center mt-0"
                 v-for="rankCount in ranksCount"
                 :key="rankCount.name"
+                class="align-center mt-0"
               >
                 <v-col>
                   <v-chip :color="rankCount.color">
@@ -40,6 +40,12 @@ import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { RANK_COLOR } from '../config/const'
 
+export interface ranksCount {
+  name: string
+  count: number
+  color: string
+}
+
 interface DataType {
   ranksCount: ranksCount[]
 }
@@ -54,12 +60,6 @@ interface ComputedType {
 }
 
 interface PropsType {}
-
-export interface ranksCount {
-  name: string
-  count: number
-  color: string
-}
 
 export default Vue.extend({
   data() {
@@ -86,7 +86,7 @@ export default Vue.extend({
       this.ranksCount = this.insertColor(response.data)
     },
 
-    //ランクの色情報をオブジェクトに追加する
+    // ランクの色情報をオブジェクトに追加する
     insertColor(ranksCount: ranksCount[]): ranksCount[] {
       const rankColors: {
         name: string
@@ -102,8 +102,8 @@ export default Vue.extend({
         { name: 'F', color: RANK_COLOR.F },
       ]
 
-      for (let i in ranksCount) {
-        for (let j in rankColors) {
+      for (const i in ranksCount) {
+        for (const j in rankColors) {
           if (ranksCount[i].name === rankColors[j].name) {
             ranksCount[i].color = rankColors[j].color
           }

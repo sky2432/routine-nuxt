@@ -1,6 +1,6 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
-import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
+import {  mount, createLocalVue } from '@vue/test-utils'
 import Vuetify from 'vuetify'
+import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 import { routineType } from '../lib/interface'
 
 describe('RoutineDetailDrawer component', () => {
@@ -62,7 +62,7 @@ describe('RoutineDetailDrawer component', () => {
   test('exists routine', async () => {
     const wrapper = mountFunction()
     await wrapper.setData({
-      routine: routine,
+      routine,
     })
     expect(wrapper.text()).toContain(
       '読書 連続日数 0日  累計日数 14日 D 最高連続日数 1日 F リカバリー 0回 F'

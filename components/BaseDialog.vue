@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :max-width="maxWidth" v-model="dialog" :persistent="persistent">
+  <v-dialog v-model="dialog" :max-width="maxWidth"  :persistent="persistent">
     <v-card tile>
       <v-card-title :class="titleClass">
         <slot name="title"></slot>
@@ -9,7 +9,7 @@
         <slot name="text"></slot>
       </v-card-text>
       <v-divider v-if="divider"></v-divider>
-      <v-card-actions :class="actionsClass" v-if="actions">
+      <v-card-actions v-if="actions" :class="actionsClass">
         <slot name="leftButton"></slot>
         <slot name="defaultButton">
           <ButtonOk v-if="defaultButtonType === 'ok'" @click="dialog = false">
@@ -57,6 +57,7 @@ export default Vue.extend({
     // 'ok' or 'cancel'
     defaultButtonType: {
       type: String,
+      required: true,
     },
     text: {
       type: Boolean,
@@ -72,6 +73,7 @@ export default Vue.extend({
     },
     textClass: {
       type: String,
+      required: true,
     },
     actionsClass: {
       type: String,

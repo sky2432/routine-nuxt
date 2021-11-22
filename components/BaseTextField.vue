@@ -4,15 +4,12 @@
     :name="name"
     :rules="rules"
     :vid="vid"
-    :mode="mode"
   >
     <v-text-field
       :counter="counter"
       :error-messages="errors"
-      :hint="hint"
       :label="label"
       :prepend-icon="icon"
-      :prepend-inner-icon="innerIcon"
       required
       :value="value"
       :hide-details="details"
@@ -36,12 +33,9 @@ interface PropsType {
   rules: string
   vid: string
   counter: number
-  hint: string
   label: string
   icon: string
-  innerIcon: string
   value: string
-  mode: string
   details: boolean
 }
 
@@ -53,30 +47,27 @@ export default Vue.extend({
     },
     rules: {
       type: String,
+      required: true,
     },
     vid: {
       type: String,
+      required: true,
     },
     counter: {
       type: Number,
-    },
-    hint: {
-      type: String,
+      default: null,
     },
     label: {
       type: String,
+      required: true,
     },
     icon: {
       type: String,
-    },
-    innerIcon: {
-      type: String,
+      required: true,
     },
     value: {
       type: String,
-    },
-    mode: {
-      type: String,
+      default: ''
     },
     details: {
       type: Boolean,

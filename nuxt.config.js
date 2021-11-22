@@ -1,12 +1,12 @@
 import colors from 'vuetify/es5/util/colors'
-const environment = process.env.NODE_ENV
 
+const environment = process.env.NODE_ENV
 // 環境変数の設定
 let apiBaseUrl = ''
-if (environment === 'dev') {
+if (environment === 'local') {
   apiBaseUrl = 'http://127.0.0.1:8000'
 }
-if (environment === 'prod') {
+if (environment === 'production') {
   apiBaseUrl = 'http://127.0.0.1:8000'
 }
 
@@ -86,7 +86,7 @@ export default {
     strategies: {
       laravelJWT: {
         provider: 'laravel/jwt',
-        url: 'http://localhost:80',
+        url: 'http://127.0.0.1:8000',
         token: {
           maxAge: 60 * 60,
         },

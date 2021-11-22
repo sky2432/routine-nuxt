@@ -19,7 +19,7 @@
             :disabled="invalid"
             @click="$emit('click')"
           ></ButtonOk>
-          <ButtonCancel btnClass="ml-16" @click="dialog = false"></ButtonCancel>
+          <ButtonCancel btn-class="ml-16" @click="dialog = false"></ButtonCancel>
         </v-card-actions>
       </validation-observer>
     </v-card>

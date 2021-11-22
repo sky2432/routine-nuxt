@@ -32,6 +32,7 @@ export default Vue.extend({
   props: {
     btnClass: {
       type: String,
+      default: null,
     },
     loading: {
       type: Boolean,

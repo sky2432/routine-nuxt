@@ -1,6 +1,6 @@
 import { RANK_COLOR } from '../config/const'
 
-export function $_returnColor(rank: string): string {
+export function $$returnColor(rank: string): string {
   if (rank === 'E') return  RANK_COLOR.E
   if (rank === 'D') return RANK_COLOR.D
   if (rank === 'C') return RANK_COLOR.C

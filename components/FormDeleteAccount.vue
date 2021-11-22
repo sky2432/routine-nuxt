@@ -26,14 +26,14 @@
         ref="deleteDialog"
         :text="true"
         :divider="true"
-        textClass="text-center"
-        defaultButtonType="cancel"
+        text-class="text-center"
+        defaultbutton-type="cancel"
       >
         <template #title>Caution</template>
         <template #text>本当にアカウントを削除しますか？</template>
         <template #leftButton>
           <ButtonOk
-            btnClass="mr-16"
+            btn-class="mr-16"
             :loading="loading"
             @click="deleteAccount"
           ></ButtonOk>

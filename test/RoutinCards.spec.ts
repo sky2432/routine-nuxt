@@ -1,6 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import RoutineCards from '../components/RoutineCards.vue'
 import Vuetify from 'vuetify'
+import RoutineCards from '../components/RoutineCards.vue'
 import { routineType } from '../lib/interface'
 
 describe('RoutineCards component', () => {
@@ -115,7 +115,7 @@ describe('RoutineCards component', () => {
       propsData: {
         loaded: true,
         isHome: true,
-        routines: routines,
+        routines,
       }
     })
     expect(wrapper.find('.v-card').exists()).toBe(true)
@@ -129,7 +129,7 @@ describe('RoutineCards component', () => {
       propsData: {
         loaded: true,
         isHome: true,
-        routines: routines,
+        routines,
         keyword: '日記'
       }
     })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderDrawer headerTitle="設定" :serach="false"></HeaderDrawer>
+    <HeaderDrawer header-title="設定" :serach="false"></HeaderDrawer>
 
     <v-main>
       <v-container>

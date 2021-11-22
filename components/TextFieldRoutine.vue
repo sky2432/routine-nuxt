@@ -27,6 +27,7 @@ export default Vue.extend({
   props: {
     value: {
       type: String,
+      default: ''
     },
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)

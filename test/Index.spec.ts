@@ -1,6 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import index from '../pages/index.vue'
 import Vuetify from 'vuetify'
+import index from '../pages/index.vue'
 
 describe('index page', () => {
   const localVue = createLocalVue()

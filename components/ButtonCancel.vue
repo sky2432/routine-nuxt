@@ -22,6 +22,7 @@ export default Vue.extend({
   props: {
     btnClass: {
       type: String,
+      default: null,
     },
   },
 } as ThisTypedComponentOptionsWithRecordProps<Vue, DataType, MethodType, ComputedType, PropsType>)

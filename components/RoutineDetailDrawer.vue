@@ -12,9 +12,9 @@
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-menu offset-y v-if="routine.id">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" icon>
+        <v-menu v-if="routine.id" offset-y>
+          <template #activator="{ on, attrs }">
+            <v-btn v-bind="attrs" icon v-on="on">
               <v-icon>mdi-dots-horizontal-circle-outline</v-icon>
             </v-btn>
           </template>
@@ -36,7 +36,7 @@
         </v-menu>
       </div>
 
-      <div class="wrapper" v-if="!loaded">
+      <div v-if="!loaded" class="wrapper">
         <v-progress-circular
           indeterminate
           color="primary"
@@ -44,7 +44,7 @@
       </div>
 
       <div v-if="loaded">
-        <div class="wrapper" v-if="!routine.id">
+        <div v-if="!routine.id" class="wrapper">
           <div>習慣を選択してください</div>
         </div>
 
@@ -90,7 +90,7 @@
               </v-row>
             </v-card>
             <v-tooltip top>
-              <template v-slot:activator="{ on, attrs }">
+              <template #activator="{ on, attrs }">
                 <v-card class="mt-4" v-bind="attrs" v-on="on">
                   <v-row class="ma-0 align-center">
                     <v-col>リカバリー</v-col>
@@ -125,8 +125,8 @@
               </div>
             </v-sheet>
             <v-sheet>
-              <v-calendar ref="calendar" locale="ja-jp" v-model="calendarDate">
-                <template v-slot:day-label="{ date, day, month, present }">
+              <v-calendar ref="calendar" v-model="calendarDate" locale="ja-jp">
+                <template #day-label="{ date, day, month, present }">
                   <v-btn
                     class="calendar-day"
                     :color="calenderDayColor(present)"
@@ -152,15 +152,15 @@
       ref="deleteDialog"
       :text="true"
       :divider="true"
-      textClass="text-center"
-      defaultButtonType="cancel"
+      text-class="text-center"
+      default-button-type="cancel"
     >
       <template #title>Confirm</template>
       <template #text>この習慣を削除しますか？</template>
       <template #leftButton>
         <ButtonOk
           :loading="deleteBtnLoading"
-          btnClass="mr-16"
+          btn-class="mr-16"
           @click="deleteRoutine"
         ></ButtonOk>
       </template>
@@ -171,12 +171,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { $_returnColor } from '../plugins/helper'
+import dayjs from 'dayjs'
+import { $$returnColor } from '../plugins/helper'
 import { routineType, VCalendar } from '../lib/interface'
 import { windowWidthMixin } from '../mixins/windowWidthMixin'
 import BaseDialog from './BaseDialog.vue'
 import DialogRoutine from './DialogRoutine.vue'
-import dayjs from 'dayjs'
 
 interface DataType {
   width: number
@@ -194,7 +194,7 @@ interface MethodType {
   setToday(): void
   prev(): void
   next(): void
-  isSameMonth(created_at?: string | undefined): boolean
+  isSameMonth(createdAt?: string | undefined): boolean
   isDoneRoutineDate(date: number): boolean
   archiveRoutine(): Promise<void>
   openEditDialog(): void
@@ -243,7 +243,7 @@ export default Vue.extend({
   computed: {
     rankColor() {
       return (rank: string): string => {
-        return $_returnColor(rank)
+        return $$returnColor(rank)
       }
     },
 
@@ -318,9 +318,9 @@ export default Vue.extend({
       this.refsCalendar().next()
     },
 
-    isSameMonth(created_at?: string) {
+    isSameMonth(createdAt?: string) {
       const month = dayjs(this.calendarDate.substring(0, 7))
-      const date = dayjs(created_at).format('YYYY-MM')
+      const date = dayjs(createdAt).format('YYYY-MM')
       if (month.isSame(date)) {
         return true
       }
@@ -329,7 +329,7 @@ export default Vue.extend({
 
     isDoneRoutineDate(date: number): boolean {
       const calendarDate = dayjs(date)
-      for (let i in this.routine.records) {
+      for (const i in this.routine.records) {
         const record = this.routine.records[i]
         const recordDate = dayjs(record.created_at).format('YYYY-MM-DD')
         if (calendarDate.isSame(recordDate)) {

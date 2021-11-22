@@ -1,8 +1,8 @@
 <template>
   <div>
     <HeaderDrawer
-      headerTitle="ホーム"
       v-model="keywordForSearch"
+      header-title="ホーム"
     ></HeaderDrawer>
 
     <v-main>
@@ -46,13 +46,13 @@
       ref="rankUpDialog"
       :text="true"
       :divider="true"
-      textClass="text-center pb-0 px-16"
-      defaultButtonType="ok"
+      text-class="text-center pb-0 px-16"
+      default-button-type="ok"
     >
       <template #title>Congratulations!!</template>
       <template #text>
         <p>「{{ rankUpRoutineName }}」ランクアップ</p>
-        <v-row class="ma-0" v-for="rank in rankUpData" :key="rank.name">
+        <v-row v-for="rank in rankUpData" :key="rank.name" class="ma-0">
           <v-col>
             {{ rank.name }}
           </v-col>
@@ -71,7 +71,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { $_returnColor } from '../plugins/helper'
+import { $$returnColor } from '../plugins/helper'
 import { routineType, rankUpData } from '../lib/interface'
 import BaseDialog from '../components/BaseDialog.vue'
 import DialogRoutine from '../components/DialogRoutine.vue'
@@ -94,7 +94,7 @@ interface MethodType {
   createRecord(routineId: number): Promise<void>
   notifyRankUp(rankUpData: rankUpData[]): void
   deleteRecord(routine: routineType): Promise<void>
-  reloadRoutineDetail(routine_id: number): void
+  reloadRoutineDetail(routineId: number): void
   openAddDialog(): void
   resetNameTextField(): void
   addRoutine(): Promise<void>
@@ -127,7 +127,7 @@ export default Vue.extend({
   computed: {
     rankColor() {
       return (rank: string): string => {
-        return $_returnColor(rank)
+        return $$returnColor(rank)
       }
     },
   },
@@ -185,11 +185,11 @@ export default Vue.extend({
       this.reloadRoutineDetail(routine.id)
     },
 
-    reloadRoutineDetail(routine_id: number) {
-      if (this.selectedRoutine.id === routine_id) {
-        for (let i in this.routines) {
+    reloadRoutineDetail(routineId: number) {
+      if (this.selectedRoutine.id === routineId) {
+        for (const i in this.routines) {
           const routine = this.routines[i]
-          if (routine.id === routine_id) {
+          if (routine.id === routineId) {
             this.showRoutineDetail(routine)
           }
         }

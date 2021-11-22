@@ -4,7 +4,7 @@
       <div class="setting-content">
         <div class="text-center" style="width: 40%">
           <v-avatar size="128" color="grey">
-            <v-img :src="imageUrl" v-if="imageUrl"></v-img>
+            <v-img v-if="imageUrl" :src="imageUrl"></v-img>
           </v-avatar>
           <validation-observer ref="observer" v-slot="{ invalid }">
             <validation-provider
@@ -36,10 +36,10 @@
 
     <BaseDialog
       ref="baseDialog"
-      defaultButtonType="ok"
+      default-button-type="ok"
       :text="true"
       :divider="true"
-      textClass="text-center"
+      text-class="text-center"
     >
       <template #title>Done</template>
       <template #text>画像を変更しました</template>

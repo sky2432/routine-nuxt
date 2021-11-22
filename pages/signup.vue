@@ -49,8 +49,8 @@
       ref="confirmDialog"
       :text="true"
       :divider="true"
-      textClass="text-center"
-      defaultButtonType="cancel"
+      text-class="text-center"
+      default-button-type="cancel"
     >
       <template #title>Confirm</template>
       <template #text>
@@ -70,7 +70,7 @@
       <template #leftButton>
         <ButtonOk
           :loading="signupLoading"
-          btnClass="mr-16"
+          btn-class="mr-16"
           @click="signup"
         ></ButtonOk>
       </template>

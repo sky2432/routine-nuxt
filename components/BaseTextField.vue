@@ -63,7 +63,7 @@ export default Vue.extend({
     },
     icon: {
       type: String,
-      required: true,
+      default: null,
     },
     value: {
       type: String,

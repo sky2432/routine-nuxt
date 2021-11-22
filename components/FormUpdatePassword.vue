@@ -11,7 +11,6 @@
             v-model="password"
             name="現在のパスワード"
             label="Current Password"
-            mode="eager"
           ></TextFieldPassword>
 
           <TextFieldPassword

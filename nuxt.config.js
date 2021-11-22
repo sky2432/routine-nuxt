@@ -19,7 +19,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'RoutineQuest',
+    title: 'RoutineQuest | 習慣化アプリ',
     htmlAttrs: {
       lang: 'ja',
     },
@@ -28,8 +28,39 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      { name: 'msapplication-TileColor', content: '#da532c' },
+      { name: 'theme-color', content: '#ffffff' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      // favicon
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/favicons/favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: '/favicons/favicon-16x16.png',
+      },
+      {
+        rel: 'apple-touch-icon',
+        type: 'image/png',
+        sizes: '180x180',
+        href: '/favicons/apple-touch-icon.png',
+      },
+      {
+        rel: 'manifest',
+        href: '/favicons/site.webmanifest',
+      },
+      {
+        rel: 'mask-icon',
+        href: '/favicons/safari-pinned-tab.svg',
+        color: '#5bbad5',
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

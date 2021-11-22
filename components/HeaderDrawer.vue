@@ -74,15 +74,15 @@
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
-interface DataType {
-  drawer: boolean | null
-  items: navitem[]
-}
-
 interface navitem {
   icon: string
   title: string
   to: string
+}
+
+interface DataType {
+  drawer: boolean | null
+  items: navitem[]
 }
 
 interface MethodType {
@@ -104,9 +104,11 @@ export default Vue.extend({
   props: {
     headerTitle: {
       type: String,
+      required: true
     },
     value: {
       type: String,
+      default: ''
     },
     serach: {
       type: Boolean,
@@ -157,7 +159,7 @@ export default Vue.extend({
       try {
         await this.$auth.logout()
       } catch (error) {
-        console.log(error)
+        alert(error)
       }
     },
   },

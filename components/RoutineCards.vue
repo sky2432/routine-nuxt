@@ -1,18 +1,18 @@
 <template>
   <div ref="root">
-    <div class="wrapper" v-if="!loaded">
+    <div v-if="!loaded" class="wrapper">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
     <div v-if="loaded">
-      <div class="wrapper" v-if="routines.length === 0">
+      <div v-if="routines.length === 0" class="wrapper">
         <p v-if="isHome">習慣を登録しましょう！</p>
         <p v-if="!isHome">アーカイブされた習慣はありません</p>
       </div>
-      <v-row class="ma-0" v-if="routines.length !== 0">
+      <v-row v-if="routines.length !== 0" class="ma-0">
         <v-col
-          :style="colWidth"
           v-for="routine in selectedRoutinesByKeyword"
           :key="routine.id"
+          :style="colWidth"
         >
           <v-card
             class="routine-card"
@@ -61,7 +61,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { $_returnColor } from '../plugins/helper'
+import { $$returnColor } from '../plugins/helper'
 import { routineType } from '../lib/interface'
 
 interface DataType {
@@ -103,6 +103,7 @@ export default Vue.extend({
     },
     keyword: {
       type: String,
+      default: ''
     },
   },
 
@@ -121,7 +122,7 @@ export default Vue.extend({
 
     rankColor() {
       return (rank: string): string => {
-        return $_returnColor(rank)
+        return $$returnColor(rank)
       }
     },
 
@@ -159,10 +160,10 @@ export default Vue.extend({
 
   methods: {
     selectRoutine(): routineType[] {
-      let selectedRoutines = []
-      for (let i in this.routines) {
-        let routine = this.routines[i]
-        if (routine.name.indexOf(this.keyword) !== -1) {
+      const selectedRoutines = []
+      for (const i in this.routines) {
+        const routine = this.routines[i]
+        if (routine.name.includes(this.keyword)) {
           selectedRoutines.push(routine)
         }
       }

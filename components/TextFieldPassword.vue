@@ -37,13 +37,13 @@ interface PropsType {
   name: string
   label: string
   vid: string
-  mode: string
 }
 
 export default Vue.extend({
   props: {
     value: {
       type: String,
+      default: ''
     },
     name: {
       type: String,
@@ -56,10 +56,7 @@ export default Vue.extend({
     vid: {
       type: String,
       default: 'password',
-    },
-    mode: {
-      type: String,
-    },
+    }
   },
 
   data() {

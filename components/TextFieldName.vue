@@ -34,6 +34,7 @@ export default Vue.extend({
   props: {
     value: {
       type: String,
+      default: ''
     },
     name: {
       type: String,

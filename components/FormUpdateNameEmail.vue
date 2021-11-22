@@ -3,9 +3,9 @@
     <v-card class="setting-card" tile>
       <div class="setting-content">
         <validation-observer
-          style="width: 80%"
           ref="observer"
           v-slot="{ invalid }"
+          style="width: 80%"
         >
           <TextFieldName v-model="name"></TextFieldName>
 
@@ -24,10 +24,10 @@
 
     <BaseDialog
       ref="baseDialog"
-      defaultButtonType="ok"
+      default-button-type="ok"
       :text="true"
       :divider="true"
-      textClass="text-center"
+      text-class="text-center"
     >
       <template #title>Done</template>
       <template #text>名前・メールアドレスを変更しました</template>

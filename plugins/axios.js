@@ -24,7 +24,7 @@ export default function (context) {
               return $axios.request(originalRequest)
             })
             .catch((err) => {
-              //error handling
+              alert(err)
             })
         }
       }

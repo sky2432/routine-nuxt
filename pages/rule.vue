@@ -1,12 +1,12 @@
 <template>
   <div>
-    <HeaderDrawer headerTitle="ルール" :serach="false"></HeaderDrawer>
+    <HeaderDrawer header-title="ルール" :serach="false"></HeaderDrawer>
 
     <v-main>
       <v-container>
         <div v-if="isMobileWidth">
           <v-simple-table>
-            <template v-slot:default>
+            <template #default>
               <thead>
                 <tr>
                   <th></th>
@@ -27,7 +27,7 @@
           </v-simple-table>
 
           <v-simple-table>
-            <template v-slot:default>
+            <template #default>
               <thead>
                 <tr>
                   <th></th>
@@ -41,14 +41,14 @@
                       tableItem.rank
                     }}</v-chip>
                   </th>
-                  <td>{{ tableItem.highest_continuous }}</td>
+                  <td>{{ tableItem.highestContinuous }}</td>
                 </tr>
               </tbody>
             </template>
           </v-simple-table>
 
           <v-simple-table>
-            <template v-slot:default>
+            <template #default>
               <thead>
                 <tr>
                   <th></th>
@@ -70,7 +70,7 @@
         </div>
 
         <v-simple-table v-if="!isMobileWidth">
-          <template v-slot:default>
+          <template #default>
             <thead>
               <tr>
                 <th></th>
@@ -85,7 +85,7 @@
                   <v-chip :color="tableItem.color">{{ tableItem.rank }}</v-chip>
                 </td>
                 <td>{{ tableItem.all }}</td>
-                <td>{{ tableItem.highest_continuous }}</td>
+                <td>{{ tableItem.highestContinuous }}</td>
                 <td>{{ tableItem.recovery }}</td>
               </tr>
             </tbody>
@@ -102,6 +102,14 @@ import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { RANK_COLOR } from '../config/const'
 import { windowWidthMixin } from '../mixins/windowWidthMixin'
 
+export interface tableItems {
+  rank: string
+  all: string
+  highestContinuous: string
+  recovery: string
+  color: string
+}
+
 interface DataType {
   width: number
   isMobileWidth: boolean
@@ -116,13 +124,6 @@ interface ComputedType {}
 
 interface PropsType {}
 
-export interface tableItems {
-  rank: string
-  all: string
-  highest_continuous: string
-  recovery: string
-  color: string
-}
 
 export default Vue.extend({
   mixins: [windowWidthMixin],
@@ -135,56 +136,56 @@ export default Vue.extend({
         {
           rank: 'SS',
           all: '6ヶ月（180日）〜',
-          highest_continuous: '3ヶ月（90日）〜',
+          highestContinuous: '3ヶ月（90日）〜',
           recovery: '18回〜',
           color: RANK_COLOR.SS,
         },
         {
           rank: 'S',
           all: '4ヶ月（120日）〜',
-          highest_continuous: '2ヶ月（60日）〜',
+          highestContinuous: '2ヶ月（60日）〜',
           recovery: '15回〜',
           color: RANK_COLOR.S,
         },
         {
           rank: 'A',
           all: '3ヶ月（90日）〜',
-          highest_continuous: '1ヶ月（30日）〜',
+          highestContinuous: '1ヶ月（30日）〜',
           recovery: '12回〜',
           color: RANK_COLOR.A,
         },
         {
           rank: 'B',
           all: '2ヶ月（60日）〜',
-          highest_continuous: '3週間（21日）〜',
+          highestContinuous: '3週間（21日）〜',
           recovery: '9回〜',
           color: RANK_COLOR.B,
         },
         {
           rank: 'C',
           all: '1ヶ月（30日）〜',
-          highest_continuous: '2週間（14日）〜',
+          highestContinuous: '2週間（14日）〜',
           recovery: '6回〜',
           color: RANK_COLOR.C,
         },
         {
           rank: 'D',
           all: '2週間（14日）〜',
-          highest_continuous: '1週間（7日）〜',
+          highestContinuous: '1週間（7日）〜',
           recovery: '3回〜',
           color: RANK_COLOR.D,
         },
         {
           rank: 'E',
           all: '1週間（7日）〜',
-          highest_continuous: '3日〜',
+          highestContinuous: '3日〜',
           recovery: '1回〜',
           color: RANK_COLOR.E,
         },
         {
           rank: 'F',
           all: '0日〜',
-          highest_continuous: '0日〜',
+          highestContinuous: '0日〜',
           recovery: '0回〜',
           color: RANK_COLOR.F,
         },
@@ -192,15 +193,14 @@ export default Vue.extend({
     }
   },
 
-  created() {
-    this.switchTableType()
-  },
-
-  watch: {
+   watch: {
     width() {
-      console.log(this.width)
       this.switchTableType()
     },
+  },
+
+  created() {
+    this.switchTableType()
   },
 
   methods: {

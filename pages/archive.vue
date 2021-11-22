@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderDrawer headerTitle="アーカイブ" v-model="keyword"></HeaderDrawer>
+    <HeaderDrawer v-model="keyword" header-title="アーカイブ" ></HeaderDrawer>
 
     <v-main>
       <v-container>

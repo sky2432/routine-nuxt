@@ -7,7 +7,7 @@ if (environment === 'local') {
   apiBaseUrl = 'http://127.0.0.1:8000'
 }
 if (environment === 'production') {
-  apiBaseUrl = 'http://127.0.0.1:8000'
+  apiBaseUrl = 'http://ec2-35-72-9-207.ap-northeast-1.compute.amazonaws.com'
 }
 
 export default {
@@ -116,7 +116,7 @@ export default {
     strategies: {
       laravelJWT: {
         provider: 'laravel/jwt',
-        url: 'http://127.0.0.1:8000',
+        url: apiBaseUrl,
         token: {
           maxAge: 60 * 60,
         },
@@ -138,5 +138,10 @@ export default {
 
   axios: {
     baseURL: `${apiBaseUrl}/api`,
+  },
+
+  // デプロイ時にページリロードの有効化
+  generate: {
+    fallback: true,
   },
 }

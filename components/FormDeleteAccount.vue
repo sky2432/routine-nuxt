@@ -15,7 +15,12 @@
             </p>
           </v-alert>
           <div class="text-center">
-            <v-btn class="mt-2" color="red white--text" @click="openDialog">
+            <v-btn
+              class="mt-2"
+              color="red white--text"
+              :disabled="isGuestUser"
+              @click="openDialog"
+            >
               アカウントを削除
             </v-btn>
           </div>
@@ -47,6 +52,7 @@
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import BaseDialog from '../components/BaseDialog.vue'
+import { GUEST_USER_EMAIL } from '../config/const'
 
 interface DataType {
   loading: boolean
@@ -59,7 +65,9 @@ interface MethodType {
   refsDeleteDialog(): any
 }
 
-interface ComputedType {}
+interface ComputedType {
+  isGuestUser(): boolean
+}
 
 interface PropsType {}
 
@@ -67,6 +75,15 @@ export default Vue.extend({
   data() {
     return {
       loading: false,
+    }
+  },
+
+  computed: {
+    isGuestUser () :boolean {
+      if (this.$auth.user.email === GUEST_USER_EMAIL) {
+        return true
+      }
+      return false
     }
   },
 

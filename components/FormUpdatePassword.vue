@@ -23,7 +23,7 @@
           <v-card-actions class="justify-center">
             <ButtonOk
               :loading="btnLoading"
-              :disabled="invalid"
+              :disabled="isGuestUser(invalid)"
               @click="updatePassword"
             ></ButtonOk>
           </v-card-actions>
@@ -49,6 +49,7 @@ import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { ValidationObserver } from 'vee-validate'
 import BaseDialog from '../components/BaseDialog.vue'
+import { GUEST_USER_EMAIL } from '../config/const'
 
 interface DataType {
   password: string
@@ -63,7 +64,9 @@ interface MethodType {
   refsObserver(): any
 }
 
-interface ComputedType {}
+interface ComputedType {
+  isGuestUser(invalid: boolean): boolean
+}
 
 interface PropsType {}
 
@@ -73,6 +76,17 @@ export default Vue.extend({
       btnLoading: false,
       password: '',
       newPassword: '',
+    }
+  },
+
+  computed: {
+    isGuestUser () {
+      return (invalid: boolean) :boolean => {
+        if (this.$auth.user.email === GUEST_USER_EMAIL) {
+          return true
+        }
+        return invalid
+      }
     }
   },
 

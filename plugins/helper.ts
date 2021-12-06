@@ -1,14 +1,14 @@
-import { RANK_COLOR } from '../config/const'
+import { RANK_COLORS } from '../config/const'
 
 export function $$returnColor(rank: string): string {
-  if (rank === 'E') return  RANK_COLOR.E
-  if (rank === 'D') return RANK_COLOR.D
-  if (rank === 'C') return RANK_COLOR.C
-  if (rank === 'B') return RANK_COLOR.B
-  if (rank === 'A') return RANK_COLOR.A
-  if (rank === 'S') return RANK_COLOR.S
-  if (rank === 'SS') return RANK_COLOR.SS
-  return RANK_COLOR.F
+  if (rank === 'E') return  RANK_COLORS.E
+  if (rank === 'D') return RANK_COLORS.D
+  if (rank === 'C') return RANK_COLORS.C
+  if (rank === 'B') return RANK_COLORS.B
+  if (rank === 'A') return RANK_COLORS.A
+  if (rank === 'S') return RANK_COLORS.S
+  if (rank === 'SS') return RANK_COLORS.SS
+  return RANK_COLORS.F
 }
 
 

@@ -38,7 +38,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { RANK_COLOR } from '../config/const'
+import { RANK_COLORS } from '../config/const'
 
 export interface ranksCount {
   name: string
@@ -92,14 +92,14 @@ export default Vue.extend({
         name: string
         color: string
       }[] = [
-        { name: 'SS', color: RANK_COLOR.SS },
-        { name: 'S', color: RANK_COLOR.S },
-        { name: 'A', color: RANK_COLOR.A },
-        { name: 'B', color: RANK_COLOR.B },
-        { name: 'C', color: RANK_COLOR.C },
-        { name: 'D', color: RANK_COLOR.D },
-        { name: 'E', color: RANK_COLOR.E },
-        { name: 'F', color: RANK_COLOR.F },
+        { name: 'SS', color: RANK_COLORS.SS },
+        { name: 'S', color: RANK_COLORS.S },
+        { name: 'A', color: RANK_COLORS.A },
+        { name: 'B', color: RANK_COLORS.B },
+        { name: 'C', color: RANK_COLORS.C },
+        { name: 'D', color: RANK_COLORS.D },
+        { name: 'E', color: RANK_COLORS.E },
+        { name: 'F', color: RANK_COLORS.F },
       ]
 
       for (const i in ranksCount) {

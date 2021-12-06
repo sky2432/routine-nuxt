@@ -99,7 +99,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { RANK_COLOR } from '../config/const'
+import { RANK_COLORS } from '../config/const'
 import { windowWidthMixin } from '../mixins/windowWidthMixin'
 
 export interface tableItems {
@@ -138,56 +138,56 @@ export default Vue.extend({
           all: '6ヶ月（180日）〜',
           highestContinuous: '3ヶ月（90日）〜',
           recovery: '18回〜',
-          color: RANK_COLOR.SS,
+          color: RANK_COLORS.SS,
         },
         {
           rank: 'S',
           all: '4ヶ月（120日）〜',
           highestContinuous: '2ヶ月（60日）〜',
           recovery: '15回〜',
-          color: RANK_COLOR.S,
+          color: RANK_COLORS.S,
         },
         {
           rank: 'A',
           all: '3ヶ月（90日）〜',
           highestContinuous: '1ヶ月（30日）〜',
           recovery: '12回〜',
-          color: RANK_COLOR.A,
+          color: RANK_COLORS.A,
         },
         {
           rank: 'B',
           all: '2ヶ月（60日）〜',
           highestContinuous: '3週間（21日）〜',
           recovery: '9回〜',
-          color: RANK_COLOR.B,
+          color: RANK_COLORS.B,
         },
         {
           rank: 'C',
           all: '1ヶ月（30日）〜',
           highestContinuous: '2週間（14日）〜',
           recovery: '6回〜',
-          color: RANK_COLOR.C,
+          color: RANK_COLORS.C,
         },
         {
           rank: 'D',
           all: '2週間（14日）〜',
           highestContinuous: '1週間（7日）〜',
           recovery: '3回〜',
-          color: RANK_COLOR.D,
+          color: RANK_COLORS.D,
         },
         {
           rank: 'E',
           all: '1週間（7日）〜',
           highestContinuous: '3日〜',
           recovery: '1回〜',
-          color: RANK_COLOR.E,
+          color: RANK_COLORS.E,
         },
         {
           rank: 'F',
           all: '0日〜',
           highestContinuous: '0日〜',
           recovery: '0回〜',
-          color: RANK_COLOR.F,
+          color: RANK_COLORS.F,
         },
       ] as tableItems[],
     }

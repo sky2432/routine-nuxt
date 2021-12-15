@@ -1,3 +1,5 @@
+[![cicd](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml/badge.svg)](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml)
+
 # RoutineQuest
 
 ゲーム的要素を取り入れた習慣化アプリケーションです。習慣の登録・習慣達成の記録ができます。連続日数・累計日数・最高連続日数・リカバリー回数の表示とランクアップ機能により習慣化を促します。

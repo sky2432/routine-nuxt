@@ -55,7 +55,7 @@ export default Vue.extend({
         })
         this.$router.push('/home')
       } catch(error) {
-        alert(error)
+        alert('エラーが発生しました')
       }
     },
   },
@@ -64,16 +64,21 @@ export default Vue.extend({
 
 <style scoped>
 .main {
+  margin-top: 64px;
   height: 100vh;
   background-image: url('@/static/top-page-image.png');
   background-size: cover;
-  background-position: 0px 64px;
+  background-position: right center;
   background-repeat: no-repeat;
 }
 
 .top-message {
   margin-top: 7%;
   margin-left: 5%;
+}
+
+.top-message h1 {
+  font-size: 24px;
 }
 
 .top-btn {
@@ -86,5 +91,11 @@ export default Vue.extend({
 
 .nav-link:hover {
   opacity: 0.5;
+}
+
+@media screen and (min-width: 600px) {
+  .top-message h1 {
+    font-size: 32px
+  }
 }
 </style>

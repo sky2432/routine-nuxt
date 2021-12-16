@@ -73,11 +73,13 @@ import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { $$returnColor } from '../plugins/helper'
 import { routineType, rankUpData } from '../lib/interface'
+import { windowWidthMixin } from '../mixins/windowWidthMixin'
 import BaseDialog from '../components/BaseDialog.vue'
 import DialogRoutine from '../components/DialogRoutine.vue'
 import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
 
 interface DataType {
+  width: number
   loaded: boolean
   name: string
   keywordForSearch: string
@@ -110,10 +112,13 @@ interface ComputedType {
 interface PropsType {}
 
 export default Vue.extend({
+  mixins: [windowWidthMixin],
+
   middleware: 'auth',
 
   data() {
     return {
+      width: window.innerWidth as number, // windowWidthMixinの変数
       loaded: false,
       name: '',
       keywordForSearch: '',
@@ -189,7 +194,7 @@ export default Vue.extend({
       if (this.selectedRoutine.id === routineId) {
         for (const i in this.routines) {
           const routine = this.routines[i]
-          if (routine.id === routineId) {
+          if (routine.id === routineId && this.width >= 600) {
             this.showRoutineDetail(routine)
           }
         }
@@ -254,7 +259,7 @@ export default Vue.extend({
 
 @media screen and (min-width: 600px) {
   .add-btn {
-    right: 41%;
+    right: 51%;
   }
 }
 

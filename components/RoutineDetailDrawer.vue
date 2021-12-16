@@ -124,7 +124,7 @@
                 </div>
               </div>
             </v-sheet>
-            <v-sheet>
+            <v-sheet class="calender-sheet">
               <v-calendar ref="calendar" v-model="calendarDate" locale="ja-jp">
                 <template #day-label="{ date, day, month, present }">
                   <v-btn
@@ -279,7 +279,7 @@ export default Vue.extend({
     // 画面幅によってdrawerの幅を変更
     drawerWidth(): string {
       if (this.width >= 960) return '30%'
-      if (this.width >= 600) return '40%'
+      if (this.width >= 600) return '50%'
       return '100%'
     },
   },
@@ -443,5 +443,15 @@ export default Vue.extend({
   font-size: 12px;
   color: #000000de;
   margin: 6px 0 6px 0;
+}
+
+.calender-sheet {
+  margin-bottom: 150px;
+}
+
+@media screen and (min-width: 600px) {
+  .calender-sheet {
+    margin-bottom: 0px;
+  }
 }
 </style>

@@ -4,9 +4,9 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ headerTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <div v-if="serach">
+      <div v-if="search">
         <v-text-field
-          name="serach"
+          name="search"
           prepend-inner-icon="mdi-magnify"
           hide-details="true"
           :value="value"
@@ -97,7 +97,7 @@ interface ComputedType {
 interface PropsType {
   headerTitle: string
   value: string
-  serach: boolean
+  search: boolean
 }
 
 export default Vue.extend({
@@ -110,7 +110,7 @@ export default Vue.extend({
       type: String,
       default: ''
     },
-    serach: {
+    search: {
       type: Boolean,
       default: true,
     },

@@ -5,7 +5,7 @@
     </div>
     <div v-if="loaded">
       <div v-if="routines.length === 0" class="wrapper">
-        <p v-if="isHome">習慣を登録しましょう！</p>
+        <p v-if="isHome">習慣を登録しましょう!</p>
         <p v-if="!isHome">アーカイブされた習慣はありません</p>
       </div>
       <v-row v-if="routines.length !== 0" class="ma-0">

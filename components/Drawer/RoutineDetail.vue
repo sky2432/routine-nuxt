@@ -43,7 +43,7 @@
         ></v-progress-circular>
       </div>
 
-      <div v-if="loaded">
+      <div v-if="loaded" class="loaded-content">
         <div v-if="!routine.id" class="wrapper">
           <div>習慣を選択してください</div>
         </div>
@@ -124,7 +124,7 @@
                 </div>
               </div>
             </v-sheet>
-            <v-sheet class="calender-sheet">
+            <v-sheet>
               <v-calendar ref="calendar" v-model="calendarDate" locale="ja-jp">
                 <template #day-label="{ date, day, month, present }">
                   <v-btn
@@ -142,7 +142,19 @@
           </div>
         </div>
       </div>
+      <v-btn
+        v-if="width < 600"
+        class="floating-close-btn"
+        color="indigo"
+        fab
+        dark
+        large
+        @click="drawer = !drawer"
+      >
+        <v-icon dark>mdi-chevron-right</v-icon>
+      </v-btn>
     </v-navigation-drawer>
+
 
     <DialogRoutine ref="editDialog" v-model="updatedName" @click="editRoutine">
       <template #title>Edit</template>
@@ -445,12 +457,19 @@ export default Vue.extend({
   margin: 6px 0 6px 0;
 }
 
-.calender-sheet {
-  margin-bottom: 150px;
+/* スマートフォンの場合下に余白を持たせる */
+.loaded-content {
+  margin-bottom: 170px;
+}
+
+.floating-close-btn {
+  position: fixed;
+  bottom: 110px;
+  left: 1%;
 }
 
 @media screen and (min-width: 600px) {
-  .calender-sheet {
+  .loaded-content {
     margin-bottom: 0px;
   }
 }

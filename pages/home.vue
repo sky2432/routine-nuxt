@@ -1,13 +1,13 @@
 <template>
   <div>
-    <HeaderDrawer
+    <TheHeaderDrawer
       v-model="keywordForSearch"
       header-title="ホーム"
-    ></HeaderDrawer>
+    ></TheHeaderDrawer>
 
     <v-main>
       <v-container>
-        <RoutineCards
+        <CardRoutine
           v-bind="{
             loaded: loaded,
             routines: routines,
@@ -17,7 +17,7 @@
           @clickRoutine="showRoutineDetail"
           @clickCheckbox="createOrDeleteRecord"
         >
-        </RoutineCards>
+        </CardRoutine>
 
         <v-btn
           class="add-btn"
@@ -32,11 +32,11 @@
       </v-container>
     </v-main>
 
-    <RoutineDetailDrawer
+    <DrawerRoutineDetail
       ref="routineDetailDrawer"
       @reloadRoutines="fetchUserRoutines"
       @startLoading="loaded = false"
-    ></RoutineDetailDrawer>
+    ></DrawerRoutineDetail>
 
     <DialogRoutine ref="addDialog" v-model="name" @click="addRoutine">
       <template #title>Register</template>
@@ -71,12 +71,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { $$returnColor } from '../plugins/helper'
-import { routineType, rankUpData } from '../lib/interface'
-import { windowWidthMixin } from '../mixins/windowWidthMixin'
-import BaseDialog from '../components/BaseDialog.vue'
-import DialogRoutine from '../components/DialogRoutine.vue'
-import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
+import BaseDialog from '@/components/Base/Dialog.vue'
+import DialogRoutine from '@/components/Dialog/Routine.vue'
+import { windowWidthMixin } from '@/mixins/windowWidthMixin'
+import DrawerRoutineDetail from '@/components/Drawer/RoutineDetail.vue'
+import { $$returnColor } from '@/plugins/helper'
+import { routineType, rankUpData } from '@/lib/interface'
 
 interface DataType {
   width: number
@@ -237,7 +237,7 @@ export default Vue.extend({
 
     refsRoutineDetailDrawer() {
       return this.$refs.routineDetailDrawer as InstanceType<
-        typeof RoutineDetailDrawer
+        typeof DrawerRoutineDetail
       >
     },
 

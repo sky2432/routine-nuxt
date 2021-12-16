@@ -6,7 +6,7 @@
           <v-card-title class="justify-center"> Thanks!!</v-card-title>
           <v-divider></v-divider>
           <v-card-text class="text-center py-5">
-            会員登録ありがとうございます！
+            会員登録ありがとうございます!
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions class="justify-center">

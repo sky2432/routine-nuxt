@@ -83,7 +83,7 @@
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { ValidationObserver } from 'vee-validate'
-import BaseDialog from '../components/BaseDialog.vue'
+import BaseDialog from '@/components/Base/Dialog.vue'
 
 interface DataType {
   name: string

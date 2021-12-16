@@ -1,9 +1,9 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Vuetify from 'vuetify'
-import RoutineCards from '../components/RoutineCards.vue'
-import { routineType } from '../lib/interface'
+import CardRoutine from '@/components/Card/Routine.vue'
+import { routineType } from '@/lib/interface'
 
-describe('RoutineCards component', () => {
+describe('CardRoutine component', () => {
   const localVue = createLocalVue()
   let vuetify: Vuetify
 
@@ -12,7 +12,7 @@ describe('RoutineCards component', () => {
   })
 
   const mountFunction = (options?: any) => {
-    return mount(RoutineCards, {
+    return mount(CardRoutine, {
       localVue,
       vuetify,
       ...options,
@@ -28,7 +28,7 @@ describe('RoutineCards component', () => {
       }
     })
     expect(wrapper.text()).toBe(
-      '習慣を登録しましょう！'
+      '習慣を登録しましょう!'
     )
   })
 

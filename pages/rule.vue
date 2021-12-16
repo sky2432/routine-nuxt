@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderDrawer header-title="ルール" :serach="false"></HeaderDrawer>
+    <TheHeaderDrawer header-title="ルール" :serach="false"></TheHeaderDrawer>
 
     <v-main>
       <v-container>
@@ -99,8 +99,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { RANK_COLORS } from '../config/const'
-import { windowWidthMixin } from '../mixins/windowWidthMixin'
+import { RANK_COLORS } from '@/config/const'
+import { windowWidthMixin } from '@/mixins/windowWidthMixin'
 
 export interface tableItems {
   rank: string

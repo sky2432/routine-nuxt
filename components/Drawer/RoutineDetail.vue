@@ -172,11 +172,11 @@
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import dayjs from 'dayjs'
-import { $$returnColor } from '../plugins/helper'
-import { routineType, VCalendar } from '../lib/interface'
-import { windowWidthMixin } from '../mixins/windowWidthMixin'
-import BaseDialog from './BaseDialog.vue'
-import DialogRoutine from './DialogRoutine.vue'
+import BaseDialog from '@/components/Base/Dialog.vue'
+import DialogRoutine from '@/components/Dialog/Routine.vue'
+import { windowWidthMixin } from '@/mixins/windowWidthMixin'
+import { $$returnColor } from '@/plugins/helper'
+import { routineType, VCalendar } from '@/lib/interface'
 
 interface DataType {
   width: number

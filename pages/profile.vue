@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderDrawer header-title="プロフィール" :serach="false"></HeaderDrawer>
+    <TheHeaderDrawer header-title="プロフィール" :serach="false"></TheHeaderDrawer>
 
     <v-main>
       <v-container>
@@ -38,7 +38,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { RANK_COLORS } from '../config/const'
+import { RANK_COLORS } from '@/config/const'
 
 export interface ranksCount {
   name: string

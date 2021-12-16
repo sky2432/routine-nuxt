@@ -51,8 +51,8 @@
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 import { ValidationObserver } from 'vee-validate'
-import BaseDialog from '../components/BaseDialog.vue'
-import { GUEST_USER_EMAIL } from '../config/const'
+import BaseDialog from '@/components/Base/Dialog.vue'
+import { GUEST_USER_EMAIL } from '@/config/const'
 
 interface DataType {
   image: null | any

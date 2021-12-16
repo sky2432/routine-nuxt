@@ -1,10 +1,10 @@
 <template>
   <div>
-    <HeaderDrawer v-model="keyword" header-title="アーカイブ" ></HeaderDrawer>
+    <TheHeaderDrawer v-model="keyword" header-title="アーカイブ" ></TheHeaderDrawer>
 
     <v-main>
       <v-container>
-        <RoutineCards
+        <CardRoutine
           v-bind="{
             loaded: loaded,
             routines: routines,
@@ -12,25 +12,25 @@
           }"
           @clickRoutine="showRoutineDetail"
         >
-        </RoutineCards>
+        </CardRoutine>
       </v-container>
     </v-main>
 
-    <RoutineDetailDrawer
+    <DrawerRoutineDetail
       ref="routineDetailDrawer"
       @reloadRoutines="getUserRoutines"
       @startLoading="loaded = false"
     >
       <template #archiveButtonText>戻す</template>
-    </RoutineDetailDrawer>
+    </DrawerRoutineDetail>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
-import { routineType } from '../lib/interface'
-import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
+import { routineType } from '@/lib/interface'
+import DrawerRoutineDetail from '@/components/Drawer/RoutineDetail.vue'
 
 interface DataType {
   loaded: boolean
@@ -81,7 +81,7 @@ export default Vue.extend({
     // コンポーネント要素の型定義
     refsRoutineDetailDrawer() {
       return this.$refs.routineDetailDrawer as InstanceType<
-        typeof RoutineDetailDrawer
+        typeof DrawerRoutineDetail
       >
     },
   },

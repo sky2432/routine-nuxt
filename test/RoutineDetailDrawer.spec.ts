@@ -1,9 +1,9 @@
 import {  mount, createLocalVue } from '@vue/test-utils'
 import Vuetify from 'vuetify'
-import RoutineDetailDrawer from '../components/RoutineDetailDrawer.vue'
-import { routineType } from '../lib/interface'
+import DrawerRoutineDetail from '@/components/Drawer/RoutineDetail.vue'
+import { routineType } from '@/lib/interface'
 
-describe('RoutineDetailDrawer component', () => {
+describe('DrawerRoutineDetail component', () => {
   const localVue = createLocalVue()
   let vuetify: Vuetify
 
@@ -12,7 +12,7 @@ describe('RoutineDetailDrawer component', () => {
   })
 
   const mountFunction = (options?: any) => {
-    return mount(RoutineDetailDrawer, {
+    return mount(DrawerRoutineDetail, {
       localVue,
       vuetify,
       ...options,

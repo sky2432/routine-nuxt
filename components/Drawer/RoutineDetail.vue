@@ -153,30 +153,28 @@
       >
         <v-icon dark>mdi-chevron-right</v-icon>
       </v-btn>
+      <DialogRoutine ref="editDialog" v-model="updatedName" @click="editRoutine">
+        <template #title>Edit</template>
+      </DialogRoutine>
+
+      <BaseDialog
+        ref="deleteDialog"
+        :text="true"
+        :divider="true"
+        text-class="text-center"
+        default-button-type="cancel"
+      >
+        <template #title>Confirm</template>
+        <template #text>この習慣を削除しますか？</template>
+        <template #leftButton>
+          <ButtonOk
+            :loading="deleteBtnLoading"
+            btn-class="mr-16"
+            @click="deleteRoutine"
+          ></ButtonOk>
+        </template>
+      </BaseDialog>
     </v-navigation-drawer>
-
-
-    <DialogRoutine ref="editDialog" v-model="updatedName" @click="editRoutine">
-      <template #title>Edit</template>
-    </DialogRoutine>
-
-    <BaseDialog
-      ref="deleteDialog"
-      :text="true"
-      :divider="true"
-      text-class="text-center"
-      default-button-type="cancel"
-    >
-      <template #title>Confirm</template>
-      <template #text>この習慣を削除しますか？</template>
-      <template #leftButton>
-        <ButtonOk
-          :loading="deleteBtnLoading"
-          btn-class="mr-16"
-          @click="deleteRoutine"
-        ></ButtonOk>
-      </template>
-    </BaseDialog>
   </div>
 </template>
 
@@ -299,7 +297,7 @@ export default Vue.extend({
   watch: {
     width() {
       this.drawer = false
-    },
+    }
   },
 
   created() {
@@ -403,6 +401,9 @@ export default Vue.extend({
       this.routine = {} as routineType
       this.refsDeleteDialog().closeDialog()
       this.deleteBtnLoading = false
+      if (this.width < 600) {
+        this.drawer = false
+      }
     },
     //
     // end

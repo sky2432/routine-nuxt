@@ -28,7 +28,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
-      { name: 'msapplication-TileColor', content: '#da532c' },
+      { name: 'msapplication-TileColor', content: '#ffffff' },
       { name: 'theme-color', content: '#ffffff' },
     ],
     link: [
@@ -58,7 +58,7 @@ export default {
       {
         rel: 'mask-icon',
         href: '/favicons/safari-pinned-tab.svg',
-        color: '#5bbad5',
+        color: '#ababab',
       },
     ],
   },

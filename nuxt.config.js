@@ -7,7 +7,7 @@ if (environment === 'local') {
   apiBaseUrl = 'http://127.0.0.1:8000'
 }
 if (environment === 'production') {
-  apiBaseUrl = 'http://ec2-35-72-9-207.ap-northeast-1.compute.amazonaws.com'
+  apiBaseUrl = 'http://ec2-3-112-254-133.ap-northeast-1.compute.amazonaws.com'
 }
 
 export default {

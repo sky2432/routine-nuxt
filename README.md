@@ -1,4 +1,4 @@
-[![ci](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml/badge.svg)](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml)
+[![ci](https://github.com/sky2432/routine-nuxt/actions/workflows/ci.yml/badge.svg)](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/0311d150-9614-4ea2-b571-23ccee353c19/deploy-status)](https://app.netlify.com/sites/lovely-cascaron-bab7eb/deploys)
 
 # RoutineQuest
@@ -11,7 +11,7 @@
 習慣化のために自身で手作業で行なっていた作業を自動化させるために作成しました。
 
 ## アプリケーションURL
-http://routine-quest-app.s3-website-ap-northeast-1.amazonaws.com/
+https://routine-quest.netlify.app/
 
 トップページの「試してみる」ボタンからアプリを体験してみてください。アプリ体験時は一部機能が制限されています。
 
@@ -51,8 +51,8 @@ https://github.com/sky2432/routine-laravel
 - Mysql 8.0.23
 
 インフラ
-- Apache
-- AWS EC2・RDS・S3
+- Netlify
+- Heroku
 - github actions
 
 ## ER図

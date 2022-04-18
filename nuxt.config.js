@@ -1,14 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
-const environment = process.env.NODE_ENV
-// 環境変数の設定
-let apiBaseUrl = ''
-if (environment === 'local') {
-  apiBaseUrl = 'http://127.0.0.1:8000'
-}
-if (environment === 'production') {
-  apiBaseUrl = 'http://ec2-3-112-254-133.ap-northeast-1.compute.amazonaws.com'
-}
+const defaultApiBaseUrl = 'http://127.0.0.1:8000'
+const apiBaseUrl = process.env.API_BASE_URL || defaultApiBaseUrl
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode

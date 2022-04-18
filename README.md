@@ -1,4 +1,5 @@
-[![cicd](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml/badge.svg)](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml)
+[![ci](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml/badge.svg)](https://github.com/sky2432/routine-nuxt/actions/workflows/cicd.yml)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0311d150-9614-4ea2-b571-23ccee353c19/deploy-status)](https://app.netlify.com/sites/lovely-cascaron-bab7eb/deploys)
 
 # RoutineQuest
 

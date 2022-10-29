@@ -11,7 +11,7 @@
       <div class="top-message">
         <h1>ゲームのように習慣を身につけよう</h1>
         <h1>習慣が人生を作る</h1>
-        <v-btn class="mt-4 top-btn" large @click="guestlogin">試してみる</v-btn>
+        <v-btn class="mt-4 top-btn" :loading="loading" large @click="guestlogin">試してみる</v-btn>
       </div>
     </v-main>
 
@@ -30,7 +30,9 @@
 import Vue from 'vue'
 import { ThisTypedComponentOptionsWithRecordProps } from 'vue/types/options'
 
-interface DataType {}
+interface DataType {
+  loading: boolean
+}
 
 interface MethodType {
   guestlogin(): Promise<void>
@@ -41,9 +43,16 @@ interface ComputedType {}
 interface PropsType {}
 
 export default Vue.extend({
+  data() {
+    return {
+      loading: false
+    }
+  },
+
   methods: {
     async guestlogin() {
       try {
+        this.loading = true
         const guestUserEmail = 'guest@user.com'
         const guestUserPassword = 1234
 
@@ -56,6 +65,8 @@ export default Vue.extend({
         this.$router.push('/home')
       } catch(error) {
         alert('エラーが発生しました')
+      } finally {
+        this.loading = false
       }
     },
   },
